@@ -1,0 +1,8 @@
+{
+  "short_name": "Quinielas 2022 App",
+  "name": "Capstone Project Quinielas 2022 App",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
