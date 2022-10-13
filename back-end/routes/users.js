@@ -13,9 +13,9 @@ const { BadRequestError } = require("../expressError");
 
 /** 
 * POST /users/register:   { user } => { newUser }
-* user must include { firstName, lastName, email, password }
-* Returns JWT token which can be used to authenticate further requests.
-* Authorization required: none
+*   user must include { firstName, lastName, email, username, password }
+*   Returns JWT token which can be used to authenticate further requests.
+*   Authorization required: none
 */
 router.post("/register", async function (req, res, next) {
     try {
@@ -31,6 +31,20 @@ router.post("/register", async function (req, res, next) {
         return next(err);
     }
 });
-  
+
+
+/** 
+* GET / => { users: [ {firstName, lastName, username, email }, ... ] }
+*   Returns list of all not admin users
+**/
+router.get("/", async function (req, res, next) {
+    try {
+        const users = await User.findAllActive();
+        return res.json({ users });
+    } catch (err) {
+        return next(err);
+    }
+});
+
   
 module.exports = router;
