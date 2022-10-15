@@ -15,7 +15,7 @@ const {
 class User {
     /** 
     * Register user with data
-    *   Returns { firstName, lastName, email, isAdmin }
+    *   Returns { id, firstName, lastName, email, isAdmin }
     *   Throws BadRequestError on duplicates
     **/
     static async register({ firstName, lastName, email, username, password, isAdmin }){
@@ -59,12 +59,13 @@ class User {
     }
 
     /** 
-    * Find all users
-    *   Returns [{ first_name, last_name, email, username, is_admin }, ...]
+    * Find all users (only regular users)
+    *   Returns [{ id, first_name, last_name, email, username, is_admin }, ...]
     **/
     static async findAllActive(){
         const result = await db.query(
             `SELECT 
+                id,     
                 first_name AS "firstName",
                 last_name AS "lastName",
                 username,
@@ -78,6 +79,33 @@ class User {
         );
 
         return result.rows;
+    }
+
+    /** 
+    * Given a username, return data about user (only regular users)
+    *   Returns { first_name, last_name, username, email }
+    *   Throws NotFoundError if user not found
+    **/
+    static async get(username) {
+        const userRes = await db.query(
+            `SELECT 
+                username,
+                first_name AS "firstName",
+                last_name AS "lastName",
+                username, 
+                email 
+            FROM 
+                users
+            WHERE 
+                username = $1 AND is_admin = false`,
+        [username]);
+        const user = userRes.rows[0];
+
+        if(!user){
+            throw new NotFoundError(`Username not found: ${username}`);
+        } 
+
+        return user;
     }
 }
 
