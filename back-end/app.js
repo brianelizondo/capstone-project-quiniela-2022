@@ -9,6 +9,7 @@ const { NotFoundError } = require("./expressError");
 
 /** Routes */
 const usersRoutes = require("./routes/users");
+const quinielassRoutes = require("./routes/quinielas");
 
 const app = express();
 app.use(cors());
@@ -16,6 +17,7 @@ app.use(express.json());
 
 /** Routes directories */
 app.use("/users", usersRoutes);
+app.use("/quinielas", quinielassRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function (req, res, next){
