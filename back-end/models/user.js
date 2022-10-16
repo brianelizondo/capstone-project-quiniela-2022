@@ -83,7 +83,8 @@ class User {
 
     /** 
     * Given a username, return data about user (only regular users)
-    *   Returns { first_name, last_name, username, email }
+    *   Returns { first_name, last_name, username, email, quinielas }
+    *   where "quinielas" is [{id, createdAt, endedAt, status}, ...]
     *   Throws NotFoundError if user not found
     **/
     static async get(username) {
@@ -105,6 +106,27 @@ class User {
         if(!user){
             throw new NotFoundError(`Username not found: ${username}`);
         } 
+
+        const userQuinielasRes = await db.query(
+            `SELECT 
+                id, 
+                created_at AS "createdAt",
+                ended_at AS "endedAt",
+                status 
+             FROM 
+                quinielas
+             WHERE 
+                user_id = $1 AND status=1`, 
+        [user.id]);
+  
+        user.quinielas = userQuinielasRes.rows.map((q) => {
+            return { 
+                id: q.id,
+                createdAt: q.createdAt,
+                endedAt: q.endedAt,
+                status: q.status
+            }
+        });
 
         return user;
     }
