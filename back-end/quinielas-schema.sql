@@ -15,7 +15,7 @@ CREATE TABLE quinielas (
 	ended_at 	DATE 		DEFAULT NULL,
 	user_id 	INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
 	status 		INTEGER 	DEFAULT 0 NOT NULL
- );
+);
 
 -- create USERS table
 CREATE TABLE users ( 
@@ -36,7 +36,7 @@ CREATE TABLE quinielas (
 	ended_at 	DATE 		DEFAULT NULL,
 	user_id 	INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
 	status 		INTEGER 	DEFAULT 0 NOT NULL
- );
+);
 
 
 -- basic and independent tables
@@ -44,19 +44,53 @@ CREATE TABLE quinielas (
 CREATE TABLE cities ( 
 	id			SERIAL		PRIMARY KEY,
 	city		VARCHAR(50) NOT NULL
- );
+);
 
 -- create STADIUMS table
 CREATE TABLE stadiums ( 
 	id			SERIAL		PRIMARY KEY,
 	name		VARCHAR(50)	NOT NULL,
 	city_id		INTEGER NOT NULL REFERENCES cities ( id ) ON DELETE CASCADE
- );
+);
 
- -- create TEAMS table
- CREATE TABLE teams ( 
+-- create TEAMS table
+CREATE TABLE teams ( 
 	id			SERIAL		PRIMARY KEY,
 	name		VARCHAR(50) NOT NULL,
 	short_name	VARCHAR(3) 	UNIQUE NOT NULL,
 	api_id		INTEGER 	UNIQUE NOT NULL
- );
+);
+
+
+-- create MATCHES_PHASE_1 table
+CREATE TABLE matches_phase_1 ( 
+	id			SERIAL		PRIMARY KEY,
+	match_date	DATE 		NOT NULL,
+	match_time 	TIME		NOT NULL,
+	stadium_id 	INTEGER 	NOT NULL REFERENCES stadiums ( id ) ON DELETE CASCADE,
+	city_id 	INTEGER 	NOT NULL REFERENCES cities ( id ) ON DELETE CASCADE,
+	match_group	VARCHAR(1)  NOT NULL,
+	team_a_id	INTEGER 	NOT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
+	team_b_id	INTEGER 	NOT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
+	match_result VARCHAR(5) DEFAULT NULL,
+	match_status INTEGER 	NOT NULL DEFAULT 0,
+	api_id		INTEGER 	NOT NULL
+);
+-- create MATCHES_PHASE_2 table
+CREATE SEQUENCE sec_matches_phase_2 START WITH 49;
+CREATE TABLE matches_phase_2 ( 
+	id			INTEGER		PRIMARY KEY	DEFAULT NEXTVAL('sec_matches_phase_2'),
+	match_date 	DATE 		NOT NULL,
+	match_time	TIME		NOT NULL,
+	stadium_id	INTEGER 	NOT NULL REFERENCES stadiums ( id ) ON DELETE CASCADE,
+	city_id 	INTEGER 	NOT NULL REFERENCES cities ( id ) ON DELETE CASCADE,
+	match_phase VARCHAR(3)  NOT NULL,
+	team_a_classified    	VARCHAR(25),
+	team_a_id	INTEGER 	REFERENCES teams ( id ) ON DELETE CASCADE,
+	team_a_result INTEGER 	DEFAULT NULL,
+	team_b_classified    	VARCHAR(25),
+	team_b_id	INTEGER 	REFERENCES teams ( id ) ON DELETE CASCADE,
+	team_b_result INTEGER 	DEFAULT NULL,
+	match_result VARCHAR(5) DEFAULT NULL,
+	match_status INTEGER 	NOT NULL DEFAULT 0
+);
