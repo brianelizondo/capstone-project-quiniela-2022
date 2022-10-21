@@ -1,3 +1,15 @@
+-- Insert test users in table USERS
+INSERT INTO users
+	(first_name, 
+    last_name, 
+    email, 
+    username, 
+    password) 
+VALUES 
+    ('regular', 'user', 'regular@mail.com', 'regularuser', '$2b$12$KCCMfnTiOCaVcBw.7KLgq.WBd/Kxt.I6jbYjE3w0ZLTK1LbvqcVa2'),
+    ('admin', 'user', 'admin@mail.com', 'adminuser', '$2b$12$KCCMfnTiOCaVcBw.7KLgq.WBd/Kxt.I6jbYjE3w0ZLTK1LbvqcVa2');
+
+
 -- Seed basic and independent tables with info
 INSERT INTO cities 
     (city) 

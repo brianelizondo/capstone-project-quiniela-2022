@@ -10,6 +10,8 @@ const {
     UnauthorizedError,
 } = require("../expressError");
 
+const Quiniela = require("./quiniela");
+
 
 /** Related class and functions for USER object */
 class User {
@@ -107,26 +109,7 @@ class User {
             throw new NotFoundError(`Username not found: ${username}`);
         } 
 
-        const userQuinielasRes = await db.query(
-            `SELECT 
-                id, 
-                created_at AS "createdAt",
-                ended_at AS "endedAt",
-                status 
-             FROM 
-                quinielas
-             WHERE 
-                user_id = $1 AND status=1`, 
-        [user.id]);
-  
-        user.quinielas = userQuinielasRes.rows.map((q) => {
-            return { 
-                id: q.id,
-                createdAt: q.createdAt,
-                endedAt: q.endedAt,
-                status: q.status
-            }
-        });
+        user.quinielas = await Quiniela.findAllActive(user.id);
 
         return user;
     }

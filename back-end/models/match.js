@@ -17,7 +17,7 @@ class Match {
     *           where "teamA" or "teamB" is { id, name, shortName, apiID }
     * 
     *   Matches Phase 2:
-    *       Returns [{ id, date, time, stadium, city, phase, teamA_classified, teamA, teamA_result, teamB_classified, teamB, teamB_result, result, status }, ...]
+    *       Returns [{ id, date, time, stadium, city, phase, teamA_classified, teamA, teamA_result, teamB_classified, teamB, teamB_result, result, status, apiID }, ...]
     **/
     static async findAll(phase){
         phase = Number(phase);
@@ -106,7 +106,8 @@ class Match {
                     m.team_b_id AS "teamB",
                     m.team_b_result AS "teamB_result", 
                     m.match_result AS "result", 
-                    m.match_status AS "status" 
+                    m.match_status AS "status",
+                    m.api_id AS "apiID" 
                 FROM
                     matches_phase_2 AS m 
                 
@@ -129,7 +130,7 @@ class Match {
     * Given a phase and match, return data about match
     *   Returns for matches phase 1: { id, date, time, stadium, city, group, teamA, teamB, result, status, apiID }
     *       where "teamA" or "teamB" is { id, name, shortName, apiID }
-    *   Returns for matches phase 2: { id, date, time, stadium, city, phase, teamA_classified, teamA, teamA_result, teamB_classified, teamB, teamB_result, result, status }
+    *   Returns for matches phase 2: { id, date, time, stadium, city, phase, teamA_classified, teamA, teamA_result, teamB_classified, teamB, teamB_result, result, status, apiID }
     * 
     *   Throws NotFoundError if phase or match not found
     **/
@@ -222,7 +223,8 @@ class Match {
                     m.team_b_id AS "teamB",
                     m.team_b_result AS "teamB_result", 
                     m.match_result AS "result", 
-                    m.match_status AS "status" 
+                    m.match_status AS "status",
+                    m.api_id AS "apiID"  
                 FROM
                     matches_phase_2 AS m 
                 

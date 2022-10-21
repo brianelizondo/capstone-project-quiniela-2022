@@ -1,22 +1,3 @@
-CREATE TABLE users ( 
-	id 			SERIAL 		PRIMARY KEY,
-	first_name 	VARCHAR(50) NOT NULL,
-	last_name 	VARCHAR(50) NOT NULL,
-	email 		VARCHAR(50) UNIQUE NOT NULL,
-	username 	VARCHAR(20) UNIQUE NOT NULL,
-	password 	VARCHAR 	NOT NULL,
-	is_admin 	BOOLEAN 	NOT NULL DEFAULT false,
-	status 		INTEGER 	NOT NULL DEFAULT 1
-);
-
-CREATE TABLE quinielas ( 
-	id 			SERIAL 		PRIMARY KEY,
-	created_at 	DATE 		NOT NULL DEFAULT CURRENT_DATE,
-	ended_at 	DATE 		DEFAULT NULL,
-	user_id 	INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
-	status 		INTEGER 	DEFAULT 0 NOT NULL
-);
-
 -- create USERS table
 CREATE TABLE users ( 
 	id 			SERIAL 		PRIMARY KEY,
@@ -26,7 +7,7 @@ CREATE TABLE users (
 	username 	VARCHAR(20) UNIQUE NOT NULL,
 	password 	VARCHAR 	NOT NULL,
 	is_admin 	BOOLEAN 	NOT NULL DEFAULT false,
-	status 		INTEGER 	NOT NULL DEFAULT 1
+	status 		INTEGER 	NOT NULL DEFAULT 0
 );
 
 -- create QUINIELAS table
@@ -35,7 +16,7 @@ CREATE TABLE quinielas (
 	created_at 	DATE 		NOT NULL DEFAULT CURRENT_DATE,
 	ended_at 	DATE 		DEFAULT NULL,
 	user_id 	INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
-	status 		INTEGER 	DEFAULT 0 NOT NULL
+	status 		INTEGER 	NOT NULL DEFAULT 0
 );
 
 
@@ -62,6 +43,7 @@ CREATE TABLE teams (
 );
 
 
+-- tables about games for each phase
 -- create MATCHES_PHASE_1 table
 CREATE TABLE matches_phase_1 ( 
 	id			SERIAL		PRIMARY KEY,
@@ -92,5 +74,30 @@ CREATE TABLE matches_phase_2 (
 	team_b_id	INTEGER 	REFERENCES teams ( id ) ON DELETE CASCADE,
 	team_b_result INTEGER 	DEFAULT NULL,
 	match_result VARCHAR(5) DEFAULT NULL,
-	match_status INTEGER 	NOT NULL DEFAULT 0
+	match_status INTEGER 	NOT NULL DEFAULT 0,
+	api_id		INTEGER 	DEFAULT NULL
+);
+
+
+-- tables for matches associated to users quinielas
+-- create QUINIELAS_PHASE_1 matches table
+CREATE TABLE quinielas_phase_1 ( 
+	id          SERIAL 		PRIMARY KEY,
+	quiniela_id INTEGER 	NOT NULL REFERENCES quinielas ( id ) ON DELETE CASCADE,
+	user_id     INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
+	match_id    INTEGER 	NOT NULL REFERENCES matches_phase_1 ( id ) ON DELETE CASCADE,
+	team_a_result INTEGER 	DEFAULT NULL,
+	team_b_result INTEGER 	DEFAULT NULL
+);
+
+-- create QUINIELAS_PHASE_2 matches table
+CREATE TABLE quinielas_phase_2 ( 
+	id          SERIAL 		PRIMARY KEY,
+	quiniela_id INTEGER 	NOT NULL REFERENCES quinielas ( id ) ON DELETE CASCADE,
+	user_id     INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
+	match_id    INTEGER 	NOT NULL REFERENCES matches_phase_2 ( id ) ON DELETE CASCADE,
+	team_a      INTEGER 	DEFAULT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
+	team_a_result INTEGER 	DEFAULT NULL,
+	team_b      INTEGER 	DEFAULT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
+	team_b_result INTEGER 	DEFAULT NULL
 );
