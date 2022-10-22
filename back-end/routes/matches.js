@@ -21,17 +21,16 @@ router.get("/phase/:phase", async function (req, res, next) {
 });
 
 /** 
-* GET /phase/[id]/match/[id] => { match: { id, date, time, stadium, city, group, teamA, teamB, result, status, apiID } }
-*   Returns match details
+* GET /groups/standings => { groupsStandings: { [{group, teamID, teamName, gamesPlayed, gamesWon, gamesDraws, gamesLost, goalsFor, goalsAgainst, goalsDiff, points}], ...} }
+*   Returns the standings for each group/team
 **/
-router.get("/phase/:phase/match/:match", async function (req, res, next) {
+router.get("/groups/standings", async function (req, res, next) {
     try {
-        const match = await Match.get(req.params.phase, req.params.match);
-        return res.json({ match });
+        const groupsStandings = await Match.getGroupsStandings();
+        return res.json({ groupsStandings });
     } catch (err) {
         return next(err);
     }
 });
-  
 
 module.exports = router;

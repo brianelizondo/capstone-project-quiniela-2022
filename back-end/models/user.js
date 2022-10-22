@@ -75,7 +75,7 @@ class User {
             FROM 
                 users
             WHERE
-                is_admin = false 
+                status = 1 AND is_admin = false 
             ORDER BY 
                 username`
         );
@@ -101,7 +101,7 @@ class User {
             FROM 
                 users
             WHERE 
-                username = $1 AND is_admin = false`,
+                username = $1 AND status = 1 AND is_admin = false`,
         [username.toLowerCase()]);
         const user = userRes.rows[0];
 

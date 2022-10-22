@@ -155,6 +155,8 @@ class Quiniela {
             LEFT JOIN teams AS t 
                 ON qp.champion_team_id = t.id 
             
+            WHERE
+                qp.status >= 1 
             ORDER BY 
                 qp.points DESC`
         );
@@ -175,7 +177,7 @@ class Quiniela {
             FROM 
                 quinielas 
             WHERE
-                user_id = $1 AND status = 0 
+                user_id = $1 AND status >= 1 
             ORDER BY 
                 id`,
         [userID]);
@@ -214,7 +216,7 @@ class Quiniela {
                 ON qp.champion_team_id = t.id 
 
             WHERE 
-                q.id = $1 AND q.user_id = $2 AND q.status = 0`,
+                q.id = $1 AND q.user_id = $2 AND q.status >= 1`,
         [quinielaID, userID]);
         let quiniela = result.rows[0];
 
