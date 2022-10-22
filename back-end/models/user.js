@@ -28,7 +28,7 @@ class User {
                 users 
             WHERE 
                 email = $1 OR username = $2`,
-        [email, username]);
+        [email.toLowerCase(), username.toLowerCase()]);
 
         if(duplicateCheck.rows[0]){
             throw new BadRequestError(`Duplicate email and/or username: ${email} / ${username}`);
@@ -102,7 +102,7 @@ class User {
                 users
             WHERE 
                 username = $1 AND is_admin = false`,
-        [username]);
+        [username.toLowerCase()]);
         const user = userRes.rows[0];
 
         if(!user){

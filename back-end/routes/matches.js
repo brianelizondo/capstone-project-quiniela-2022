@@ -1,7 +1,5 @@
 /** Routes for MATCHES */
 const express = require("express");
-const jsonschema = require("jsonschema");
-
 const router = new express.Router();
 
 const Match = require("../models/match");

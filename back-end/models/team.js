@@ -12,26 +12,46 @@ const {
 /** Related class and functions for TEAM object */
 class Team {
     /** 
+    * Find all teams
+    *   Returns [{ id, name, shortName, apiID }, ...]
+    **/
+     static async findAll(){
+        const result = await db.query(
+            `SELECT 
+                id,     
+                name,
+                short_name AS "shortName",
+                api_id AS "apiID" 
+            FROM 
+                teams 
+            ORDER BY 
+                name ASC`
+        );
+
+        return result.rows;
+    }
+    
+    /** 
     * Given a team, return data about team
     *   Returns { id, name, shortName, api_id }
     *   Throws NotFoundError if team not found
     **/
-     static async get(id) {
-        const teamRes = await db.query(
+     static async get(shortName) {
+        const result = await db.query(
             `SELECT 
-                id, 
-                name, 
-                short_name AS "shortName", 
+                id,     
+                name,
+                short_name AS "shortName",
                 api_id AS "apiID" 
             FROM 
                 teams 
             WHERE 
-                id = $1`,
-        [id]);
-        const team = teamRes.rows[0];
+                short_name = $1`,
+        [shortName.toUpperCase()]);
+        const team = result.rows[0];
 
         if(!team){
-            throw new NotFoundError(`ID Team not found: ${id}`);
+            throw new NotFoundError(`Team not found: ${shortName}`);
         } 
         
         return team;

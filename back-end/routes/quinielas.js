@@ -1,7 +1,5 @@
 /** Routes for QUINIELAS */
 const express = require("express");
-const jsonschema = require("jsonschema");
-
 const router = new express.Router();
 
 const User = require("../models/user");

@@ -11,6 +11,7 @@ const { NotFoundError } = require("./expressError");
 const usersRoutes = require("./routes/users");
 const quinielasRoutes = require("./routes/quinielas");
 const matchesRoutes = require("./routes/matches");
+const teamsRoutes = require("./routes/teams");
 
 const app = express();
 app.use(cors());
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use("/users", usersRoutes);
 app.use("/quinielas", quinielasRoutes);
 app.use("/matches", matchesRoutes);
+app.use("/teams", teamsRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function (req, res, next){
