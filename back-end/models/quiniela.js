@@ -14,8 +14,9 @@ const Match = require("./match");
 class Quiniela {
     /** 
     * Create a new quiniela with data
-    *   Returns { id, createdAt, ended_at, userID, status }
-    *   Throws BadRequestError on duplicates
+    *   Returns { id, createdAt, ended_at, userID, status, matchesPhase1, matchesPhase2 }
+    *       where matchesPhase1 is: { id, matchID, teamAResult, teamBResult, points }
+    *       where matchesPhase2 is: { id, matchID, teamA, teamAResult, teamB, teamBResult, points }
     **/
     static async create(userID){
         const result = await db.query(
@@ -33,23 +34,31 @@ class Quiniela {
         for(const match of matches_phase_1){
             quiniela_matches_phase_1.push(await Quiniela.addMatch(quiniela.id, quiniela.userID, match.id, 1));
         }
-        
         const matches_phase_2 = await Match.findAll(2);
         let quiniela_matches_phase_2 = [];
         for(const match of matches_phase_2){
             quiniela_matches_phase_2.push(await Quiniela.addMatch(quiniela.id, quiniela.userID, match.id, 2));
         }
-
         quiniela.matchesPhase1 = quiniela_matches_phase_1;
         quiniela.matchesPhase2 = quiniela_matches_phase_2;
+
+        const resultPoints = await db.query(
+            `INSERT INTO quinielas_points 
+                (quiniela_id, user_id) 
+            VALUES 
+                ($1, $2)
+            RETURNING 
+                points`, 
+        [quiniela.id, userID]);
+        quiniela.points = resultPoints.rows[0].points;
         
         return quiniela;
     }
 
     /**
     * Add match to quiniela phase associated
-    *   Returns for phase 1 match: { id, matchID, teamAResult, teamBResult }
-    *   Returns for phase 2 match: { id, matchID, teamA, teamAResult, teamB, teamBResult }
+    *   Returns for phase 1 match: { id, matchID, teamAResult, teamBResult, points }
+    *   Returns for phase 2 match: { id, matchID, teamA, teamAResult, teamB, teamBResult, points }
     */
     static async addMatch(quinielaID, userID, matchID, phase){
         if(phase == 1){
@@ -83,8 +92,8 @@ class Quiniela {
 
     /**
     * Return the list of matches for the quinielas
-    *   Returns for phase 1 match: { id, matchID, teamAResult, teamBResult }
-    *   Returns for phase 2 match: { id, matchID, teamA, teamAResult, teamB, teamBResult }
+    *   Returns for phase 1 match: { id, matchID, teamAResult, teamBResult, points }
+    *   Returns for phase 2 match: { id, matchID, teamA, teamAResult, teamB, teamBResult, points }
     */
      static async matchesList(quinielaID, phase){
         let quinielaMatches;
@@ -94,7 +103,8 @@ class Quiniela {
                     id, 
                     match_id AS "matchID", 
                     team_a_result AS "teamAResult", 
-                    team_b_result AS "teamBResult" 
+                    team_b_result AS "teamBResult",
+                    points 
                 FROM 
                     quinielas_phase_1 
                 WHERE
@@ -109,7 +119,8 @@ class Quiniela {
                     team_a AS "teamA", 
                     team_a_result AS "teamAResult", 
                     team_b AS "teamB", 
-                    team_b_result AS "teamBResult" 
+                    team_b_result AS "teamBResult",
+                    points  
                 FROM 
                     quinielas_phase_2 
                 WHERE
@@ -186,11 +197,24 @@ class Quiniela {
      static async findDetails(userID, quinielaID){
         const result = await db.query(
             `SELECT 
-                id, created_at, ended_at 
+                q.id, 
+                q.user_id AS "userID", 
+                q.created_at AS "createdAt", 
+                q.ended_at AS "endedAt", 
+                qp.points, 
+                qp.champion_team_id AS "championTeamID", 
+                t.name AS "championTeamName" 
             FROM 
-                quinielas 
+                quinielas AS q 
+
+            LEFT JOIN quinielas_points AS qp 
+                ON q.id = qp.quiniela_id 
+            
+            LEFT JOIN teams AS t 
+                ON qp.champion_team_id = t.id 
+
             WHERE 
-                id = $1 AND user_id = $2 AND status = 0`,
+                q.id = $1 AND q.user_id = $2 AND q.status = 0`,
         [quinielaID, userID]);
         let quiniela = result.rows[0];
 

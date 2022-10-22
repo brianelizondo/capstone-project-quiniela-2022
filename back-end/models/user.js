@@ -109,7 +109,7 @@ class User {
             throw new NotFoundError(`Username not found: ${username}`);
         } 
 
-        user.quinielas = await Quiniela.findAllActive(user.id);
+        user.quinielas = await Quiniela.findAllActiveByUser(user.id);
 
         return user;
     }

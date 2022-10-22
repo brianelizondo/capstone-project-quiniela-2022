@@ -86,7 +86,8 @@ CREATE TABLE quinielas_phase_1 (
 	user_id     INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
 	match_id    INTEGER 	NOT NULL REFERENCES matches_phase_1 ( id ) ON DELETE CASCADE,
 	team_a_result INTEGER 	DEFAULT NULL,
-	team_b_result INTEGER 	DEFAULT NULL
+	team_b_result INTEGER 	DEFAULT NULL,
+	points		INTEGER		NOT NULL DEFAULT 0
 );
 
 -- create QUINIELAS_PHASE_2 matches table
@@ -98,7 +99,8 @@ CREATE TABLE quinielas_phase_2 (
 	team_a      INTEGER 	DEFAULT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
 	team_a_result INTEGER 	DEFAULT NULL,
 	team_b      INTEGER 	DEFAULT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
-	team_b_result INTEGER 	DEFAULT NULL
+	team_b_result INTEGER 	DEFAULT NULL,
+	points		INTEGER		NOT NULL DEFAULT 0
 );
 
 
@@ -107,6 +109,6 @@ CREATE TABLE quinielas_phase_2 (
 CREATE TABLE quinielas_points ( 
 	quiniela_id INTEGER 	NOT NULL REFERENCES quinielas ( id ) ON DELETE CASCADE,
 	user_id 	INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
-	champion_team_id 		INTEGER 	NOT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
+	champion_team_id 		INTEGER 	DEFAULT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
 	points 		INTEGER 	NOT NULL DEFAULT 0 
 );
