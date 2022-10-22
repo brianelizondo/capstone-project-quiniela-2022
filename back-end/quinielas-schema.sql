@@ -19,7 +19,6 @@ CREATE TABLE quinielas (
 	status 		INTEGER 	NOT NULL DEFAULT 0
 );
 
-
 -- basic and independent tables
 -- create CITIES table
 CREATE TABLE cities ( 
@@ -100,4 +99,14 @@ CREATE TABLE quinielas_phase_2 (
 	team_a_result INTEGER 	DEFAULT NULL,
 	team_b      INTEGER 	DEFAULT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
 	team_b_result INTEGER 	DEFAULT NULL
+);
+
+
+-- table to handle quiniela points
+-- create QUINIELAS_POINTS table 
+CREATE TABLE quinielas_points ( 
+	quiniela_id INTEGER 	NOT NULL REFERENCES quinielas ( id ) ON DELETE CASCADE,
+	user_id 	INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
+	champion_team_id 		INTEGER 	NOT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
+	points 		INTEGER 	NOT NULL DEFAULT 0 
 );

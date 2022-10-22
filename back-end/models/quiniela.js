@@ -81,25 +81,15 @@ class Quiniela {
         quiniela_matches_phase_2.push(result.rows[0]);
     }
 
-    /** 
-    * Find all active quinielas from an user
-    *   Returns [ {id, createdAt, endedAt, userID, status, matchesPhase1, matchesPhase2 }, ...]
-    **/
-     static async findAllActive(userID){
-        const result = await db.query(
-            `SELECT 
-                id, created_at, ended_at 
-            FROM 
-                quinielas 
-            WHERE
-                user_id = $1 AND status = 0 
-            ORDER BY 
-                id`,
-        [userID]);
-        
-        let quinielas = [];
-        for(let quiniela of result.rows){
-            const resultP1 = await db.query(
+    /**
+    * Return the list of matches for the quinielas
+    *   Returns for phase 1 match: { id, matchID, teamAResult, teamBResult }
+    *   Returns for phase 2 match: { id, matchID, teamA, teamAResult, teamB, teamBResult }
+    */
+     static async matchesList(quinielaID, phase){
+        let quinielaMatches;
+        if(phase == 1){
+            const result = await db.query(
                 `SELECT 
                     id, 
                     match_id AS "matchID", 
@@ -109,10 +99,10 @@ class Quiniela {
                     quinielas_phase_1 
                 WHERE
                     quiniela_id = $1`,
-            [quiniela.id]);
-            quiniela.matchesPhase1 = resultP1.rows;
-
-            const resultP2 = await db.query(
+            [quinielaID]);
+            quinielaMatches = result.rows;
+        }else if(phase == 2){
+            const result = await db.query(
                 `SELECT 
                     id, 
                     match_id AS "matchID", 
@@ -124,13 +114,94 @@ class Quiniela {
                     quinielas_phase_2 
                 WHERE
                     quiniela_id = $1`,
-            [quiniela.id]);
-            quiniela.matchesPhase2 = resultP2.rows;
+            [quinielaID]);
+            quinielaMatches = result.rows;
+        }
+
+        return quinielaMatches;
+    }
+
+    /** 
+    * Find all active quinielas
+    *   Returns [ { quinielaID, userID, userFirstName, userLastName, championTeamID, championTeamName, points }, ...]
+    **/
+     static async findAllActive(){
+        const result = await db.query(
+            `SELECT 
+                qp.quiniela_id AS "quinielaID", 
+                qp.user_id AS "userID", 
+                u.first_name AS "userFirstName",
+                u.last_name AS "userLastName",
+                qp.champion_team_id AS "championTeamID", 
+                t.name AS "championTeamName",
+                qp.points 
+            FROM 
+                quinielas_points AS qp 
             
+            LEFT JOIN users AS u 
+                ON qp.user_id = u.id 
+            
+            LEFT JOIN teams AS t 
+                ON qp.champion_team_id = t.id 
+            
+            ORDER BY 
+                qp.points DESC`
+        );
+
+        return result.rows;
+    }
+
+    /** 
+    * Find all active quinielas from an user
+    *   Returns [ {id, createdAt, endedAt, userID, status, matchesPhase1, matchesPhase2 }, ...]
+    **/
+     static async findAllActiveByUser(userID){
+        const result = await db.query(
+            `SELECT 
+                id, 
+                created_at AS "createdAt", 
+                ended_at AS "endedAT"  
+            FROM 
+                quinielas 
+            WHERE
+                user_id = $1 AND status = 0 
+            ORDER BY 
+                id`,
+        [userID]);
+        
+        let quinielas = [];
+        for(let quiniela of result.rows){
+            quiniela.matchesPhase1 = await Quiniela.matchesList(quiniela.id, 1);
+            quiniela.matchesPhase2 = await Quiniela.matchesList(quiniela.id, 2);
             quinielas.push(quiniela);
         }
 
         return quinielas;
+    }
+
+    /** 
+    * Find active quiniela details of user
+    *   Returns [ {id, createdAt, endedAt, userID, status, matchesPhase1, matchesPhase2 }, ...]
+    **/
+     static async findDetails(userID, quinielaID){
+        const result = await db.query(
+            `SELECT 
+                id, created_at, ended_at 
+            FROM 
+                quinielas 
+            WHERE 
+                id = $1 AND user_id = $2 AND status = 0`,
+        [quinielaID, userID]);
+        let quiniela = result.rows[0];
+
+        if(!quiniela){
+            throw new NotFoundError(`Quiniela/User not found`);
+        }
+        
+        quiniela.matchesPhase1 = await Quiniela.matchesList(quinielaID, 1);
+        quiniela.matchesPhase2 = await Quiniela.matchesList(quinielaID, 2);
+        
+        return quiniela;
     }
 }
 module.exports = Quiniela;
