@@ -5,17 +5,17 @@ Capstone Project for USF Software Engineer Bootcamp
 ## Capstone Project Overview
 
 **Project Steps**
-* **Step One - Initial Project Ideas:** _You’ll pick up to 3 project ideas to propose to your mentor and the community. You’ll also explore some potential APIs._
+* **Step One - Initial Project Ideas:** _You'll pick up to 3 project ideas to propose to your mentor and the community. You'll also explore some potential APIs._
 
-* **Step Two - Project Proposal:** _For this step, you’ll write a proposal for the site you want to build. This will help your mentor better understand your chosen capstone project idea._
+* **Step Two - Project Proposal:** _For this step, you'll write a proposal for the site you want to build. This will help your mentor better understand your chosen capstone project idea._
 
-* **Step Three - Source Your Data:** _After your mentor approves of your capstone project proposal, you’ll figure out the database design of your application and where your data will come from. You may choose to use an existing API or create your own._
+* **Step Three - Source Your Data:** _After your mentor approves of your capstone project proposal, you'll figure out the database design of your application and where your data will come from. You may choose to use an existing API or create your own._
 
-* **Step Four - Coding User Flows:** _Once you’ve figured out what you’re building, you’ll write the code to implement it. It’s important to think about what you want a user’s experience to be like as they navigate your site._
+* **Step Four - Coding User Flows:** _Once you've figured out what you're building, you'll write the code to implement it. It's important to think about what you want a user's experience to be like as they navigate your site._
 
-* **Step Five - Polishing Your Application** _Once you have the core functionality implemented, you’ll focus on additional UI enhancements and styling for your application. This is where you will implement your bells and whistles._
+* **Step Five - Polishing Your Application** _Once you have the core functionality implemented, you'll focus on additional UI enhancements and styling for your application. This is where you will implement your bells and whistles._
 
-* **Step Six - Documenting and Submission:** _You’ve done a lot of work so now it’s time to show your mentor your progress! Create a README in markdown, make sure your GitHub is organized, and submit your finalized project._
+* **Step Six - Documenting and Submission:** _You've done a lot of work so now it's time to show your mentor your progress! Create a README in markdown, make sure your GitHub is organized, and submit your finalized project._
 
 
 ## Completed Project Steps
@@ -37,7 +37,7 @@ The project should make use of all the technologies covered in the course such a
 
 * **Step Three completed - Source Your Data**
 
-  a. **Pre Existing API:** _For this project an API called "The Sports DB" will be used to obtain additional information about the stadiums, teams, players and general statistics. For more information about the API you can check here [API Docs](https://www.thesportsdb.com/Sport/Soccer)._
+  a. **Pre Existing API:** _For this project an API called "API-FOOTBALL (3.9.2)" will be used to obtain additional information about the matches, fixtures, teams, players and general statistics. For more information about the API you can check here [API Docs](https://www.api-football.com/documentation-v3)._
 
   b. **Homemade API:** _The project will have its own API for handling user registration requests, login, registration of new "quinielas" and get general information of the project from a PostgreSQL database. Most of the information will be stored in a PostgreSQL database, information about users, pools, cities, stadiums, games in phase 1, games in phase 2, game results, etc will be stored._
 

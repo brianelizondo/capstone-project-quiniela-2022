@@ -8,8 +8,90 @@ const {
     UnauthorizedError,
 } = require("../expressError");
 
+/** API class to handle info request */
+const ApiFootball = require("../helpers/api-football");
+
 /** Related class and functions for MATCH object */
 class Match {
+    /**
+    * Fuction to create and assign each team object to the field and delete extras no more needed
+    */
+    static teamObjectAssign(arr){
+        return arr.map((m) => {
+            m.teamA = {
+                id: m.teamA_id,
+                name: m.teamA_name,
+                shortName: m.teamA_shortName,
+                apiID: m.teamA_apiID
+            };
+            delete m.teamA_id;
+            delete m.teamA_name;
+            delete m.teamA_shortName;
+            delete m.teamA_apiID;
+
+            m.teamB = {
+                id: m.teamB_id,
+                name: m.teamB_name,
+                shortName: m.teamB_shortName,
+                apiID: m.teamB_apiID
+            };
+            delete m.teamB_id;
+            delete m.teamB_name;
+            delete m.teamB_shortName;
+            delete m.teamB_apiID;
+
+            return m;
+        });
+    }
+    
+    /**
+    * Fuction to set info from the API to the matches and teams
+    */
+    static setMatchTeamsInfo(matches, matchesAPI){
+        let matchesUpdated = [];
+        matches.forEach(match => {
+            for(let matchAPI of matchesAPI){
+                if(match.apiID == matchAPI.fixture.id){
+                    // set match info
+                    delete matchAPI.fixture.id;
+                    delete matchAPI.fixture.date;
+                    delete matchAPI.fixture.timezone;
+                    delete matchAPI.fixture.date;
+                    delete matchAPI.fixture.timestamp;
+                    delete matchAPI.fixture.periods;
+                    delete matchAPI.fixture.venue;
+                    match.apiInfo = matchAPI.fixture;
+
+                    //set additional info
+                    match.apiInfo.goals = {
+                        teamA: matchAPI.goals.home,
+                        teamB: matchAPI.goals.away
+                    };
+                    match.apiInfo.score = {
+                        fulltime: {
+                            teamA: matchAPI.score.fulltime.home,
+                            teamB: matchAPI.score.fulltime.away
+                        },
+                        extratime: {
+                            teamA: matchAPI.score.extratime.home,
+                            teamB: matchAPI.score.extratime.away
+                        },
+                        penalty: {
+                            teamA: matchAPI.score.penalty.home,
+                            teamB: matchAPI.score.penalty.away
+                        }
+                    }
+
+                    // set teamA and teamB info
+                    match.teamA.apiInfo = matchAPI.teams.home;
+                    match.teamB.apiInfo = matchAPI.teams.away;
+                }
+            }
+            matchesUpdated.push(match);
+        });
+        return matchesUpdated;
+    }
+
     /** 
     * Find all matches in the phase
     *   Matches Phase 1:
@@ -19,9 +101,12 @@ class Match {
     *   Matches Phase 2:
     *       Returns [{ id, date, time, stadium, city, phase, teamA_classified, teamA, teamA_result, teamB_classified, teamB, teamB_result, result, status, apiID }, ...]
     **/
-    static async findAll(phase){
-        phase = Number(phase);
-        if(phase === 1){
+    static async findAll(phaseID){
+        phaseID = Number(phaseID);
+        let matches;
+        if(phaseID < 1 || phaseID > 2 || isNaN(phaseID)){
+            throw new NotFoundError(`Incorrect phase matches`);
+        }else if(phaseID === 1){
             const resMatches = await db.query(
                 `SELECT 
                     m.id, 
@@ -61,36 +146,10 @@ class Match {
                 ORDER BY m.id`
             );    
             
-            // create and assign each team object to the field and delete extras no more needed
-            const matches = resMatches.rows.map((m) => {
-                m.teamA = {
-                    id: m.teamA_id,
-                    name: m.teamA_name,
-                    shortName: m.teamA_shortName,
-                    apiID: m.teamA_apiID
-                };
-                delete m.teamA_id;
-                delete m.teamA_name;
-                delete m.teamA_shortName;
-                delete m.teamA_apiID;
-    
-                m.teamB = {
-                    id: m.teamB_id,
-                    name: m.teamB_name,
-                    shortName: m.teamB_shortName,
-                    apiID: m.teamB_apiID
-                };
-                delete m.teamB_id;
-                delete m.teamB_name;
-                delete m.teamB_shortName;
-                delete m.teamB_apiID;
+            // create and assign each team object
+            matches = Match.teamObjectAssign(resMatches.rows);
 
-                return m;
-            });
-            
-            return matches;
-
-        }else if(phase === 2){
+        }else if(phaseID === 2){
             const resMatches = await db.query(
                 `SELECT 
                     m.id, 
@@ -107,7 +166,15 @@ class Match {
                     m.team_b_result AS "teamB_result", 
                     m.match_result AS "result", 
                     m.match_status AS "status",
-                    m.api_id AS "apiID" 
+                    m.api_id AS "apiID", 
+                    ta.id AS "teamA_id", 
+                    ta.name AS "teamA_name", 
+                    ta.short_name AS "teamA_shortName", 
+                    ta.api_id AS "teamA_apiID",
+                    tb.id AS "teamB_id", 
+                    tb.name AS "teamB_name", 
+                    tb.short_name AS "teamB_shortName", 
+                    tb.api_id AS "teamB_apiID" 
                 FROM
                     matches_phase_2 AS m 
                 
@@ -117,13 +184,23 @@ class Match {
                 LEFT JOIN cities AS c 
                     ON m.city_id = c.id 
                 
+                LEFT JOIN teams AS ta 
+                    ON m.team_a_id = ta.id 
+
+                LEFT JOIN teams AS tb 
+                    ON m.team_b_id = tb.id 
+                
                 ORDER BY m.id`
             );
 
-            return resMatches.rows;
+            // create and assign each team object
+            matches = Match.teamObjectAssign(resMatches.rows);
         }
 
-        throw new NotFoundError(`Incorrect phase matches`);
+        // get and set the info from API of teams and match
+        const matchesAPIInfo = await ApiFootball.getMatches();
+
+        return Match.setMatchTeamsInfo(matches, matchesAPIInfo);
     }
 
     /** 
@@ -134,9 +211,12 @@ class Match {
     * 
     *   Throws NotFoundError if phase or match not found
     **/
-    static async get(phaseID, matchID) {
+    static async getMatch(phaseID, matchID) {
         phaseID = Number(phaseID);
-        if(phaseID === 1){
+        let match;
+        if(phaseID < 1 || phaseID > 2 || isNaN(phaseID)){
+            throw new NotFoundError(`Incorrect match phase`);
+        }else if(phaseID === 1){
             const resMatch = await db.query(
                 `SELECT 
                     m.id, 
@@ -176,36 +256,13 @@ class Match {
                 WHERE
                     m.id = $1`,
             [matchID]);   
-            let match = resMatch.rows[0];
-
-            if(!match){
+            
+            if(!resMatch.rows[0]){
                 throw new NotFoundError(`Match not found: ${matchID}`);
             }
             
-            // create and assign each team object to the field and delete extras no more needed
-            match.teamA = {
-                id: match.teamA_id,
-                name: match.teamA_name,
-                shortName: match.teamA_shortName,
-                apiID: match.teamA_apiID
-            };
-            delete match.teamA_id;
-            delete match.teamA_name;
-            delete match.teamA_shortName;
-            delete match.teamA_apiID;
-
-            match.teamB = {
-                id: match.teamB_id,
-                name: match.teamB_name,
-                shortName: match.teamB_shortName,
-                apiID: match.teamB_apiID
-            };
-            delete match.teamB_id;
-            delete match.teamB_name;
-            delete match.teamB_shortName;
-            delete match.teamB_apiID;
-            
-            return match;
+            // create and assign each team object
+            match = Match.teamObjectAssign(resMatch.rows);
 
         }else if(phaseID === 2){
             const resMatch = await db.query(
@@ -224,7 +281,15 @@ class Match {
                     m.team_b_result AS "teamB_result", 
                     m.match_result AS "result", 
                     m.match_status AS "status",
-                    m.api_id AS "apiID"  
+                    m.api_id AS "apiID", 
+                    ta.id AS "teamA_id", 
+                    ta.name AS "teamA_name", 
+                    ta.short_name AS "teamA_shortName", 
+                    ta.api_id AS "teamA_apiID",
+                    tb.id AS "teamB_id", 
+                    tb.name AS "teamB_name", 
+                    tb.short_name AS "teamB_shortName", 
+                    tb.api_id AS "teamB_apiID"  
                 FROM
                     matches_phase_2 AS m 
                 
@@ -233,20 +298,30 @@ class Match {
                 
                 LEFT JOIN cities AS c 
                     ON m.city_id = c.id 
+
+                LEFT JOIN teams AS ta 
+                    ON m.team_a_id = ta.id 
+
+                LEFT JOIN teams AS tb 
+                    ON m.team_b_id = tb.id
                 
                 WHERE 
                     m.id = $1`,
             [matchID]);
-            let match = resMatch.rows[0];
-
-            if(!match){
+            
+            if(!resMatch.rows[0]){
                 throw new NotFoundError(`Match not found: ${matchID}`);
             }
 
-            return match;
+            // create and assign each team object
+            match = Match.teamObjectAssign(resMatch.rows);
         }
 
-        throw new NotFoundError(`Incorrect match phase`);
+        // get and set the info from API of teams and match
+        const matchAPIInfo = await ApiFootball.getMatch(match[0].apiID);
+        match = Match.setMatchTeamsInfo(match, matchAPIInfo);
+
+        return match[0];
     }
 
     /** 
