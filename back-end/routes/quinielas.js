@@ -1,6 +1,7 @@
 /** Routes for QUINIELAS */
 const express = require("express");
 const router = new express.Router();
+const { ensureLoggedIn, ensureAdmin, ensureCorrectUserOrAdmin  } = require("../middleware/auth");
 
 const User = require("../models/user");
 const Quiniela = require("../models/quiniela");
@@ -28,7 +29,7 @@ router.get("/", async function (req, res, next) {
 *   where matchesPhase1: [ {id, matchID, teamAResult, teamBResult }, ... ]
 *         matchesPhase2: [ {id, matchID, teamA, teamAResult, teamB, teamBResult }, ... ]
 **/
-router.get("/:username", async function (req, res, next) {
+router.get("/:username", ensureLoggedIn, async function (req, res, next) {
     try {
         const user = await User.get(req.params.username);
         const quinielas = await Quiniela.findAllActiveByUser(user.id);
@@ -44,7 +45,7 @@ router.get("/:username", async function (req, res, next) {
 *   where matchesPhase1: [ {id, matchID, teamAResult, teamBResult }, ... ]
 *         matchesPhase2: [ {id, matchID, teamA, teamAResult, teamB, teamBResult }, ... ]
 **/
-router.get("/:username/:id", async function (req, res, next) {
+router.get("/:username/:id", ensureLoggedIn, async function (req, res, next) {
     try {
         const user = await User.get(req.params.username);
         const quiniela = await Quiniela.findDetails(user.id, parseInt(req.params.id));
@@ -58,7 +59,7 @@ router.get("/:username/:id", async function (req, res, next) {
 * POST /add/[username]
 *   quiniela must include { userID }
 */
-router.post("/add/:username", async function (req, res, next) {
+router.post("/add/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try {
         const user = await User.get(req.params.username);
         const quiniela = await Quiniela.create(user.id);
@@ -67,7 +68,5 @@ router.post("/add/:username", async function (req, res, next) {
         return next(err);
     }
 });
-
-
 
 module.exports = router;

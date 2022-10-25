@@ -1,6 +1,7 @@
 /** Routes for USERS */
 const express = require("express");
 const jsonschema = require("jsonschema");
+const { ensureAdmin, ensureCorrectUserOrAdmin } = require("../middleware/auth");
 
 const router = new express.Router();
 
@@ -37,7 +38,7 @@ router.post("/register", async function (req, res, next) {
 * GET / => { users: [ {firstName, lastName, username, email }, ... ] }
 *   Returns list of all not admin users
 **/
-router.get("/", async function (req, res, next) {
+router.get("/", ensureAdmin, async function (req, res, next) {
     try {
         const users = await User.findAllActive();
         return res.json({ users });
@@ -51,7 +52,7 @@ router.get("/", async function (req, res, next) {
 * GET /[username] => { user: {firstName, lastName, username, email } }
 *   Returns { id, firstName, lastName, username, email }
 **/
-router.get("/:username", async function (req, res, next) {
+router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try {
         const user = await User.get(req.params.username);
         return res.json({ user });

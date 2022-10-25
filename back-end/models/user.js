@@ -12,9 +12,43 @@ const {
 
 const Quiniela = require("./quiniela");
 
-
 /** Related class and functions for USER object */
 class User {
+    /** 
+    * Authenticate user with username & password
+    *   Returns { id, firstName, lastName, email, username, isAdmin }
+    *   Throws UnauthorizedError is user not found or wrong password
+    **/
+    static async authenticate(username, password) {
+        // try to find the user first
+        const result = await db.query(
+            `SELECT 
+                id, 
+                first_name AS "firstName", 
+                last_name AS "lastName", 
+                email, 
+                username,
+                password,  
+                is_admin AS "isAdmin" 
+            FROM 
+                users 
+            WHERE 
+                username = $1 AND status = 1`,
+        [username.toLowerCase()]);
+        const user = result.rows[0];
+
+        if(user) {
+            // compare hashed password to a new hash from password
+            const isValid = await bcrypt.compare(password, user.password);
+            if(isValid === true){
+                delete user.password;
+                return user;
+            }
+        }
+
+        throw new UnauthorizedError("Invalid username/password");
+    }
+    
     /** 
     * Register user with data
     *   Returns { id, firstName, lastName, email, isAdmin }

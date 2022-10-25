@@ -8,6 +8,8 @@ const cors = require("cors");
 const { NotFoundError } = require("./expressError");
 
 /** Routes */
+const { authenticateJWT } = require("./middleware/auth");
+const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
 const quinielasRoutes = require("./routes/quinielas");
 const matchesRoutes = require("./routes/matches");
@@ -16,8 +18,10 @@ const teamsRoutes = require("./routes/teams");
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(authenticateJWT);
 
 /** Routes directories */
+app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/quinielas", quinielasRoutes);
 app.use("/matches", matchesRoutes);
