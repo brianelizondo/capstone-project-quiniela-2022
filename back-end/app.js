@@ -3,6 +3,7 @@
 */
 const express = require("express");
 const cors = require("cors");
+const morgan = require("morgan");
 
 /** Function to handle express errors */
 const { NotFoundError } = require("./expressError");
@@ -18,6 +19,7 @@ const teamsRoutes = require("./routes/teams");
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(morgan("tiny"));
 app.use(authenticateJWT);
 
 /** Routes directories */
