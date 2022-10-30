@@ -11,8 +11,8 @@ function Home(){
 
     useEffect(() => {
         async function getQuinielas() {
-            let resp = await APIFootball.getQuinielas();
-            setQuinielas(resp.quinielas);
+            const resp = await APIFootball.getQuinielas();
+            setQuinielas(resp);
         }
         getQuinielas();
     }, [quinielas]);

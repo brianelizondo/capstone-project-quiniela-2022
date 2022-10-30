@@ -7,6 +7,7 @@ import './App.css';
 // Import components
 import NavBar from './Navbar';
 import Home from './Home';
+import GroupList from './GroupList';
 import Footer from './Footer';
 
 function App() {
@@ -27,22 +28,22 @@ function App() {
                 </Route>
                 <Route exact path="/quinielas/:username/:id">
                     <QuinielaDetails />
-                </Route>
+                </Route> */}
                 
                 <Route exact path="/groups">
-                    <MatchesGroups />
+                    <GroupList />
                 </Route>
-                <Route exact path="/matches">
-                    <Matches />
+                {/* <Route exact path="/matches">
+                    <MatchList />
                 </Route>
                 <Route exact path="/matches/:id">
-                    <Matches />
+                    <MatchDetails />
                 </Route>
                 <Route exact path="/teams">
-                    <MatchesTeams />
+                    <TeamList />
                 </Route>
                 <Route exact path="/teams/:shortname">
-                    <MatchesTeams />
+                    <TeamDetails />
                 </Route>
                 <Route exact path="/rules">
                     <Rules />

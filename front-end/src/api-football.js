@@ -33,10 +33,14 @@ class APIFootball {
     /** Get all quinielas active */
     static async getQuinielas(){
         let res = await this.request(`quinielas/`);
-        return res;
+        return res.quinielas;
     }
 
     // GROUPS requests
+    static async getGroupsStandings(){
+        let res = await this.request(`matches/groups/standings/`);
+        return res.groupsStandings;
+    }
 
     // MATCHES requests
 
