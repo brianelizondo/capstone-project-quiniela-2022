@@ -94,7 +94,10 @@ class Group {
                 WHERE 
                     m.match_group = $1 
                 
-                ORDER BY m.id ASC`,
+                GROUP BY 
+                    m.match_date, m.id, s.name, c.city, ta.id, tb.id    
+                ORDER BY 
+                    m.match_date ASC, m.match_time ASC`,
             [group.toUpperCase()]);    
             
             // create and assign each team object

@@ -65,7 +65,10 @@ class Match {
                 LEFT JOIN teams AS tb 
                     ON m.team_b_id = tb.id 
                 
-                ORDER BY m.id`
+                GROUP BY 
+                    m.match_date, m.id, s.name, c.city, ta.id, tb.id    
+                ORDER BY 
+                    m.match_date ASC, m.match_time ASC`
             );    
             
             // create and assign each team object
@@ -112,7 +115,10 @@ class Match {
                 LEFT JOIN teams AS tb 
                     ON m.team_b_id = tb.id 
                 
-                ORDER BY m.id`
+                GROUP BY 
+                    m.match_date, m.id, s.name, c.city, ta.id, tb.id    
+                ORDER BY 
+                    m.match_date ASC, m.match_time ASC`
             );
 
             // create and assign each team object
@@ -244,38 +250,6 @@ class Match {
         match = setMatchTeamsInfo(match, matchAPIInfo);
 
         return match[0];
-    }
-
-    /** 
-    * Find the standings for each group/team
-    *   Returns [{ group, teamID, teamName, gamesPlayed, gamesWon, gamesDraws, gamesLost, goalsFor, goalsAgainst, goalsDiff, points }, ...]
-    **/
-     static async getGroupsStandings(){
-        const result = await db.query(
-            `SELECT 
-                gs.group, 
-                gs.team_id AS "teamID", 
-                t.name AS "teamName",
-                t.short_name AS "shortName",
-                gs.games_played AS "gamesPlayed", 
-                gs.games_won AS "gamesWon", 
-                gs.games_draws AS "gamesDraws", 
-                gs.games_lost AS "gamesLost", 
-                gs.goals_for AS "goalsFor", 
-                gs.goals_against AS "goalsAgainst", 
-                gs.goals_diff AS "goalsDiff", 
-                gs.points 
-            FROM
-                groups_standings AS gs 
-            
-            LEFT JOIN teams AS t 
-                ON gs.team_id = t.id
-                
-            ORDER BY 
-                gs.group ASC, gs.points DESC, gs.games_won DESC, goals_diff DESC`,
-        );
-        
-        return result.rows;
     }
 }
 

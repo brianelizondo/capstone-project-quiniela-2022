@@ -9,6 +9,7 @@ import NavBar from './Navbar';
 import Home from './Home';
 import GroupList from './GroupList';
 import GroupDetails from './GroupDetails';
+import MatchList from './MatchList';
 import Footer from './Footer';
 
 function App() {
@@ -37,10 +38,10 @@ function App() {
                 <Route exact path="/groups/:group">
                     <GroupDetails />
                 </Route>
-                {/* <Route exact path="/matches">
+                <Route exact path="/matches">
                     <MatchList />
                 </Route>
-                <Route exact path="/matches/:id">
+                {/* <Route exact path="/matches/:id">
                     <MatchDetails />
                 </Route>
                 <Route exact path="/teams">

@@ -49,6 +49,11 @@ class APIFootball {
     }
 
     // MATCHES requests
+    /** Get all matches for a phase */
+    static async getPhaseMatches(phase){
+        let res = await this.request(`matches/phase/${phase}/`);
+        return res.matches;
+    }
 
     // TEAMS requests
 
