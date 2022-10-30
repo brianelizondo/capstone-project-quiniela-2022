@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Card, Table, Button } from 'react-bootstrap';
 
-function GroupStandings({ group, standings }){
+function GroupStandings({ group, standings, detailsButton }){
     let history = useHistory();
     function handleClick(link){
         history.push(link);
@@ -42,7 +42,7 @@ function GroupStandings({ group, standings }){
                         ))}
                     </tbody>
                 </Table>
-                <Button variant="info" size="sm" onClick={() => handleClick(`/groups/${group}`)}>Group Details</Button>
+                { detailsButton ? <Button variant="info" size="sm" onClick={() => handleClick(`/groups/${group}`)}>Group Details</Button> : "" }
             </Card.Body>
         </Card>
     );

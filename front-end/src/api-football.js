@@ -37,9 +37,15 @@ class APIFootball {
     }
 
     // GROUPS requests
+    /** Get all groups standings */
     static async getGroupsStandings(){
-        let res = await this.request(`matches/groups/standings/`);
+        let res = await this.request(`groups/standings/`);
         return res.groupsStandings;
+    }
+    /** Get all matches for a group */
+    static async getGroupMatches(group){
+        let res = await this.request(`groups/${group}/matches/`);
+        return res.groupMatches;
     }
 
     // MATCHES requests

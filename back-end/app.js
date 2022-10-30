@@ -13,6 +13,7 @@ const { authenticateJWT } = require("./middleware/auth");
 const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
 const quinielasRoutes = require("./routes/quinielas");
+const groupsRoutes = require("./routes/groups")
 const matchesRoutes = require("./routes/matches");
 const teamsRoutes = require("./routes/teams");
 
@@ -26,6 +27,7 @@ app.use(authenticateJWT);
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/quinielas", quinielasRoutes);
+app.use("/groups", groupsRoutes);
 app.use("/matches", matchesRoutes);
 app.use("/teams", teamsRoutes);
 

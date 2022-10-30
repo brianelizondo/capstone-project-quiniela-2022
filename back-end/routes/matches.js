@@ -35,17 +35,4 @@ router.get("/phase/:phase/match/:match", async function (req, res, next) {
     }
 });
 
-/** 
-* GET /groups/standings => { groupsStandings: { [{group, teamID, teamName, gamesPlayed, gamesWon, gamesDraws, gamesLost, goalsFor, goalsAgainst, goalsDiff, points}], ...} }
-*   Returns the standings for each group/team
-**/
-router.get("/groups/standings", async function (req, res, next) {
-    try {
-        const groupsStandings = await Match.getGroupsStandings();
-        return res.json({ groupsStandings });
-    } catch (err) {
-        return next(err);
-    }
-});
-
 module.exports = router;

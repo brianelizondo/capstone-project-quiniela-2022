@@ -8,6 +8,7 @@ import './App.css';
 import NavBar from './Navbar';
 import Home from './Home';
 import GroupList from './GroupList';
+import GroupDetails from './GroupDetails';
 import Footer from './Footer';
 
 function App() {
@@ -32,6 +33,9 @@ function App() {
                 
                 <Route exact path="/groups">
                     <GroupList />
+                </Route>
+                <Route exact path="/groups/:group">
+                    <GroupDetails />
                 </Route>
                 {/* <Route exact path="/matches">
                     <MatchList />
