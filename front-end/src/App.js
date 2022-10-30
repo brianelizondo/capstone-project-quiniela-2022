@@ -1,19 +1,22 @@
 import React from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
 
 import './App.css';
 
-// Import files to routes
+// Import components
 import NavBar from './Navbar';
+import Home from './Home';
+import Footer from './Footer';
 
 function App() {
     return (
         <BrowserRouter>
             <NavBar />
             <Switch>
-                {/* <Route exact path="/">
+                <Route exact path="/">
                     <Home />
-                </Route> */}
+                </Route>
                 
                 {/* ROUTES TO PROTECT LATER */}
                 {/* <Route exact path="/quinielas/:username/add">
@@ -56,6 +59,7 @@ function App() {
                     <PageNotFound />
                 </Route> */}
             </Switch>
+            <Footer />
         </BrowserRouter>
     );
 }

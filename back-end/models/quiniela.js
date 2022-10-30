@@ -143,6 +143,7 @@ class Quiniela {
                 qp.user_id AS "userID", 
                 u.first_name AS "userFirstName",
                 u.last_name AS "userLastName",
+                u.username,
                 qp.champion_team_id AS "championTeamID", 
                 t.name AS "championTeamName",
                 qp.points 
