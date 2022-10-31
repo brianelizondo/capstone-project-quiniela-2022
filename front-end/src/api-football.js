@@ -61,7 +61,11 @@ class APIFootball {
     }
 
     // TEAMS requests
-
+    /** Get all matches for a phase */
+    static async getTeams(){
+        let res = await this.request(`teams/`);
+        return res.teams;
+    }
 }
 
 APIFootball.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
