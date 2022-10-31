@@ -249,6 +249,9 @@ class Match {
         const matchAPIInfo = await ApiFootball.getMatch(match[0].apiID);
         match = setMatchTeamsInfo(match, matchAPIInfo);
 
+        // get stats of the match
+        match[0].apiStats = await ApiFootball.getMatchStats(match[0].apiID);
+
         return match[0];
     }
 }

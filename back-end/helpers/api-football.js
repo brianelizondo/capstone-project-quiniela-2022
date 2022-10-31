@@ -60,6 +60,26 @@ class ApiFootball {
         return apiResponse;
     }
     /** 
+    * Get info from the API about a match stats
+    **/
+     static async getMatchStats(apiID){
+        const endpoint = `fixtures/statistics?fixture=${apiID}`;
+        const apiResponse = await ApiFootball.apiGetInfo(endpoint);
+        let statistics = [];
+        if(apiResponse.length > 0){
+            for(let i=0; i<16; i++){
+                const teamsStat = {
+                    type: apiResponse[0].statistics[i].type,
+                    teamA: apiResponse[0].statistics[i].value,
+                    teamB: apiResponse[1].statistics[i].value
+                };
+                statistics.push(teamsStat);
+            }
+        }
+
+        return statistics;
+    }
+    /** 
     * Get info from the API about a matches
     **/
      static async getMatches(){

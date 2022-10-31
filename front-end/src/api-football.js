@@ -54,6 +54,11 @@ class APIFootball {
         let res = await this.request(`matches/phase/${phase}/`);
         return res.matches;
     }
+    /** Get match details */
+    static async getMatchDetails(matchID, phase){
+        let res = await this.request(`matches/phase/${phase}/match/${matchID}/`);
+        return res.match;
+    }
 
     // TEAMS requests
 
