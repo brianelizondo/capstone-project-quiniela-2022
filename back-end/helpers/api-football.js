@@ -38,13 +38,32 @@ class ApiFootball {
         let apiResponse = await ApiFootball.apiGetInfo(endpoint);
         return apiResponse[0].team;
     }
-
     /** 
     * Get info from the API about a team
     *   Return: [{ id, name, code, country, founded, national, logo }, ...]
     **/
      static async getTeams(){
         let endpoint = `teams?league=1&season=2022`;
+        let apiResponse = await ApiFootball.apiGetInfo(endpoint);
+        return apiResponse;
+    }
+    /** 
+    * Get stats data from the API about a team
+    *   Return: { matchesPlayed, matchesWon, matchesDrawn, matchesLost, goalsFor, goalsForAvg, goalsAgainst, goalsAgainstAvg, cardsYellow, cardsRed, cardsYellowAvg, cardsRedAvg, cleanSheet }
+    **/
+     static async getTeamStats(apiID){
+        let endpoint = `teams/statistics?league=1&season=2014&team=${apiID}`;
+        let apiResponse = await ApiFootball.apiGetInfo(endpoint);
+        return apiResponse;
+    }
+    /** 
+    * Get squad from the API about a team
+    *   Return: { team, players }
+    *   where team is:      { id, name, logo }
+    *         players is:   [{ id, name, age, number, position, photo }, ...]
+    **/
+     static async getTeamSquad(apiID){
+        let endpoint = `players/squads?team=${apiID}`;
         let apiResponse = await ApiFootball.apiGetInfo(endpoint);
         return apiResponse;
     }

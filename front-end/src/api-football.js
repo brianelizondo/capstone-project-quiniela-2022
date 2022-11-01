@@ -66,6 +66,22 @@ class APIFootball {
         let res = await this.request(`teams/`);
         return res.teams;
     }
+    /** Get info about a team */
+    static async getTeam(shortName){
+        let res = await this.request(`teams/${shortName}/`);
+        return res.team;
+    }
+    /** Get stats about a team */
+    static async getTeamStats(shortName){
+        let res = await this.request(`teams/${shortName}/stats/`);
+        return res.teamStats;
+    }
+    /** Get squad about a team */
+    static async getTeamSquad(shortName){
+        let res = await this.request(`teams/${shortName}/squad/`);
+        return res.teamSquad;
+    }
+
 }
 
 APIFootball.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +

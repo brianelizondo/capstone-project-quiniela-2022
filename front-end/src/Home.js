@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from 'react';
-
+import Loading from './Loading';
 import QuinielaListCard from './QuinielaListCard';
 
 // import APIFootball api
 import APIFootball from "./api-football";
 
 function Home(){
-    // initial state for quinielas list
+    // initial state
+    const [loading, setLoading] = useState(false);
     const [quinielas, setQuinielas] = useState([]);
 
     useEffect(() => {
+        setLoading(true);
         async function getQuinielas() {
             const resp = await APIFootball.getQuinielas();
             setQuinielas(resp);
         }
         getQuinielas();
+        setLoading(false);
     }, [quinielas]);
+
+    if(loading){
+        return <Loading />;
+    }
 
     return (
         <div className="Home col-md-8 offset-md-2">

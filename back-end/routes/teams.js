@@ -21,13 +21,39 @@ router.get("/", async function (req, res, next) {
 });
 
 /** 
-* GET /phase/[id]/match/[id] => { match: { id, date, time, stadium, city, group, teamA, teamB, result, status, apiID } }
-*   Returns match details
+* GET /[shortName] => { team: { id, name, shortName, apiID, apiInfo } }
+*   Returns team details
 **/
 router.get("/:shortname", async function (req, res, next) {
     try {
         const team = await Team.get(req.params.shortname);
         return res.json({ team });
+    } catch (err) {
+        return next(err);
+    }
+});
+
+/** 
+* GET /[shortName]/stats => { teamStats: { id, date, time, stadium, city, group, teamA, teamB, result, status, apiID } }
+*   Returns team stats details
+**/
+router.get("/:shortname/stats", async function (req, res, next) {
+    try {
+        const teamStats = await Team.getTeamStats(req.params.shortname);
+        return res.json({ teamStats });
+    } catch (err) {
+        return next(err);
+    }
+});
+
+/** 
+* GET /[shortName]/squad => { teamSquad: { id, date, time, stadium, city, group, teamA, teamB, result, status, apiID } }
+*   Returns team squad list
+**/
+router.get("/:shortname/squad", async function (req, res, next) {
+    try {
+        const teamSquad = await Team.getTeamSquad(req.params.shortname);
+        return res.json({ teamSquad });
     } catch (err) {
         return next(err);
     }

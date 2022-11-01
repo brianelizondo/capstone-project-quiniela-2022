@@ -12,6 +12,7 @@ import GroupDetails from './GroupDetails';
 import MatchList from './MatchList';
 import MatchDetails from './MatchDetails';
 import TeamList from './TeamList';
+import TeamDetails from './TeamDetails';
 import Footer from './Footer';
 
 function App() {
@@ -49,10 +50,10 @@ function App() {
                 <Route exact path="/teams">
                     <TeamList />
                 </Route>
-                {/* <Route exact path="/teams/:shortname">
+                <Route exact path="/teams/:shortname">
                     <TeamDetails />
                 </Route>
-                <Route exact path="/rules">
+                {/* <Route exact path="/rules">
                     <Rules />
                 </Route>
 

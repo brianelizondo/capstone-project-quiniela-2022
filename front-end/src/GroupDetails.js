@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Loading from './Loading';
 
 // import APIFootball api
 import APIFootball from "./api-football";
@@ -8,12 +9,14 @@ import GroupStandings from './GroupStandings';
 import MatchCard from './MatchCard';
 
 function GroupDetails(){
-    // initial state for quinielas list
+    // initial state
     const { group } = useParams();
+    const [loading, setLoading] = useState(false);
     const [groupsStandings, setGroupsStandings] = useState([]);
     const [groupMatches, setGroupMatches] = useState([]);
 
     useEffect(() => {
+        setLoading(true);
         async function getGroupsStandings() {
             const resp = await APIFootball.getGroupsStandings();
             setGroupsStandings(resp);
@@ -25,7 +28,12 @@ function GroupDetails(){
             setGroupMatches(resp);
         }
         getGroupMatches();
+        setLoading(false);
     }, []);
+
+    if(loading){
+        return <Loading />;
+    }
 
     return (
         <div className="GroupDetails col-md-8 offset-md-2">

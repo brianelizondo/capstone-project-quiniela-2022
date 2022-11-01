@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
+import Loading from './Loading';
 
 // import APIFootball api
 import APIFootball from "./api-football";
@@ -7,7 +8,8 @@ import APIFootball from "./api-football";
 import MatchCard from './MatchCard';
 
 function MatchList(){
-    // initial state for quinielas list
+    // initial state
+    const [loading, setLoading] = useState(false);
     const [matchesGroups, setMatchesGroups] = useState([]);
     const [matchesRound16, setMatchesRound16] = useState([]);
     const [matchesQuarters, setMatchesQuarters] = useState([]);
@@ -16,6 +18,7 @@ function MatchList(){
     const [matchesFinal, setMatchesFinal] = useState([]);
 
     useEffect(() => {
+        setLoading(true);
         async function getPhaseMatches(){
             const respPhase1 = await APIFootball.getPhaseMatches(1);
             setMatchesGroups(respPhase1);
@@ -42,7 +45,12 @@ function MatchList(){
             });
         }
         getPhaseMatches();
+        setLoading(false);
     }, []);
+
+    if(loading){
+        return <Loading />;
+    }
 
     return (
         <div className="MatchList col-md-8 offset-md-2">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Loading from './Loading';
 
 // import APIFootball api
 import APIFootball from "./api-football";
@@ -6,16 +7,23 @@ import APIFootball from "./api-football";
 import TeamCard from './TeamCard';
 
 function TeamList(){
-    // initial state for quinielas list
+    // initial state
+    const [loading, setLoading] = useState(false);
     const [teams, setTeams] = useState([]);
 
     useEffect(() => {
+        setLoading(true);
         async function getTeams() {
             const resp = await APIFootball.getTeams();
             setTeams(resp);
         }
         getTeams();
+        setLoading(false);
     }, []);
+
+    if(loading){
+        return <Loading />;
+    }
 
     return (
         <div className="TeamList col-md-8 offset-md-2">

@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { ProgressBar } from 'react-bootstrap';
+import Loading from './Loading';
 
 // import APIFootball api
 import APIFootball from "./api-football";
 
-
 function MatchDetails(){
     const { matchID, phase } = useParams();
     const phaseID = Number(phase);
-    
+    // initial state
+    const [loading, setLoading] = useState(false);
     const INITIAL_VALUE = { teamA: "", teamB: "" };
     const [matchDetails, setMatchDetails] = useState({});
     const [matchStats, setMatchStats] = useState([]);
@@ -17,6 +18,7 @@ function MatchDetails(){
     const [teamsLogo, setTeamsLogo] = useState(INITIAL_VALUE);
 
     useEffect(() => {
+        setLoading(true);
         async function getMatchDetails() {
             const resp = await APIFootball.getMatchDetails(matchID, phase);
             setMatchDetails(resp);
@@ -46,6 +48,7 @@ function MatchDetails(){
             }
         }
         getMatchDetails();
+        setLoading(false);
     }, []);
 
     const calculatePerc = (value, valueA, valueB) => {
@@ -54,6 +57,10 @@ function MatchDetails(){
         valueB = isNaN(valueB) ? Number(valueB.replace("%", "")) : valueB;
         return (value * 100) / (valueA + valueB);
     };
+
+    if(loading){
+        return <Loading />;
+    }
 
     return (
         <div className="MatchDetails col-md-8 offset-md-2">
