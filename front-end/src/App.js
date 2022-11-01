@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-
 import './App.css';
 
 // Import components
@@ -13,6 +12,7 @@ import MatchList from './MatchList';
 import MatchDetails from './MatchDetails';
 import TeamList from './TeamList';
 import TeamDetails from './TeamDetails';
+import Rules from './Rules';
 import Footer from './Footer';
 
 function App() {
@@ -53,11 +53,11 @@ function App() {
                 <Route exact path="/teams/:shortname">
                     <TeamDetails />
                 </Route>
-                {/* <Route exact path="/rules">
+                <Route exact path="/rules">
                     <Rules />
                 </Route>
 
-                <Route exact path="/register">
+                {/* <Route exact path="/register">
                     <RegisterForm />
                 </Route>
                 <Route exact path="/login">
