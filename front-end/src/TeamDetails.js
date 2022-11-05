@@ -26,7 +26,7 @@ function TeamDetails(){
         }
         getTeam();
         setLoading(false);
-    }, []);
+    }, [shortname]);
 
     const calculatePorc = (value, total) => {
         return ((value * 100) / total).toFixed(2);

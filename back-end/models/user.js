@@ -83,15 +83,48 @@ class User {
             RETURNING 
                 id, first_name AS "firstName", last_name AS "lastName", email, username, is_admin AS "isAdmin"`, 
         [
-            firstName,
-            lastName,
-            email,
-            username,
+            firstName.toLowerCase(),
+            lastName.toLowerCase(),
+            email.toLowerCase(),
+            username.toLowerCase(),
             hashedPassword, 
             isAdmin
         ]);
         
         return result.rows[0];
+    }
+
+    /** 
+    * Check if username/email already exist
+    *   Returns { username, email }
+    **/
+    static async checkUsernameEmail({ username, email }){
+        let checkResult;
+        if(username){
+            const usernameCheck = await db.query(
+                `SELECT 
+                    username
+                FROM 
+                    users 
+                WHERE 
+                    username = $1`,
+            [username.toLowerCase()]);
+            checkResult = usernameCheck.rows[0] ? true : false;
+        }
+        
+        if(email){
+            const emailCheck = await db.query(
+                `SELECT 
+                    email
+                FROM 
+                    users 
+                WHERE 
+                    email = $1`,
+            [email.toLowerCase()]);
+            checkResult = emailCheck.rows[0] ? true : false;
+        }
+
+        return checkResult;
     }
 
     /** 

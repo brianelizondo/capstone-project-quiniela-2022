@@ -29,7 +29,7 @@ function GroupDetails(){
         }
         getGroupMatches();
         setLoading(false);
-    }, []);
+    }, [group]);
 
     if(loading){
         return <Loading />;
@@ -42,7 +42,7 @@ function GroupDetails(){
             
             <h4>Group Standings</h4>
             <div className="GroupDetails-standings">
-                <GroupStandings key={group} group={group} standings={ groupsStandings.filter(team => team.group == group) } detailsButton={false} />
+                <GroupStandings key={group} group={group} standings={ groupsStandings.filter(team => team.group === group) } detailsButton={false} />
             </div>
 
             <h4>Group Matches</h4>

@@ -1,46 +1,48 @@
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
-    "$id": "http://example.com/example.json",
     "type": "object",
     "default": {},
-    "title": "Root Schema",
+    "title": "User Register Schema",
     "required": [
         "firstName",
         "lastName",
-        "username",
         "email",
+        "username",
         "password"
     ],
     "properties": {
         "firstName": {
             "type": "string",
-            "default": "",
-            "title": "The firstName Schema"
+            "minLength": "1",
+            "maxLength": "50"
         },
         "lastName": {
             "type": "string",
-            "default": "",
-            "title": "The lastName Schema"
+            "minLength": "1",
+            "maxLength": "50"
         },
         "email": {
             "type": "string",
-            "default": "",
-            "title": "The email Schema"
+            "minLength": "6",
+            "maxLength": "50",
+            "format": "email"
         },
         "username": {
             "type": "string",
-            "default": "",
-            "title": "The username Schema"
+            "minLength": "8",
+            "maxLength": "20"
         },
         "password": {
             "type": "string",
-            "default": "",
-            "title": "The password Schema"
-        },
-        "isAdmin": {
-            "type": "boolean",
-            "default": false,
-            "title": "The isAdmin Schema"
+            "minLength": "8",
+            "maxLength": "20"
         }
-    }
+    },
+    "examples": [{
+        "firstName": "firstname",
+        "lastName": "lastname",
+        "email": "test@test.com",
+        "username": "username",
+        "password": "ABCabc1234567890"
+    }]
 }

@@ -24,12 +24,12 @@ function MatchDetails(){
             setMatchDetails(resp);
             setMatchStats(Array.from(resp.apiStats));
 
-            if(phaseID == 1){
+            if(phaseID === 1){
                 const teamALogo = <img src={ resp.teamA.apiInfo.logo } alt={ resp.teamA.name } />;
                 const teamBLogo = <img src={ resp.teamB.apiInfo.logo } alt={ resp.teamB.name } />;
                 setTeamsName({ teamA: resp.teamA.name, teamB: resp.teamB.name });
                 setTeamsLogo({ teamA: teamALogo, teamB: teamBLogo });
-            }else{
+            }else if(phaseID === 2){
                 let teamAName, teamBName, teamALogo = "", teamBLogo = "";
                 if(resp.teamA.id > 0){
                     teamAName = resp.teamA.name;
@@ -49,7 +49,7 @@ function MatchDetails(){
         }
         getMatchDetails();
         setLoading(false);
-    }, []);
+    }, [matchID, phase, phaseID]);
 
     const calculatePerc = (value, valueA, valueB) => {
         value = isNaN(value) ? Number(value.replace("%", "")) : value;

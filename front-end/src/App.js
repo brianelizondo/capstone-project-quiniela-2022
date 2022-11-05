@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-
 import './App.css';
+
+// import APIFootball api
+import APIFootball from "./api-football";
 
 // Import components
 import NavBar from './Navbar';
@@ -13,9 +15,33 @@ import MatchDetails from './MatchDetails';
 import TeamList from './TeamList';
 import TeamDetails from './TeamDetails';
 import Rules from './Rules';
+
+import RegisterForm from './RegisterForm';
+
+import PageNotFound from './PageNotFound';
 import Footer from './Footer';
 
 function App() {
+    // functions to register, update, login, logout users
+    const userRegister = async user => {
+        try{
+            let resp = await APIFootball.registerUser(user);
+            return resp;
+        }catch (err){
+            return err;
+        }
+    }
+    // check if username/email already exists
+    const checkUsernameEmail = async values => {
+        try{
+            let resp = await APIFootball.checkUsernameEmail(values.username, values.email);
+            return resp;
+        }catch (err){
+            return err;
+        }
+    }
+
+    
     return (
         <BrowserRouter>
             <NavBar />
@@ -57,16 +83,19 @@ function App() {
                     <Rules />
                 </Route>
 
-                {/* <Route exact path="/register">
-                    <RegisterForm />
+                <Route exact path="/register">
+                    <RegisterForm userRegister={userRegister} checkUsernameEmail={checkUsernameEmail} />
                 </Route>
-                <Route exact path="/login">
+                {/* <Route exact path="/login">
                     <LoginForm />
-                </Route>
+                </Route> */}
 
+                <Route exact path="/404">
+                    <PageNotFound />
+                </Route>
                 <Route>
                     <PageNotFound />
-                </Route> */}
+                </Route>
             </Switch>
             <Footer />
         </BrowserRouter>

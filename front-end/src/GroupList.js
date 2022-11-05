@@ -31,7 +31,7 @@ function GroupList(){
             <p>Standings for each group</p>
             
             <div className="GroupList-details">
-                { groups.map(group => (<GroupStandings key={group} group={group} standings={ groupsStandings.filter(team => team.group == group) } detailsButton={true} />))}
+                { groups.map(group => (<GroupStandings key={group} group={group} standings={ groupsStandings.filter(team => team.group === group) } detailsButton={true} />))}
             </div>
         </div>
     );

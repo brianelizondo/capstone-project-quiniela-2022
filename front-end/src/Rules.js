@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Tab, Tabs } from 'react-bootstrap';
+import { Tab, Tabs } from 'react-bootstrap';
 
 function Rules(){
     return (

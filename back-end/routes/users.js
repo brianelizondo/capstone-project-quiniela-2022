@@ -35,6 +35,23 @@ router.post("/register", async function (req, res, next) {
 
 
 /** 
+* POST /users/register/check:   { user } => { userCheck }
+*   user must include { email, username }
+*   Returns if the username or email already exists
+*       { username: true/false, email: true/false }
+*   Authorization required: none
+*/
+router.post("/register/check", async function (req, res, next) {
+    try {
+        const userCheck = await User.checkUsernameEmail(req.body);
+        return res.json(userCheck);
+    } catch (err) {
+        return next(err);
+    }
+});
+
+
+/** 
 * GET / => { users: [ {firstName, lastName, username, email }, ... ] }
 *   Returns list of all not admin users
 **/

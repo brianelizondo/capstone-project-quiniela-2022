@@ -18,7 +18,7 @@ function Home(){
         }
         getQuinielas();
         setLoading(false);
-    }, [quinielas]);
+    }, []);
 
     if(loading){
         return <Loading />;
