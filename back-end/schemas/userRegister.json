@@ -14,12 +14,14 @@
         "firstName": {
             "type": "string",
             "minLength": "1",
-            "maxLength": "50"
+            "maxLength": "50",
+            "pattern": "^([a-zA-Z ])*$"
         },
         "lastName": {
             "type": "string",
             "minLength": "1",
-            "maxLength": "50"
+            "maxLength": "50",
+            "pattern": "^([a-zA-Z ])*$"
         },
         "email": {
             "type": "string",
@@ -30,18 +32,20 @@
         "username": {
             "type": "string",
             "minLength": "8",
-            "maxLength": "20"
+            "maxLength": "20",
+            "pattern": "^([a-zA-Z0-9])*$"
         },
         "password": {
             "type": "string",
             "minLength": "8",
-            "maxLength": "20"
+            "maxLength": "20",
+            "pattern": "^([a-zA-Z0-9])*$"
         }
     },
     "examples": [{
-        "firstName": "firstname",
-        "lastName": "lastname",
-        "email": "test@test.com",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "email@domain.com",
         "username": "username",
         "password": "ABCabc1234567890"
     }]

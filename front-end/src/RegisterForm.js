@@ -2,73 +2,14 @@ import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { Form, FloatingLabel, Button, Spinner, Col, Row } from "react-bootstrap";
 import { useFormik } from 'formik';
-import Loading from './Loading';
+import * as Yup from 'yup';
 
 
 function RegisterForm({ userRegister, checkUsernameEmail }){
     // history, loading and state for submit button
     const history = useHistory();
     const [btnSubmitLoading, setBtnSubmitLoading] = useState(false);
-    const [currentUsernameEmail, setCurrentUsernameEmail] = useState({ username: "", email: "" });
-
-    const validate = async values => {
-        const errors = {};
-        if(!values.firstName) {
-            errors.firstName = 'Required';
-        }else if(!/^([a-zA-Z ])*$/.test(values.firstName)){
-            errors.firstName = "Only letters are allowed";
-        }else if(values.firstName.length > 50) {
-            errors.firstName = 'Must be 50 characters or less';
-        }
-
-        if(!values.lastName) {
-            errors.lastName = 'Required';
-        }else if(!/^([a-zA-Z ])*$/.test(values.lastName)){
-            errors.lastName = "Only letters are allowed";
-        }else if(values.lastName.length > 50) {
-            errors.lastName = 'Must be 50 characters or less';
-        }
-        
-        if(!values.email) {
-            errors.email = 'Required';
-        }else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-            errors.email = 'Invalid email address';
-        }else if(values.email.length > 50) {
-            errors.email = 'Must be 50 characters or less';
-        }else if(values.email !== "" && currentUsernameEmail.email !== values.email){
-            setCurrentUsernameEmail({...currentUsernameEmail, email: values.email});
-            if(await checkUsernameEmail({ username: false, email: values.email })){
-                errors.email = 'The email already exist';
-            }
-        }
-
-        if(!values.username) {
-            errors.username = 'Required';
-        }else if(!/^([a-zA-Z0-9])*$/.test(values.username)){
-            errors.password = "Only letters and numbers are allowed";
-        }else if(values.username.length < 8) {
-            errors.username = 'Must be 8 characters or more';
-        }else if(values.username.length > 20) {
-            errors.username = 'Must be 20 characters or less';
-        }else if(values.username !== "" && currentUsernameEmail.username !== values.username){
-            setCurrentUsernameEmail({...currentUsernameEmail, username: values.username});
-            if(await checkUsernameEmail({ username: values.username, email: false })){
-                errors.username = 'The username already exist';
-            }
-        }
-
-        if(!values.password) {
-            errors.password = 'Required';
-        }else if(!/^([a-zA-Z0-9])*$/.test(values.password)){
-            errors.password = "Only letters and numbers are allowed";
-        }else if(values.password.length < 8) {
-            errors.password = 'Must be 8 characters or more';
-        }else if(values.password.length > 20) {
-            errors.password = 'Must be 20 characters or less';
-        }
-      
-        return errors;
-    };
+    const [showUserEmailError, setShowUserEmailError] = useState({ username: false, email: false });
 
     // config for user register form
     const formik = useFormik({
@@ -79,14 +20,38 @@ function RegisterForm({ userRegister, checkUsernameEmail }){
             username: "", 
             password: ""
         },
-        validate,
+        validationSchema: Yup.object({
+            firstName: Yup.string()
+                .required('Required')
+                .max(50, 'Must be 50 characters or less')
+                .matches(/^([a-zA-Z ])*$/, { message: 'Only letters are allowed' }),
+            lastName: Yup.string()
+                .required('Required')
+                .max(50, 'Must be 50 characters or less')
+                .matches(/^([a-zA-Z ])*$/, { message: 'Only letters are allowed' }),
+            email: Yup.string()
+                .required('Required')
+                .email('Invalid email address'),
+            username: Yup.string()
+                .required('Required')
+                .matches(/^([a-zA-Z0-9])*$/, { message: "Only letters and numbers are allowed" })
+                .min(8, 'Must be 8 characters or more')
+                .max(20, 'Must be 20 characters or less'),
+            password: Yup.string()
+                .required('Required')
+                .matches(/^([a-zA-Z0-9])*$/, { message: "Only letters and numbers are allowed" })
+                .min(8, 'Must be 8 characters or more')
+                .max(20, 'Must be 20 characters or less')
+          }),
         onSubmit: async (values) => {
             setBtnSubmitLoading(true);
-            try{
+            const checkDuplicate = await checkUsernameEmail(values.email, values.username);
+            if(checkDuplicate.username || checkDuplicate.email){
+                setBtnSubmitLoading(false);
+                setShowUserEmailError(checkDuplicate);
+            }else{
                 userRegister(values);
                 history.push('/login');
-            }catch (err){
-                history.push('404');
             }
         }
     });
@@ -105,8 +70,9 @@ function RegisterForm({ userRegister, checkUsernameEmail }){
                                     onChange={formik.handleChange} 
                                     onBlur={formik.handleBlur} 
                                     value={formik.values.firstName}
+                                    isInvalid={formik.touched.firstName && !!formik.errors.firstName}
                                 />
-                                {formik.touched.firstName && formik.errors.firstName ? <div>{formik.errors.firstName}</div> : null}
+                                <Form.Control.Feedback type="invalid">{formik.errors.firstName}</Form.Control.Feedback>
                             </FloatingLabel>
                         </Col>
                         <Col>
@@ -115,8 +81,9 @@ function RegisterForm({ userRegister, checkUsernameEmail }){
                                     onChange={formik.handleChange} 
                                     onBlur={formik.handleBlur} 
                                     value={formik.values.lastName}
+                                    isInvalid={formik.touched.lastName && !!formik.errors.lastName}
                                 />
-                                {formik.touched.lastName && formik.errors.lastName ? <div>{formik.errors.lastName}</div> : null}
+                                <Form.Control.Feedback type="invalid">{formik.errors.lastName}</Form.Control.Feedback>
                             </FloatingLabel>
                         </Col>
                     </Row>
@@ -127,8 +94,13 @@ function RegisterForm({ userRegister, checkUsernameEmail }){
                                     onChange={formik.handleChange} 
                                     onBlur={formik.handleBlur} 
                                     value={formik.values.email}
+                                    isInvalid={formik.touched.email && !!formik.errors.email}
                                 />
-                                {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
+                                <Form.Control.Feedback type="invalid">{formik.errors.email}</Form.Control.Feedback>
+                                { showUserEmailError.email 
+                                    ? <div className='formDuplicateError'>The email has already been taken { showUserEmailError.email = false }</div>
+                                    : null 
+                                }
                             </FloatingLabel>
                         </Col>
                     </Row>
@@ -139,8 +111,14 @@ function RegisterForm({ userRegister, checkUsernameEmail }){
                                     onChange={formik.handleChange} 
                                     onBlur={formik.handleBlur} 
                                     value={formik.values.username}
+                                    isInvalid={formik.touched.username && !!formik.errors.username}
                                 />
-                                {formik.touched.username && formik.errors.username ? <div>{formik.errors.username}</div> : <Form.Text id="usernameHelpBlock" muted>Your username must be 8-20 characters long and contain letters and numbers</Form.Text>}
+                                <Form.Control.Feedback type="invalid">{formik.errors.username}</Form.Control.Feedback>
+                                { showUserEmailError.username 
+                                    ? <div className='formDuplicateError'>The username has already been taken { showUserEmailError.username = false }</div>
+                                    : null 
+                                }
+                                <Form.Text id="usernameHelpBlock" muted>Your username must be 8-20 characters long and contain letters and numbers</Form.Text>
                             </FloatingLabel>
                         </Col>
                     </Row>
@@ -151,8 +129,10 @@ function RegisterForm({ userRegister, checkUsernameEmail }){
                                     onChange={formik.handleChange} 
                                     onBlur={formik.handleBlur} 
                                     value={formik.values.password}
+                                    isInvalid={formik.touched.password && !!formik.errors.password}
                                 />
-                                {formik.touched.password && formik.errors.password ? <div>{formik.errors.password}</div> : <Form.Text id="passwordHelpBlock" muted>Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters or emoji</Form.Text>}
+                                <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
+                                <Form.Text id="passwordHelpBlock" muted>Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters or emoji</Form.Text>
                             </FloatingLabel>
                         </Col>
                     </Row>

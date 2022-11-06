@@ -11,13 +11,21 @@
     "properties": {
         "username": {
             "type": "string",
-            "default": "",
-            "title": "The username Schema"
+            "title": "The username Schema",
+            "minLength": "8",
+            "maxLength": "20",
+            "pattern": "^([a-zA-Z0-9])*$"
         },
         "password": {
             "type": "string",
-            "default": "",
-            "title": "The password Schema"
+            "title": "The password Schema",
+            "minLength": "8",
+            "maxLength": "20",
+            "pattern": "^([a-zA-Z0-9])*$"
         }
-    }
+    },
+    "examples": [{
+        "username": "username",
+        "password": "ABCabc1234567890"
+    }]
 }

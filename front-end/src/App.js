@@ -17,6 +17,9 @@ import TeamDetails from './TeamDetails';
 import Rules from './Rules';
 
 import RegisterForm from './RegisterForm';
+import LoginForm from './LoginForm';
+
+import UserProfile from './UserProfile';
 
 import PageNotFound from './PageNotFound';
 import Footer from './Footer';
@@ -25,16 +28,26 @@ function App() {
     // functions to register, update, login, logout users
     const userRegister = async user => {
         try{
-            let resp = await APIFootball.registerUser(user);
+            let resp = await APIFootball.userRegister(user);
+            return resp;
+        }catch (err){
+            return err;
+        }
+    }
+    const userAuthenticate = async user => {
+        try{
+            let resp = await APIFootball.userAuthenticate(user);
+            console.log("App Resp:", resp);
             return resp;
         }catch (err){
             return err;
         }
     }
     // check if username/email already exists
-    const checkUsernameEmail = async values => {
+    const checkUsernameEmail = async (email, username) => {
+        console.log("checking API");
         try{
-            let resp = await APIFootball.checkUsernameEmail(values.username, values.email);
+            let resp = await APIFootball.checkUsernameEmail(username, email);
             return resp;
         }catch (err){
             return err;
@@ -86,8 +99,19 @@ function App() {
                 <Route exact path="/register">
                     <RegisterForm userRegister={userRegister} checkUsernameEmail={checkUsernameEmail} />
                 </Route>
-                {/* <Route exact path="/login">
-                    <LoginForm />
+                <Route exact path="/login">
+                    <LoginForm userAuthenticate={userAuthenticate} />
+                </Route>
+
+                {/* ROUTES TO PROTECT LATER */}
+                <Route exact path="/user/:username/profile">
+                    <UserProfile />
+                </Route>
+                {/* <Route exact path="/quinielas/:username/update/:id">
+                    <QuinielaUpdateForm />
+                </Route>
+                <Route exact path="/quinielas/:username/:id">
+                    <QuinielaDetails />
                 </Route> */}
 
                 <Route exact path="/404">

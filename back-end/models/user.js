@@ -99,7 +99,7 @@ class User {
     *   Returns { username, email }
     **/
     static async checkUsernameEmail({ username, email }){
-        let checkResult;
+        let checkResult = {};
         if(username){
             const usernameCheck = await db.query(
                 `SELECT 
@@ -109,7 +109,7 @@ class User {
                 WHERE 
                     username = $1`,
             [username.toLowerCase()]);
-            checkResult = usernameCheck.rows[0] ? true : false;
+            checkResult.username = usernameCheck.rows[0] ? true : false;
         }
         
         if(email){
@@ -121,7 +121,7 @@ class User {
                 WHERE 
                     email = $1`,
             [email.toLowerCase()]);
-            checkResult = emailCheck.rows[0] ? true : false;
+            checkResult.email = emailCheck.rows[0] ? true : false;
         }
 
         return checkResult;

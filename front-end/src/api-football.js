@@ -29,9 +29,13 @@ class APIFootball {
     // Individual API routes requests
     // USERS requests
     /** Register a new user */
-    static async registerUser(user){
+    static async userRegister(user){
         let res = await this.request(`users/register/`, user, "post");
         return res.user;
+    }
+    static async userAuthenticate(user){
+        let res = await this.request(`auth/token/`, user, "post");
+        return res;
     }
     /** Check if username/email already exists */
     static async checkUsernameEmail(username, email){
