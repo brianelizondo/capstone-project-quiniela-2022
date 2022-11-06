@@ -5,6 +5,10 @@ import './App.css';
 // import APIFootball api
 import APIFootball from "./api-football";
 
+// redux dispatch and reducer
+import { useDispatch } from 'react-redux';
+import { logout } from './store/userSlice';
+
 // Import components
 import NavBar from './Navbar';
 import Home from './Home';
@@ -21,10 +25,13 @@ import LoginForm from './LoginForm';
 
 import UserProfile from './UserProfile';
 
+import ProtectedRoute from './ProtectedRoute';
 import PageNotFound from './PageNotFound';
 import Footer from './Footer';
 
-function App() {
+function App(){
+    // redux selector and dispatch
+    const dispatch = useDispatch();
     // functions to register, update, login, logout users
     const userRegister = async user => {
         try{
@@ -34,14 +41,18 @@ function App() {
             return err;
         }
     }
+    // function to authenticate the user
     const userAuthenticate = async user => {
         try{
             let resp = await APIFootball.userAuthenticate(user);
-            console.log("App Resp:", resp);
             return resp;
         }catch (err){
             return err;
         }
+    }
+    // function to logout the user
+    const userLogout = () => {
+        dispatch(logout());
     }
     // check if username/email already exists
     const checkUsernameEmail = async (email, username) => {
@@ -57,12 +68,15 @@ function App() {
     
     return (
         <BrowserRouter>
-            <NavBar />
+            <NavBar userLogout={userLogout} />
             <Switch>
                 <Route exact path="/">
                     <Home />
                 </Route>
                 
+                <Route exact path="/quinielas">
+                    <Home />
+                </Route>
                 {/* ROUTES TO PROTECT LATER */}
                 {/* <Route exact path="/quinielas/:username/add">
                     <QuinielaAddForm />
@@ -104,14 +118,9 @@ function App() {
                 </Route>
 
                 {/* ROUTES TO PROTECT LATER */}
-                <Route exact path="/user/:username/profile">
-                    <UserProfile />
-                </Route>
+                <ProtectedRoute exact path="/users/:username/profile" component={UserProfile} />
                 {/* <Route exact path="/quinielas/:username/update/:id">
                     <QuinielaUpdateForm />
-                </Route>
-                <Route exact path="/quinielas/:username/:id">
-                    <QuinielaDetails />
                 </Route> */}
 
                 <Route exact path="/404">

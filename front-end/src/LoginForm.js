@@ -4,12 +4,16 @@ import { Form, FloatingLabel, Button, Spinner, Col, Row, Alert } from "react-boo
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+import { useDispatch } from 'react-redux';
+import { login } from './store/userSlice';
 
 function LoginForm({ userAuthenticate }){
     // history, loading and state for submit button
     const history = useHistory();
     const [btnSubmitLoading, setBtnSubmitLoading] = useState(false);
     const [checkUserPass, setCheckUserPass] = useState(false);
+    // redux selector and dispatch
+    const dispatch = useDispatch();
 
     // config for user register form
     const formik = useFormik({
@@ -37,8 +41,8 @@ function LoginForm({ userAuthenticate }){
                 setBtnSubmitLoading(false);
                 setCheckUserPass(true);
             }else{
-                history.push('/profile');
-                setCheckUserPass(true);
+                dispatch(login(respAuthenticate));
+                history.push(`/users/${respAuthenticate.user.username}/profile`);
             }
         }
     });
