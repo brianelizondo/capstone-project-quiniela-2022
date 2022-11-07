@@ -52,8 +52,9 @@ CREATE TABLE matches_phase_1 (
 	city_id 	INTEGER 	NOT NULL REFERENCES cities ( id ) ON DELETE CASCADE,
 	match_group	VARCHAR(1)  NOT NULL,
 	team_a_id	INTEGER 	NOT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
+	team_a_result INTEGER 	DEFAULT NULL CHECK (team_a_result >= 0),
 	team_b_id	INTEGER 	NOT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
-	match_result VARCHAR(5) DEFAULT NULL,
+	team_b_result INTEGER 	DEFAULT NULL CHECK (team_b_result >= 0),
 	match_status INTEGER 	NOT NULL DEFAULT 0,
 	api_id		INTEGER 	NOT NULL
 );
@@ -72,7 +73,6 @@ CREATE TABLE matches_phase_2 (
 	team_b_classified    	VARCHAR(25),
 	team_b_id	INTEGER 	REFERENCES teams ( id ) ON DELETE CASCADE,
 	team_b_result INTEGER 	DEFAULT NULL CHECK (team_b_result >= 0),
-	match_result VARCHAR(5) DEFAULT NULL,
 	match_status INTEGER 	NOT NULL DEFAULT 0,
 	api_id		INTEGER 	DEFAULT NULL
 );
@@ -135,6 +135,6 @@ CREATE TABLE payment (
 	user_id		INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
 	quiniela_id INTEGER 	NOT NULL REFERENCES quinielas ( id ) ON DELETE CASCADE,
 	payment_date DATE 		NOT NULL DEFAULT CURRENT_DATE,
-	amout 		MONEY 		NOT NULL DEFAULT 0 CHECK (amout >= 0),
+	amout 		MONEY 		NOT NULL DEFAULT 0,
 	status		INTEGER 	NOT NULL DEFAULT 0 
 );

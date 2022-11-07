@@ -29,13 +29,15 @@ function MatchCard({ match }){
             teamBName = match.teamB_classified;
         }
     }
+
+    const matchResult = match.teamA_result >= 0 && match.teamB_result >= 0 ? `${match.teamA_result} - ${match.teamB_result}` : "vs";
         
     return (
         <Link key={match.id} to={`/matches/phase/${ phase }/match/${match.id}`}>
             <Card>
                 <Card.Body>
                     <div>{ match.date }</div>
-                    <div>{ teamALogo } { teamAName } vs { teamBName } { teamBLogo }</div>
+                    <div>{ teamALogo } { teamAName } { matchResult } { teamBName } { teamBLogo }</div>
                     <div>{ match.time }</div>
                     <div>{ match.city } - { match.stadium }</div>
                 </Card.Body>

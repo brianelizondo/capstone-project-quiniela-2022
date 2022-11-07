@@ -58,6 +58,8 @@ function MatchDetails(){
         return (value * 100) / (valueA + valueB);
     };
 
+    const matchResult = matchDetails.teamA_result >= 0 && matchDetails.teamB_result >= 0 ? `${matchDetails.teamA_result} - ${matchDetails.teamB_result}` : "vs";
+
     if(loading){
         return <Loading />;
     }
@@ -69,7 +71,7 @@ function MatchDetails(){
 
             <div className="MatchDetails-title">
                 <div>{ matchDetails.date }</div>
-                <div>{ teamsLogo.teamA } { teamsName.teamA } vs { teamsName.teamB } { teamsLogo.teamB }</div>
+                <div>{ teamsLogo.teamA } { teamsName.teamA } { matchResult } { teamsName.teamB } { teamsLogo.teamB }</div>
                 <div>{ matchDetails.time }</div>
                 <div>{ matchDetails.city } - { matchDetails.stadium }</div>
             </div>
