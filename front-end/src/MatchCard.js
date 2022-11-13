@@ -11,20 +11,20 @@ function MatchCard({ match }){
     if(match.id <= 48){
         phase = 1;
         teamAName = match.teamA.name;
-        teamALogo = <img src={ match.teamA.apiInfo.logo } alt={ match.teamA.name } />;
+        teamALogo = <img src={ `/images/team_logo/${match.teamA.shortName}.png` } alt={ match.teamA.name } />;
         teamBName = match.teamB.name;
-        teamBLogo = <img src={ match.teamB.apiInfo.logo } alt={ match.teamB.name } />;
+        teamBLogo = <img src={ `/images/team_logo/${match.teamB.shortName}.png` } alt={ match.teamB.name } />;
     }else{
         phase = 2;
         if(match.teamA.id > 0){
             teamAName = match.teamA.name;
-            teamALogo = <img src={ `https://media.api-sports.io/football/teams/${match.teamA.apiID}.png` } alt={ match.teamA.name } />;
+            teamALogo = <img src={ `/images/team_logo/${match.teamA.shortName}.png` } alt={ match.teamA.name } />;
         }else{
             teamAName = match.teamA_classified;
         }
         if(match.teamB.id > 0){
             teamBName = match.teamB.name;
-            teamBLogo = <img src={ `https://media.api-sports.io/football/teams/${match.teamB.apiID}.png` } alt={ match.teamA.name } />;
+            teamBLogo = <img src={ `/images/team_logo/${match.teamB.shortName}.png` } alt={ match.teamA.name } />;
         }else{
             teamBName = match.teamB_classified;
         }

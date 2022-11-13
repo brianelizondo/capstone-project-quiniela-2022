@@ -25,21 +25,21 @@ function MatchDetails(){
             setMatchStats(Array.from(resp.apiStats));
 
             if(phaseID === 1){
-                const teamALogo = <img src={ resp.teamA.apiInfo.logo } alt={ resp.teamA.name } />;
-                const teamBLogo = <img src={ resp.teamB.apiInfo.logo } alt={ resp.teamB.name } />;
+                const teamALogo = <img src={ `/images/team_logo/${resp.teamA.shortName}.png` } alt={ resp.teamA.name } />;
+                const teamBLogo = <img src={ `/images/team_logo/${resp.teamB.shortName}.png` } alt={ resp.teamB.name } />;
                 setTeamsName({ teamA: resp.teamA.name, teamB: resp.teamB.name });
                 setTeamsLogo({ teamA: teamALogo, teamB: teamBLogo });
             }else if(phaseID === 2){
                 let teamAName, teamBName, teamALogo = "", teamBLogo = "";
                 if(resp.teamA.id > 0){
                     teamAName = resp.teamA.name;
-                    teamALogo = <img src={ `https://media.api-sports.io/football/teams/${resp.teamA.apiID}.png` } alt={ resp.teamA.name } />;
+                    teamALogo = <img src={ `/images/team_logo/${resp.teamA.shortName}.png` } alt={ resp.teamA.name } />;
                 }else{
                     teamAName = resp.teamA_classified;
                 }
                 if(resp.teamB.id > 0){
                     teamBName = resp.teamB.name;
-                    teamBLogo = <img src={ `https://media.api-sports.io/football/teams/${resp.teamB.apiID}.png` } alt={ resp.teamB.name } />;
+                    teamBLogo = <img src={ `/images/team_logo/${resp.teamB.shortName}.png` } alt={ resp.teamB.name } />;
                 }else{
                     teamBName = resp.teamB_classified;
                 }

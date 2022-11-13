@@ -42,7 +42,7 @@ function TeamDetails(){
             <p>Details for the team "{team.name}"</p>
             
             <div className="TeamDetails-title">
-                <div>{ team.apiInfo ? <img src={ team.apiInfo.logo } alt={ team.name } /> : "" }</div>
+                <div>{ team.apiInfo ? <img src={ `/images/team_logo/${team.shortName}.png` } alt={ team.name } /> : "" }</div>
                 <div>{ team.name }</div>
             </div>
 

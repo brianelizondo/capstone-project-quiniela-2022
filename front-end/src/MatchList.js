@@ -41,6 +41,8 @@ function MatchList(){
                     case 'F':
                         setMatchesFinal(matches => [...matches, match]);
                         break;
+                    default:
+                        break;
                 }
             });
         }

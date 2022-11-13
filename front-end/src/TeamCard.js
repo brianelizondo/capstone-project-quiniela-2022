@@ -7,7 +7,7 @@ function TeamCard({ team }){
         <Link key={team.shortName} to={`/teams/${team.shortName}`}>
             <Card>
                 <Card.Body>
-                    <div><img src={ `https://media.api-sports.io/football/teams/${team.apiID}.png` } alt={ team.name } /></div>
+                    <div><img src={ `/images/team_logo/${team.shortName}.png` } alt={ team.name } /></div>
                     <div>{ team.name }</div>
                 </Card.Body>
             </Card>

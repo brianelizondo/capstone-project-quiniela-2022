@@ -6,7 +6,7 @@ import './App.css';
 import APIFootball from "./api-football";
 
 // redux dispatch and reducer
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { logout } from './store/userSlice';
 
 // Import components
@@ -24,6 +24,7 @@ import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 
 import UserProfile from './UserProfile';
+import UserQuinielaAdd from './UserQuinielaAdd';
 
 import ProtectedRoute from './ProtectedRoute';
 import PageNotFound from './PageNotFound';
@@ -32,6 +33,9 @@ import Footer from './Footer';
 function App(){
     // redux selector and dispatch
     const dispatch = useDispatch();
+    // initial state for the token
+    const apiToken = useSelector((state) => state.user.token) || null;
+
     // functions to register, update, login, logout users
     const userRegister = async user => {
         try{
@@ -56,7 +60,6 @@ function App(){
     }
     // check if username/email already exists
     const checkUsernameEmail = async (email, username) => {
-        console.log("checking API");
         try{
             let resp = await APIFootball.checkUsernameEmail(username, email);
             return resp;
@@ -119,9 +122,7 @@ function App(){
 
                 {/* ROUTES TO PROTECT LATER */}
                 <ProtectedRoute exact path="/users/:username/profile" component={UserProfile} />
-                {/* <Route exact path="/quinielas/:username/update/:id">
-                    <QuinielaUpdateForm />
-                </Route> */}
+                <ProtectedRoute exact path="/users/:username/quinielas/add" component={UserQuinielaAdd} />
 
                 <Route exact path="/404">
                     <PageNotFound />

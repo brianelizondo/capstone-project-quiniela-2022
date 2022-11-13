@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Nav, NavDropdown } from 'react-bootstrap';
 import './NavBar.css';
 

@@ -7,6 +7,9 @@ const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
 *   Static class tying together methods used to get/send to the API
 */
 class APIFootball {
+    // the token for interactive with the API will be stored here.
+    static token;
+
     // Static method to make each request to the back-end api
     static async request(endpoint, data = {}, method = "get"){
         console.debug("API Call:", endpoint, data, method);
@@ -48,6 +51,21 @@ class APIFootball {
     static async getQuinielas(){
         let res = await this.request(`quinielas/`);
         return res.quinielas;
+    }
+    /** Get all quinielas active by users */
+    static async getQuinielasByUser(username){
+        let res = await this.request(`quinielas/${username}/`);
+        return res.quinielas;
+    }
+    /** Create a new quiniela for an user */
+    static async createNewQuiniela(user, matchesData, formData){
+        let res = await this.request(`quinielas/${user.username}/add/`, { user, matchesData, formData }, "post");
+        return res.quiniela;
+    }
+    /** Set groups standings for user quiniela */
+    static async setQuinielasClassifiedTeams(user, matches, formData){
+        let res = await this.request(`stats/quinielas/${user.username}/groups/`, { matches, formData }, "post");
+        return res.stats;
     }
 
     // GROUPS requests
@@ -98,8 +116,8 @@ class APIFootball {
 
 }
 
-APIFootball.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
-                    "eyJ1c2VybmFtZSI6InJlZ3VsYXJ1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTY2NjY1NzY4N30." + 
-                    "IdD8TZi5mjjBiLzyD9FDSnau3f-s84eIZftXlVhUWo0";
+// APIFootball.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
+//                     "eyJ1c2VybmFtZSI6InJlZ3VsYXJ1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTY2NjY1NzY4N30." + 
+//                     "IdD8TZi5mjjBiLzyD9FDSnau3f-s84eIZftXlVhUWo0";
 
 export default APIFootball;
