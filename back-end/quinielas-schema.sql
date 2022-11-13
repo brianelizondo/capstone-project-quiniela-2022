@@ -110,6 +110,7 @@ CREATE TABLE quinielas_phase_2 (
 	quiniela_id INTEGER 	NOT NULL REFERENCES quinielas ( id ) ON DELETE CASCADE,
 	user_id     INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
 	match_id    INTEGER 	NOT NULL REFERENCES matches_phase_2 ( id ) ON DELETE CASCADE,
+	match_phase VARCHAR(3)  NOT NULL,
 	team_a      INTEGER 	DEFAULT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
 	team_a_result INTEGER 	DEFAULT NULL CHECK (team_a_result >= 0),
 	team_b      INTEGER 	DEFAULT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
@@ -128,6 +129,22 @@ CREATE TABLE quinielas_points (
 	status		INTEGER 	NOT NULL DEFAULT 0
 );
 
+
+-- table to handle quiniela groups/team points
+-- create QUINIELA_GROUPS_STANDINGS table
+CREATE TABLE quinielas_groups_standings ( 
+	user_id 	INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
+	"group"		VARCHAR(1)  NOT NULL,
+	team_id		INTEGER 	NOT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
+	games_played INTEGER 	NOT NULL DEFAULT 0 CHECK (games_played >= 0),
+	games_won   INTEGER 	NOT NULL DEFAULT 0 CHECK (games_won >= 0),
+	games_draws INTEGER 	NOT NULL DEFAULT 0 CHECK (games_draws >= 0),
+	games_lost  INTEGER 	NOT NULL DEFAULT 0 CHECK (games_lost >= 0),
+	goals_for   INTEGER 	NOT NULL DEFAULT 0 CHECK (goals_for >= 0),
+	goals_against INTEGER 	NOT NULL DEFAULT 0 CHECK (goals_against >= 0),
+	goals_diff  INTEGER 	NOT NULL DEFAULT 0,
+	points      INTEGER 	NOT NULL DEFAULT 0 CHECK (points >= 0)
+);
 
 -- table to handle quiniela payments
 -- create PAYMENTS table

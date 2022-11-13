@@ -4,10 +4,11 @@ INSERT INTO users
     last_name, 
     email, 
     username, 
-    password) 
+    password,
+    status) 
 VALUES 
-    ('regular', 'user', 'regular@mail.com', 'regularuser', '$2b$12$KCCMfnTiOCaVcBw.7KLgq.WBd/Kxt.I6jbYjE3w0ZLTK1LbvqcVa2'),
-    ('admin', 'user', 'admin@mail.com', 'adminuser', '$2b$12$KCCMfnTiOCaVcBw.7KLgq.WBd/Kxt.I6jbYjE3w0ZLTK1LbvqcVa2');
+    ('regular', 'user', 'regular@mail.com', 'regularuser', '$2b$12$KCCMfnTiOCaVcBw.7KLgq.WBd/Kxt.I6jbYjE3w0ZLTK1LbvqcVa2', 1),
+    ('admin', 'user', 'admin@mail.com', 'adminuser', '$2b$12$KCCMfnTiOCaVcBw.7KLgq.WBd/Kxt.I6jbYjE3w0ZLTK1LbvqcVa2', 1);
 
 
 -- Seed basic and independent tables with info

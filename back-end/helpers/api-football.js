@@ -52,7 +52,7 @@ class ApiFootball {
     *   Return: { matchesPlayed, matchesWon, matchesDrawn, matchesLost, goalsFor, goalsForAvg, goalsAgainst, goalsAgainstAvg, cardsYellow, cardsRed, cardsYellowAvg, cardsRedAvg, cleanSheet }
     **/
      static async getTeamStats(apiID){
-        let endpoint = `teams/statistics?league=1&season=2014&team=${apiID}`;
+        let endpoint = `teams/statistics?league=1&season=2022&team=${apiID}`;
         let apiResponse = await ApiFootball.apiGetInfo(endpoint);
         return apiResponse;
     }

@@ -69,7 +69,7 @@ class Match {
                 GROUP BY 
                     m.match_date, m.id, s.name, c.city, ta.id, tb.id    
                 ORDER BY 
-                    m.match_date ASC, m.match_time ASC`
+                    m.match_date ASC, m.match_time ASC, m.id ASC`
             );    
             
             // create and assign each team object
@@ -118,7 +118,7 @@ class Match {
                 GROUP BY 
                     m.match_date, m.id, s.name, c.city, ta.id, tb.id    
                 ORDER BY 
-                    m.match_date ASC, m.match_time ASC`
+                    m.match_date ASC, m.match_time ASC, m.id ASC`
             );
 
             // create and assign each team object

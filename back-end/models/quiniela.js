@@ -14,11 +14,11 @@ const Match = require("./match");
 class Quiniela {
     /** 
     * Create a new quiniela with data
-    *   Returns { id, createdAt, ended_at, userID, status, matchesPhase1, matchesPhase2 }
-    *       where matchesPhase1 is: { id, matchID, teamAResult, teamBResult, points }
-    *       where matchesPhase2 is: { id, matchID, teamA, teamAResult, teamB, teamBResult, points }
+    *   Returns { id, createdAt, ended_at, userID, status, matchesPhase1, matchesPhase2, points }
+    *       where matchesPhase1 is: [{ id, matchID, teamAResult, teamBResult, points }, ...]
+    *       where matchesPhase2 is: [{ id, matchID, matchPhase, teamA, teamAResult, teamB, teamBResult, points }, ...]
     **/
-    static async create(userID){
+    static async create(userID, matchesData, formData){
         const result = await db.query(
             `INSERT INTO quinielas 
                 (user_id) 
@@ -32,12 +32,19 @@ class Quiniela {
         const matches_phase_1 = await Match.findAll(1);
         let quiniela_matches_phase_1 = [];
         for(const match of matches_phase_1){
-            quiniela_matches_phase_1.push(await Quiniela.addMatch(quiniela.id, quiniela.userID, match.id, 1));
+            const teamA_result = Number(formData[`match_${match.id}_team_a`]);
+            const teamB_result = Number(formData[`match_${match.id}_team_b`]);
+            
+            quiniela_matches_phase_1.push(await Quiniela.addMatch(quiniela.id, quiniela.userID, match.id, 1, teamA_result, teamB_result));
         }
         const matches_phase_2 = await Match.findAll(2);
         let quiniela_matches_phase_2 = [];
         for(const match of matches_phase_2){
-            quiniela_matches_phase_2.push(await Quiniela.addMatch(quiniela.id, quiniela.userID, match.id, 2));
+            const teamA_result = Number(formData[`match_${match.id}_team_a`]);
+            const teamB_result = Number(formData[`match_${match.id}_team_b`]);
+            const teamsMatch = matchesData[match.phase].filter(matchPhase => matchPhase.id === match.id);
+            
+            quiniela_matches_phase_2.push(await Quiniela.addMatch(quiniela.id, quiniela.userID, match.id, 2, teamA_result, teamB_result, match.phase, teamsMatch[0].teamA.teamID, teamsMatch[0].teamB.teamID));
         }
         quiniela.matchesPhase1 = quiniela_matches_phase_1;
         quiniela.matchesPhase2 = quiniela_matches_phase_2;
@@ -60,34 +67,33 @@ class Quiniela {
     *   Returns for phase 1 match: { id, matchID, teamAResult, teamBResult, points }
     *   Returns for phase 2 match: { id, matchID, teamA, teamAResult, teamB, teamBResult, points }
     */
-    static async addMatch(quinielaID, userID, matchID, phase){
+    static async addMatch(quinielaID, userID, matchID, phase, teamA_result, teamB_result, matchPhase=null, teamA_id=null, teamB_id=null ){
         if(phase == 1){
             const result = await db.query(
                 `INSERT INTO quinielas_phase_1 
-                    (quiniela_id, 
-                    user_id, 
-                    match_id) 
+                    (quiniela_id, user_id, match_id, team_a_result, team_b_result) 
                 VALUES 
-                    ($1, $2, $3) 
+                    ($1, $2, $3, $4, $5) 
                 RETURNING 
                     id, match_id AS "matchID", team_a_result AS "teamAResult", team_b_result AS "teamBResult"`, 
-            [quinielaID, userID, matchID]);
+            [quinielaID, userID, matchID, teamA_result, teamB_result]);
             return result.rows[0];
         }else if(phase == 2){
             const result = await db.query(
                 `INSERT INTO quinielas_phase_2 
-                    (quiniela_id, 
-                    user_id, 
-                    match_id) 
+                    (quiniela_id, user_id, match_id, match_phase, team_a, team_a_result, team_b, team_b_result) 
                 VALUES 
-                    ($1, $2, $3) 
+                    ($1, $2, $3, $4, $5, $6, $7, $8) 
                 RETURNING 
-                    id, match_id AS "matchID", team_a AS "teamA", team_a_result AS "teamAResult", team_b AS "teamB", team_b_result AS "teamBResult"`, 
-            [quinielaID, userID, matchID]);
+                    id, match_id AS "matchID", 
+                    match_phase AS "matchPhase", 
+                    team_a AS "teamA", 
+                    team_a_result AS "teamAResult", 
+                    team_b AS "teamB", 
+                    team_b_result AS "teamBResult"`, 
+            [quinielaID, userID, matchID, matchPhase, teamA_id, teamA_result, teamB_id, teamB_result]);
             return result.rows[0];
         }
-        
-        quiniela_matches_phase_2.push(result.rows[0]);
     }
 
     /**
@@ -178,7 +184,7 @@ class Quiniela {
             FROM 
                 quinielas 
             WHERE
-                user_id = $1 AND status >= 1 
+                user_id = $1 
             ORDER BY 
                 id`,
         [userID]);
@@ -192,6 +198,7 @@ class Quiniela {
 
         return quinielas;
     }
+
 
     /** 
     * Find active quiniela details of user
@@ -229,6 +236,174 @@ class Quiniela {
         quiniela.matchesPhase2 = await Quiniela.matchesList(quinielaID, 2);
         
         return quiniela;
+    }
+
+
+    /**
+    * Set quiniela groups standings and get classified teams
+    *   Returns classified teams by groups/possitions: { A1: teamID, A2: teamID, B1: teamID, B2: teamID, C1: teamID, C2: teamID, D1: teamID, D2: teamID, E1: teamID, E2: teamID, F1: teamID, F2: teamID, G1: teamID, G2: teamID, H1: teamID, H2: teamID }
+    */
+     static async setQuinielasClassifiedTeams(userID, matches, formData){
+        // delete current standings
+        const result = await db.query(
+            `DELETE FROM 
+                quinielas_groups_standings 
+            WHERE 
+                user_id = $1`, 
+        [userID]);
+        
+        // set teams list and team standings object
+        const teams = new Set();
+        let teamStandings = {};        
+        
+        for(let match of matches){
+            let teamA_stan;
+            let teamB_stan;
+            
+            const insertSQL = `INSERT INTO quinielas_groups_standings (user_id, "group", team_id) VALUES ($1, $2, $3)`;
+            if(!teams.has(match.teamA.id)){
+                await db.query(insertSQL, [userID, match.group, match.teamA.id]);
+                teams.add(match.teamA.id);
+                teamA_stan = {
+                    teamID: match.teamA.id,
+                    gamesPlayed: 0,
+                    gamesWon: 0,
+                    gamesDraws: 0,
+                    gamesLost: 0,
+                    goalsFor: 0,
+                    goalsAgainst: 0,
+                    goalsDiff: 0,
+                    points: 0
+                };
+            }else{
+                teamA_stan = teamStandings[`${match.teamA.shortName}`];
+            }
+
+            if(!teams.has(match.teamB.id)){
+                await db.query(insertSQL, [userID, match.group, match.teamB.id]);
+                teams.add(match.teamB.id);
+                teamB_stan = {
+                    teamID: match.teamB.id,
+                    gamesPlayed: 0,
+                    gamesWon: 0,
+                    gamesDraws: 0,
+                    gamesLost: 0,
+                    goalsFor: 0,
+                    goalsAgainst: 0,
+                    goalsDiff: 0,
+                    points: 0
+                };
+            }else{
+                teamB_stan = teamStandings[`${match.teamB.shortName}`];
+            }
+
+            // set new standings for teams
+            // games played
+            teamA_stan.gamesPlayed += 1;
+            teamB_stan.gamesPlayed += 1;
+            // games wons, draws and lost
+            let teamA_matchResult = Number(formData[`match_${match.id}_team_a`]);
+            let teamB_matchResult = Number(formData[`match_${match.id}_team_b`]);
+            if(teamA_matchResult > teamB_matchResult){
+                teamA_stan.gamesWon += 1;
+                teamB_stan.gamesLost += 1;
+                teamA_stan.points += 3;
+            }else if(teamA_matchResult < teamB_matchResult){
+                teamA_stan.gamesLost += 1;
+                teamB_stan.gamesWon += 1;
+                teamB_stan.points += 3;
+            }else if(teamA_matchResult === teamB_matchResult){
+                teamA_stan.gamesDraws += 1;
+                teamB_stan.gamesDraws += 1;
+                teamA_stan.points += 1;
+                teamB_stan.points += 1;
+            }
+            // // goals for, against, diff
+            teamA_stan.goalsFor += teamA_matchResult;
+            teamB_stan.goalsFor += teamB_matchResult;
+            teamA_stan.goalsAgainst += teamB_matchResult;
+            teamB_stan.goalsAgainst += teamA_matchResult;
+            teamA_stan.goalsDiff = teamA_stan.goalsFor - teamA_stan.goalsAgainst;
+            teamB_stan.goalsDiff = teamB_stan.goalsFor - teamB_stan.goalsAgainst;
+
+            // save local standings
+            teamStandings[`${match.teamA.shortName}`] = teamA_stan;
+            teamStandings[`${match.teamB.shortName}`] = teamB_stan;
+        }
+
+        for(let team in teamStandings){
+            // save standings in database
+            const teamStan = teamStandings[team];
+            const result = await db.query(
+                `UPDATE 
+                    quinielas_groups_standings 
+                SET 
+                    games_played = $1, 
+                    games_won = $2, 
+                    games_draws = $3, 
+                    games_lost = $4, 
+                    goals_for = $5, 
+                    goals_against = $6, 
+                    goals_diff = $7, 
+                    points = $8 
+                WHERE 
+                    user_id = $9 AND team_id = $10`, 
+            [teamStan.gamesPlayed, 
+            teamStan.gamesWon, 
+            teamStan.gamesDraws, 
+            teamStan.gamesLost, 
+            teamStan.goalsFor, 
+            teamStan.goalsAgainst, 
+            teamStan.goalsDiff, 
+            teamStan.points, 
+            userID, 
+            teamStan.teamID]);
+        }
+
+        const resultStats = await db.query(
+            `SELECT 
+                qgs.group, 
+                qgs.team_id AS "teamID", 
+                t.name AS "teamName",
+                t.short_name AS "shortName",
+                qgs.games_played AS "gamesPlayed", 
+                qgs.games_won AS "gamesWon", 
+                qgs.games_draws AS "gamesDraws", 
+                qgs.games_lost AS "gamesLost", 
+                qgs.goals_for AS "goalsFor", 
+                qgs.goals_against AS "goalsAgainst", 
+                qgs.goals_diff AS "goalsDiff", 
+                qgs.points 
+            FROM
+                quinielas_groups_standings AS qgs 
+            
+            LEFT JOIN teams AS t 
+                ON qgs.team_id = t.id
+            
+            WHERE 
+                qgs.user_id = $1 
+            ORDER BY 
+                qgs.group ASC, qgs.points DESC, qgs.games_won DESC, qgs.goals_diff DESC`,
+        [userID]);
+
+        return {
+            "1A": { teamID: resultStats.rows[0].teamID, teamName: resultStats.rows[0].teamName, teamShortName: resultStats.rows[0].shortName },
+            "2A": { teamID: resultStats.rows[1].teamID, teamName: resultStats.rows[1].teamName, teamShortName: resultStats.rows[1].shortName },
+            "1B": { teamID: resultStats.rows[4].teamID, teamName: resultStats.rows[4].teamName, teamShortName: resultStats.rows[4].shortName },
+            "2B": { teamID: resultStats.rows[5].teamID, teamName: resultStats.rows[5].teamName, teamShortName: resultStats.rows[5].shortName },
+            "1C": { teamID: resultStats.rows[8].teamID, teamName: resultStats.rows[8].teamName, teamShortName: resultStats.rows[8].shortName },
+            "2C": { teamID: resultStats.rows[9].teamID, teamName: resultStats.rows[9].teamName, teamShortName: resultStats.rows[9].shortName },
+            "1D": { teamID: resultStats.rows[12].teamID, teamName: resultStats.rows[12].teamName, teamShortName: resultStats.rows[12].shortName },
+            "2D": { teamID: resultStats.rows[13].teamID, teamName: resultStats.rows[13].teamName, teamShortName: resultStats.rows[13].shortName },
+            "1E": { teamID: resultStats.rows[16].teamID, teamName: resultStats.rows[16].teamName, teamShortName: resultStats.rows[16].shortName },
+            "2E": { teamID: resultStats.rows[17].teamID, teamName: resultStats.rows[17].teamName, teamShortName: resultStats.rows[17].shortName },
+            "1F": { teamID: resultStats.rows[20].teamID, teamName: resultStats.rows[20].teamName, teamShortName: resultStats.rows[20].shortName },
+            "2F": { teamID: resultStats.rows[21].teamID, teamName: resultStats.rows[21].teamName, teamShortName: resultStats.rows[21].shortName },
+            "1G": { teamID: resultStats.rows[24].teamID, teamName: resultStats.rows[24].teamName, teamShortName: resultStats.rows[24].shortName },
+            "2G": { teamID: resultStats.rows[25].teamID, teamName: resultStats.rows[25].teamName, teamShortName: resultStats.rows[25].shortName },
+            "1H": { teamID: resultStats.rows[28].teamID, teamName: resultStats.rows[28].teamName, teamShortName: resultStats.rows[28].shortName },
+            "2H": { teamID: resultStats.rows[29].teamID, teamName: resultStats.rows[29].teamName, teamShortName: resultStats.rows[29].shortName }
+        };
     }
 }
 module.exports = Quiniela;

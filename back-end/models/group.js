@@ -40,7 +40,7 @@ class Group {
                 ON gs.team_id = t.id
                 
             ORDER BY 
-                gs.group ASC, gs.points DESC, gs.games_won DESC, goals_diff DESC`,
+                gs.group ASC, gs.points DESC, gs.games_won DESC, gs.goals_diff DESC`,
         );
         
         return result.rows;

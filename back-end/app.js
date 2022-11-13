@@ -16,6 +16,7 @@ const quinielasRoutes = require("./routes/quinielas");
 const groupsRoutes = require("./routes/groups")
 const matchesRoutes = require("./routes/matches");
 const teamsRoutes = require("./routes/teams");
+const statsRoutes = require("./routes/stats");
 
 const app = express();
 app.use(cors());
@@ -30,6 +31,7 @@ app.use("/quinielas", quinielasRoutes);
 app.use("/groups", groupsRoutes);
 app.use("/matches", matchesRoutes);
 app.use("/teams", teamsRoutes);
+app.use("/stats", statsRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function (req, res, next){

@@ -56,13 +56,12 @@ router.get("/:username/:id", ensureLoggedIn, async function (req, res, next) {
 });
 
 /** 
-* POST /add/[username]
+* POST /[username]/add
 *   quiniela must include { userID }
 */
-router.post("/add/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
+router.post("/:username/add", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try {
-        const user = await User.get(req.params.username);
-        const quiniela = await Quiniela.create(user.id);
+        const quiniela = await Quiniela.create(req.body.user.id, req.body.matchesData, req.body.formData); 
         return res.json({ quiniela });
     } catch (err) {
         return next(err);
