@@ -57,6 +57,11 @@ class APIFootball {
         let res = await this.request(`quinielas/${username}/`);
         return res.quinielas;
     }
+    /** Get all quinielas active by users */
+    static async getQuinielaDetails(username, quinielaID){
+        let res = await this.request(`quinielas/${username}/${quinielaID}`);
+        return res.quiniela;
+    }
     /** Create a new quiniela for an user */
     static async createNewQuiniela(user, matchesData, formData){
         let res = await this.request(`quinielas/${user.username}/add/`, { user, matchesData, formData }, "post");

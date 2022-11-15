@@ -12,6 +12,7 @@ import { logout } from './store/userSlice';
 // Import components
 import NavBar from './Navbar';
 import Home from './Home';
+import QuinielaDetails from './QuinielaDetails';
 import GroupList from './GroupList';
 import GroupDetails from './GroupDetails';
 import MatchList from './MatchList';
@@ -80,15 +81,15 @@ function App(){
                 <Route exact path="/quinielas">
                     <Home />
                 </Route>
+                <Route exact path="/quinielas/:username/:quinielaID">
+                    <QuinielaDetails />
+                </Route>
                 {/* ROUTES TO PROTECT LATER */}
                 {/* <Route exact path="/quinielas/:username/add">
                     <QuinielaAddForm />
                 </Route>
                 <Route exact path="/quinielas/:username/update/:id">
                     <QuinielaUpdateForm />
-                </Route>
-                <Route exact path="/quinielas/:username/:id">
-                    <QuinielaDetails />
                 </Route> */}
                 
                 <Route exact path="/groups">

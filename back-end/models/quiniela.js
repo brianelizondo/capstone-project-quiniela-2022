@@ -35,28 +35,38 @@ class Quiniela {
             const teamA_result = Number(formData[`match_${match.id}_team_a`]);
             const teamB_result = Number(formData[`match_${match.id}_team_b`]);
             
-            quiniela_matches_phase_1.push(await Quiniela.addMatch(quiniela.id, quiniela.userID, match.id, 1, teamA_result, teamB_result));
+            quiniela_matches_phase_1.push(await Quiniela.addMatch(quiniela.id, quiniela.userID, match.id, 1, match.teamA.id, teamA_result, match.teamB.id, teamB_result));
         }
         const matches_phase_2 = await Match.findAll(2);
+        let quinielaTeamChampionID = 0;
         let quiniela_matches_phase_2 = [];
         for(const match of matches_phase_2){
             const teamA_result = Number(formData[`match_${match.id}_team_a`]);
             const teamB_result = Number(formData[`match_${match.id}_team_b`]);
             const teamsMatch = matchesData[match.phase].filter(matchPhase => matchPhase.id === match.id);
             
-            quiniela_matches_phase_2.push(await Quiniela.addMatch(quiniela.id, quiniela.userID, match.id, 2, teamA_result, teamB_result, match.phase, teamsMatch[0].teamA.teamID, teamsMatch[0].teamB.teamID));
+            quiniela_matches_phase_2.push(await Quiniela.addMatch(quiniela.id, quiniela.userID, match.id, 2, teamsMatch[0].teamA.teamID, teamA_result, teamsMatch[0].teamB.teamID, teamB_result, match.phase));
+
+            // check champion team
+            if(match.phase === 'F'){
+                if(teamA_result > teamB_result){
+                    quinielaTeamChampionID = teamsMatch[0].teamA.teamID;
+                }else if(teamB_result > teamA_result){
+                    quinielaTeamChampionID = teamsMatch[0].teamB.teamID;
+                }
+            }
         }
         quiniela.matchesPhase1 = quiniela_matches_phase_1;
         quiniela.matchesPhase2 = quiniela_matches_phase_2;
 
         const resultPoints = await db.query(
             `INSERT INTO quinielas_points 
-                (quiniela_id, user_id) 
+                (quiniela_id, user_id, champion_team_id) 
             VALUES 
-                ($1, $2)
+                ($1, $2, $3)
             RETURNING 
                 points`, 
-        [quiniela.id, userID]);
+        [quiniela.id, userID, quinielaTeamChampionID]);
         quiniela.points = resultPoints.rows[0].points;
         
         return quiniela;
@@ -67,16 +77,21 @@ class Quiniela {
     *   Returns for phase 1 match: { id, matchID, teamAResult, teamBResult, points }
     *   Returns for phase 2 match: { id, matchID, teamA, teamAResult, teamB, teamBResult, points }
     */
-    static async addMatch(quinielaID, userID, matchID, phase, teamA_result, teamB_result, matchPhase=null, teamA_id=null, teamB_id=null ){
+    static async addMatch(quinielaID, userID, matchID, phase, teamA_id, teamA_result, teamB_id, teamB_result, matchPhase=null ){
         if(phase == 1){
             const result = await db.query(
                 `INSERT INTO quinielas_phase_1 
-                    (quiniela_id, user_id, match_id, team_a_result, team_b_result) 
+                    (quiniela_id, user_id, match_id, team_a, team_a_result, team_b, team_b_result) 
                 VALUES 
-                    ($1, $2, $3, $4, $5) 
+                    ($1, $2, $3, $4, $5, $6, $7) 
                 RETURNING 
-                    id, match_id AS "matchID", team_a_result AS "teamAResult", team_b_result AS "teamBResult"`, 
-            [quinielaID, userID, matchID, teamA_result, teamB_result]);
+                    id, 
+                    match_id AS "matchID", 
+                    team_a AS "teamA", 
+                    team_a_result AS "teamAResult", 
+                    team_b AS "teamB", 
+                    team_b_result AS "teamBResult"`, 
+            [quinielaID, userID, matchID, teamA_id, teamA_result, teamB_id, teamB_result]);
             return result.rows[0];
         }else if(phase == 2){
             const result = await db.query(
@@ -85,7 +100,8 @@ class Quiniela {
                 VALUES 
                     ($1, $2, $3, $4, $5, $6, $7, $8) 
                 RETURNING 
-                    id, match_id AS "matchID", 
+                    id, 
+                    match_id AS "matchID", 
                     match_phase AS "matchPhase", 
                     team_a AS "teamA", 
                     team_a_result AS "teamAResult", 
@@ -98,7 +114,7 @@ class Quiniela {
 
     /**
     * Return the list of matches for the quinielas
-    *   Returns for phase 1 match: { id, matchID, teamAResult, teamBResult, points }
+    *   Returns for phase 1 match: { id, matchID, teamA, teamAResult, teamB, teamBResult, points }
     *   Returns for phase 2 match: { id, matchID, teamA, teamAResult, teamB, teamBResult, points }
     */
      static async matchesList(quinielaID, phase){
@@ -106,31 +122,62 @@ class Quiniela {
         if(phase == 1){
             const result = await db.query(
                 `SELECT 
-                    id, 
-                    match_id AS "matchID", 
-                    team_a_result AS "teamAResult", 
-                    team_b_result AS "teamBResult",
-                    points 
+                    q.id, 
+                    q.match_id AS "matchID", 
+                    q.team_a AS "teamA_id", 
+                    ta.name AS "teamA_name", 
+                    ta.short_name AS "teamA_shortName", 
+                    q.team_a_result AS "teamA_result", 
+                    q.team_b AS "teamB",
+                    tb.name AS "teamB_name", 
+                    tb.short_name AS "teamB_shortName",
+                    q.team_b_result AS "teamB_result",
+                    q.points 
                 FROM 
-                    quinielas_phase_1 
+                    quinielas_phase_1 AS q 
+                
+                LEFT JOIN teams AS ta 
+                    ON q.team_a = ta.id 
+                LEFT JOIN teams AS tb 
+                    ON q.team_b = tb.id 
+                
                 WHERE
-                    quiniela_id = $1`,
+                    q.quiniela_id = $1
+                GROUP BY 
+                    q.id, ta.id, tb.id    
+                ORDER BY 
+                    q.match_id ASC`,
             [quinielaID]);
             quinielaMatches = result.rows;
         }else if(phase == 2){
             const result = await db.query(
                 `SELECT 
-                    id, 
-                    match_id AS "matchID", 
-                    team_a AS "teamA", 
-                    team_a_result AS "teamAResult", 
-                    team_b AS "teamB", 
-                    team_b_result AS "teamBResult",
-                    points  
+                    q.id, 
+                    q.match_id AS "matchID", 
+                    q.match_phase AS "matchPhase", 
+                    q.team_a AS "teamA_id", 
+                    ta.name AS "teamA_name", 
+                    ta.short_name AS "teamA_shortName", 
+                    q.team_a_result AS "teamA_result", 
+                    q.team_b AS "teamB",
+                    tb.name AS "teamB_name", 
+                    tb.short_name AS "teamB_shortName",
+                    q.team_b_result AS "teamB_result",
+                    q.points 
                 FROM 
-                    quinielas_phase_2 
+                    quinielas_phase_2 AS q 
+                
+                LEFT JOIN teams AS ta 
+                    ON q.team_a = ta.id 
+                LEFT JOIN teams AS tb 
+                    ON q.team_b = tb.id 
+                
                 WHERE
-                    quiniela_id = $1`,
+                    q.quiniela_id = $1
+                GROUP BY 
+                    q.id, ta.id, tb.id    
+                ORDER BY 
+                    q.match_id ASC`,
             [quinielaID]);
             quinielaMatches = result.rows;
         }
@@ -212,8 +259,9 @@ class Quiniela {
                 q.created_at AS "createdAt", 
                 q.ended_at AS "endedAt", 
                 qp.points, 
-                qp.champion_team_id AS "championTeamID", 
-                t.name AS "championTeamName" 
+                qp.champion_team_id AS "championTeam_ID", 
+                t.name AS "championTeam_Name",
+                t.short_name AS "championTeam_ShortName" 
             FROM 
                 quinielas AS q 
 
@@ -224,7 +272,7 @@ class Quiniela {
                 ON qp.champion_team_id = t.id 
 
             WHERE 
-                q.id = $1 AND q.user_id = $2 AND q.status >= 1`,
+                q.id = $1 AND q.user_id = $2 AND q.status >= 0`,
         [quinielaID, userID]);
         let quiniela = result.rows[0];
 

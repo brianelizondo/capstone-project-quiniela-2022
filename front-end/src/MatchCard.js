@@ -30,7 +30,7 @@ function MatchCard({ match }){
         }
     }
 
-    const matchResult = match.teamA_result >= 0 && match.teamB_result >= 0 ? `${match.teamA_result} - ${match.teamB_result}` : "vs";
+    const matchResult = match.teamA_result !== null && match.teamB_result !== null ? `${match.teamA_result} - ${match.teamB_result}` : "vs";
         
     return (
         <Link key={match.id} to={`/matches/phase/${ phase }/match/${match.id}`}>
