@@ -197,8 +197,9 @@ class Quiniela {
                 u.first_name AS "userFirstName",
                 u.last_name AS "userLastName",
                 u.username,
-                qp.champion_team_id AS "championTeamID", 
-                t.name AS "championTeamName",
+                qp.champion_team_id AS "championTeam_ID", 
+                t.name AS "championTeam_Name",
+                t.short_name AS "championTeam_ShortName",
                 qp.points 
             FROM 
                 quinielas_points AS qp 
@@ -225,21 +226,34 @@ class Quiniela {
      static async findAllActiveByUser(userID){
         const result = await db.query(
             `SELECT 
-                id, 
-                created_at AS "createdAt", 
-                ended_at AS "endedAT"  
+                qp.quiniela_id AS "quinielaID", 
+                qp.user_id AS "userID", 
+                u.first_name AS "userFirstName",
+                u.last_name AS "userLastName",
+                u.username,
+                qp.champion_team_id AS "championTeam_ID", 
+                t.name AS "championTeam_Name",
+                t.short_name AS "championTeam_ShortName",
+                qp.points 
             FROM 
-                quinielas 
+                quinielas_points AS qp 
+            
+            LEFT JOIN users AS u 
+                ON qp.user_id = u.id 
+            
+            LEFT JOIN teams AS t 
+                ON qp.champion_team_id = t.id 
+            
             WHERE
-                user_id = $1 
+                qp.user_id = $1 AND qp.status >= 1 
             ORDER BY 
-                id`,
+                qp.points DESC`,
         [userID]);
         
         let quinielas = [];
         for(let quiniela of result.rows){
-            quiniela.matchesPhase1 = await Quiniela.matchesList(quiniela.id, 1);
-            quiniela.matchesPhase2 = await Quiniela.matchesList(quiniela.id, 2);
+            quiniela.matchesPhase1 = await Quiniela.matchesList(quiniela.quinielaID, 1);
+            quiniela.matchesPhase2 = await Quiniela.matchesList(quiniela.quinielaID, 2);
             quinielas.push(quiniela);
         }
 
@@ -453,5 +467,38 @@ class Quiniela {
             "2H": { teamID: resultStats.rows[29].teamID, teamName: resultStats.rows[29].teamName, teamShortName: resultStats.rows[29].shortName }
         };
     }
+
+    /** 
+    * Find quiniela of user and deleted
+    *   Returns ID
+    **/
+     static async delete(userID, quinielaID){
+        const result = await db.query(
+            `SELECT 
+                id, 
+                user_id 
+            FROM 
+                quinielas 
+            WHERE 
+                id = $1 AND user_id = $2`,
+        [quinielaID, userID]);
+        let quiniela = result.rows[0];
+
+        if(!quiniela){
+            throw new NotFoundError(`Quiniela/User not found`);
+        }
+        
+        const resultDelete = await db.query(
+            `DELETE FROM 
+                quinielas 
+            WHERE 
+                id = $1 AND user_id = $2 
+            RETURNING
+                id`,
+        [quinielaID, userID]);
+        
+        return resultDelete.rows[0].id;
+    }
 }
+
 module.exports = Quiniela;

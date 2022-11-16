@@ -12,7 +12,7 @@ function Rules(){
                     <Tab eventKey="english" title="English">
                         <h5>1. About Registration</h5>
                         <p>
-                        The registration fee for each participant in the 2016 Cup Pools is $25 for each ticket registered by the participant. This registration cost for each form will go 80% ($20) to the "pot" of the pool and the remaining 20% ​​($5) will be for expenses related to the website of the Quinielas World Cup 2022.
+                        The registration fee for each participant in the 2016 Cup Pools is $20 for each ticket registered by the participant. This registration cost for each form will go 90% ($18) to the "pot" of the pool and the remaining 10% ​​($2) will be for expenses related to the website of the Quinielas World Cup 2022.
             
                         After completing the participant registration process and filling in one or more quinielas, the participant must make the registration payment for each quiniela they wish to register. This payment must be made through the payment platform provided for this purpose.    
                         </p>
@@ -67,7 +67,7 @@ function Rules(){
                     <Tab eventKey="spanish" title="Spanish">
                         <h5>1. Acerca del registro</h5>
                         <p>
-                        La cuota de inscripción de cada participante en la Quiniela World Cup 2022 es de $25 por cada quiniela registrada por el participante. Este costo de inscripción por cada quiniela irá en un 80% ($20) al "pote" de la quiniela y el 20% restante ($5) será para gastos relacionados con la página web de Quinielas World Cup 2022.
+                        La cuota de inscripción de cada participante en la Quiniela World Cup 2022 es de $25 por cada quiniela registrada por el participante. Este costo de inscripción por cada quiniela irá en un 90% ($18) al "pote" de la quiniela y el 10% restante ($2) será para gastos relacionados con la página web de Quinielas World Cup 2022.
             
                         Luego de completar el proceso de inscripción del participante y llenar una o más quinielas, el participante deberá realizar el pago de inscripción por cada quiniela que desee inscribir. Este pago deberá realizarse a través de la plataforma de pago habilitada para tal fin.
                         </p>

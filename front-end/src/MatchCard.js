@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card } from 'react-bootstrap';
+import { Card, Image, Row, Col } from 'react-bootstrap';
 
 function MatchCard({ match }){
     let phase;
@@ -11,20 +11,20 @@ function MatchCard({ match }){
     if(match.id <= 48){
         phase = 1;
         teamAName = match.teamA.name;
-        teamALogo = <img src={ `/images/team_logo/${match.teamA.shortName}.png` } alt={ match.teamA.name } />;
+        teamALogo = <Image src={ `/images/team_logo/${match.teamA.shortName}.png` } alt={ match.teamA.name } fluid={true} />;
         teamBName = match.teamB.name;
-        teamBLogo = <img src={ `/images/team_logo/${match.teamB.shortName}.png` } alt={ match.teamB.name } />;
+        teamBLogo = <Image src={ `/images/team_logo/${match.teamB.shortName}.png` } alt={ match.teamB.name } fluid={true} />;
     }else{
         phase = 2;
         if(match.teamA.id > 0){
             teamAName = match.teamA.name;
-            teamALogo = <img src={ `/images/team_logo/${match.teamA.shortName}.png` } alt={ match.teamA.name } />;
+            teamALogo = <Image src={ `/images/team_logo/${match.teamA.shortName}.png` } alt={ match.teamA.name } fluid={true} />;
         }else{
             teamAName = match.teamA_classified;
         }
         if(match.teamB.id > 0){
             teamBName = match.teamB.name;
-            teamBLogo = <img src={ `/images/team_logo/${match.teamB.shortName}.png` } alt={ match.teamA.name } />;
+            teamBLogo = <Image src={ `/images/team_logo/${match.teamB.shortName}.png` } alt={ match.teamA.name } fluid={true} />;
         }else{
             teamBName = match.teamB_classified;
         }
@@ -36,10 +36,25 @@ function MatchCard({ match }){
         <Link key={match.id} to={`/matches/phase/${ phase }/match/${match.id}`}>
             <Card>
                 <Card.Body>
-                    <div>{ match.date }</div>
-                    <div>{ teamALogo } { teamAName } { matchResult } { teamBName } { teamBLogo }</div>
-                    <div>{ match.time }</div>
-                    <div>{ match.city } - { match.stadium }</div>
+                    <Row>
+                        <Col>Match { match.id }</Col>
+                    </Row>
+                    <Row>
+                        <Col xs lg="2">{ teamALogo }</Col>
+                        <Col>{ teamAName }</Col>
+                        <Col>{ matchResult }</Col>
+                        <Col>{ teamBName }</Col>
+                        <Col xs lg="2">{ teamBLogo }</Col>
+                    </Row>
+                    <Row>
+                        <Col>{ match.date }</Col>
+                    </Row>
+                    <Row>
+                        <Col>{ match.time }</Col>
+                    </Row>
+                    <Row>
+                        <Col>{ match.city } - { match.stadium }</Col>
+                    </Row>
                 </Card.Body>
             </Card>
         </Link>

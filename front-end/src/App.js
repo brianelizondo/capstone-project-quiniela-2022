@@ -6,7 +6,7 @@ import './App.css';
 import APIFootball from "./api-football";
 
 // redux dispatch and reducer
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout } from './store/userSlice';
 
 // Import components
@@ -34,8 +34,6 @@ import Footer from './Footer';
 function App(){
     // redux selector and dispatch
     const dispatch = useDispatch();
-    // initial state for the token
-    const apiToken = useSelector((state) => state.user.token) || null;
 
     // functions to register, update, login, logout users
     const userRegister = async user => {
@@ -77,20 +75,12 @@ function App(){
                 <Route exact path="/">
                     <Home />
                 </Route>
-                
                 <Route exact path="/quinielas">
                     <Home />
                 </Route>
                 <Route exact path="/quinielas/:username/:quinielaID">
                     <QuinielaDetails />
                 </Route>
-                {/* ROUTES TO PROTECT LATER */}
-                {/* <Route exact path="/quinielas/:username/add">
-                    <QuinielaAddForm />
-                </Route>
-                <Route exact path="/quinielas/:username/update/:id">
-                    <QuinielaUpdateForm />
-                </Route> */}
                 
                 <Route exact path="/groups">
                     <GroupList />
@@ -124,6 +114,7 @@ function App(){
                 {/* ROUTES TO PROTECT LATER */}
                 <ProtectedRoute exact path="/users/:username/profile" component={UserProfile} />
                 <ProtectedRoute exact path="/users/:username/quinielas/add" component={UserQuinielaAdd} />
+                <ProtectedRoute exact path="/users/:username/quinielas/:quinielaID/edit" component={UserQuinielaAdd} />
 
                 <Route exact path="/404">
                     <PageNotFound />

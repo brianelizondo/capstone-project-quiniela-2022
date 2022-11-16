@@ -72,6 +72,11 @@ class APIFootball {
         let res = await this.request(`stats/quinielas/${user.username}/groups/`, { matches, formData }, "post");
         return res.stats;
     }
+    /** Delete an user quiniela */
+    static async deleteQuiniela(user, quinielaID){
+        let res = await this.request(`quinielas/${user.username}/${quinielaID}/`, { }, "delete");
+        return res.stats;
+    }
 
     // GROUPS requests
     /** Get all groups standings */

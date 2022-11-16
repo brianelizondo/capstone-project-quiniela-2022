@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { Card } from 'react-bootstrap';
 import Loading from './Loading';
+import ModalNotification from './ModalNotification';
 
 // import APIFootball api
 import APIFootball from "./api-football";
@@ -10,7 +12,10 @@ import UserQuinielaListCard from './UserQuinielaListCard';
 
 function UserProfile(){
     // initial state
+    const history = useHistory();
     const user = useSelector((state) => state.user);
+    const [modalShow, setModalShow] = useState(false);
+    const [quinielaDeleteID, setQuinielaDeleteID] = useState(0);
     const [loading, setLoading] = useState(false);
     const [userQuinielas, setUserQuinielas] = useState([]);
     
@@ -29,6 +34,18 @@ function UserProfile(){
         return <Loading />;
     }
 
+    // handle modal notificacion and delete action
+    function handleModalShow(id){
+        setQuinielaDeleteID(id);
+        setModalShow(true);
+    };
+    async function deleteQuiniela(){
+        APIFootball.token = user.token;
+        await APIFootball.deleteQuiniela(user, quinielaDeleteID);
+        setModalShow(false);
+        history.go(0);
+    }
+
     return (
         <div className="UserProfile col-md-8 offset-md-2">
             <h1>Profile</h1>
@@ -44,8 +61,9 @@ function UserProfile(){
             </div>
 
             <h1>My Quiniela's</h1>
+            <ModalNotification modalShow={modalShow} setModalShow={setModalShow} deleteQuiniela={deleteQuiniela} />
             <div className="UserProfile-quinielasList">
-                { userQuinielas.map(quiniela => (<UserQuinielaListCard key={quiniela.id} quiniela={quiniela} user={user} />))}
+                { userQuinielas.map(quiniela => (<UserQuinielaListCard key={quiniela.quinielaID} quiniela={quiniela} handleModalShow={handleModalShow} />))}
             </div>
         </div>
     );

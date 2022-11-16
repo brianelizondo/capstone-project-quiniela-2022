@@ -68,4 +68,18 @@ router.post("/:username/add", ensureCorrectUserOrAdmin, async function (req, res
     }
 });
 
+/** 
+* DELETE /[username]/[id]
+*   Returns ID of quiniela deleted
+**/
+router.delete("/:username/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
+    try {
+        const user = await User.get(req.params.username);
+        const quiniela = await Quiniela.delete(user.id, parseInt(req.params.id));
+        return res.json({ deleted: quiniela });
+    } catch (err) {
+        return next(err);
+    }
+});
+
 module.exports = router;
