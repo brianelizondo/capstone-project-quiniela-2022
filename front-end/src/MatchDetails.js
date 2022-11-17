@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
-import { ProgressBar } from 'react-bootstrap';
+import { Card, Image, Row, Col, ProgressBar } from 'react-bootstrap';
 import Loading from './Loading';
 
 // import APIFootball api
@@ -24,28 +24,28 @@ function MatchDetails(){
             setMatchDetails(resp);
             setMatchStats(Array.from(resp.apiStats));
 
+            let teamAName, teamBName, teamALogo, teamBLogo; 
             if(phaseID === 1){
-                const teamALogo = <img src={ `/images/team_logo/${resp.teamA.shortName}.png` } alt={ resp.teamA.name } />;
-                const teamBLogo = <img src={ `/images/team_logo/${resp.teamB.shortName}.png` } alt={ resp.teamB.name } />;
-                setTeamsName({ teamA: resp.teamA.name, teamB: resp.teamB.name });
-                setTeamsLogo({ teamA: teamALogo, teamB: teamBLogo });
+                teamAName = resp.teamA.name;
+                teamBName = resp.teamB.name;
+                teamALogo = <Image src={ `/images/team_logo/${resp.teamA.shortName}.png` } alt={ resp.teamA.name } fluid={true} />;
+                teamBLogo = <Image src={ `/images/team_logo/${resp.teamB.shortName}.png` } alt={ resp.teamB.name } fluid={true} />;
             }else if(phaseID === 2){
-                let teamAName, teamBName, teamALogo = "", teamBLogo = "";
                 if(resp.teamA.id > 0){
                     teamAName = resp.teamA.name;
-                    teamALogo = <img src={ `/images/team_logo/${resp.teamA.shortName}.png` } alt={ resp.teamA.name } />;
+                    teamALogo = <Image src={ `/images/team_logo/${resp.teamA.shortName}.png` } alt={ resp.teamA.name } fluid={true} />;
                 }else{
                     teamAName = resp.teamA_classified;
                 }
                 if(resp.teamB.id > 0){
                     teamBName = resp.teamB.name;
-                    teamBLogo = <img src={ `/images/team_logo/${resp.teamB.shortName}.png` } alt={ resp.teamB.name } />;
+                    teamBLogo = <Image src={ `/images/team_logo/${resp.teamB.shortName}.png` } alt={ resp.teamB.name } fluid={true} />;
                 }else{
                     teamBName = resp.teamB_classified;
                 }
-                setTeamsName({ teamA: teamAName, teamB: teamBName });
-                setTeamsLogo({ teamA: teamALogo, teamB: teamBLogo });
             }
+            setTeamsName({ teamA: resp.teamA.name, teamB: resp.teamB.name });
+            setTeamsLogo({ teamA: teamALogo, teamB: teamBLogo });
         }
         getMatchDetails();
         setLoading(false);
@@ -58,7 +58,7 @@ function MatchDetails(){
         return (value * 100) / (valueA + valueB);
     };
 
-    const matchResult = matchDetails.teamA_result >= 0 && matchDetails.teamB_result >= 0 ? `${matchDetails.teamA_result} - ${matchDetails.teamB_result}` : "vs";
+    const matchResult = matchDetails.teamA_result !== null && matchDetails.teamB_result !== null ? `${matchDetails.teamA_result} - ${matchDetails.teamB_result}` : "vs";
 
     if(loading){
         return <Loading />;
@@ -69,27 +69,46 @@ function MatchDetails(){
             <h1>Match Details of FIFA World Cup 2022</h1>
             <p>Details and Statistics about the match</p>
 
-            <div className="MatchDetails-title">
-                <div>{ matchDetails.date }</div>
-                <div>{ teamsLogo.teamA } { teamsName.teamA } { matchResult } { teamsName.teamB } { teamsLogo.teamB }</div>
-                <div>{ matchDetails.time }</div>
-                <div>{ matchDetails.city } - { matchDetails.stadium }</div>
-            </div>
+            <Card>
+                <Card.Body>
+                    <Row>
+                        <Col>Match { matchDetails.id }</Col>
+                    </Row>
+                    <Row>
+                        <Col xs lg="2">{ teamsLogo.teamA }</Col>
+                        <Col>{ teamsName.teamA }</Col>
+                        <Col>{ matchResult }</Col>
+                        <Col>{ teamsName.teamB }</Col>
+                        <Col xs lg="2">{ teamsLogo.teamB }</Col>
+                    </Row>
+                    <Row>
+                        <Col>{ matchDetails.date }</Col>
+                    </Row>
+                    <Row>
+                        <Col>{ matchDetails.time }</Col>
+                    </Row>
+                    <Row>
+                        <Col>{ matchDetails.city } - { matchDetails.stadium }</Col>
+                    </Row>
+                </Card.Body>
+            </Card>
 
-            <h4>Match Stats</h4>
-            <div className="MatchDetails-stats">
-                { matchStats.map((stat, idx) => 
-                    <div key={idx}>
-                        <div>{ stat.type }</div>
-                        <div>{ stat.teamA }</div>
-                        <ProgressBar>
-                            <ProgressBar striped now={calculatePerc(stat.teamA, stat.teamA, stat.teamB)} key={1} />
-                            <ProgressBar striped variant="info" now={calculatePerc(stat.teamB, stat.teamA, stat.teamB)} key={2} />
-                        </ProgressBar>
-                        <div>{ stat.teamB }</div>
-                    </div>
-                )}
-            </div>
+            <Card>
+                <Card.Body>
+                    <Card.Title>Match Stats</Card.Title>
+                    { matchStats.map((stat, idx) => 
+                        <div key={idx}>
+                            <div>{ stat.type }</div>
+                            <div>{ stat.teamA }</div>
+                            <ProgressBar>
+                                <ProgressBar striped now={calculatePerc(stat.teamA, stat.teamA, stat.teamB)} key={1} />
+                                <ProgressBar striped variant="info" now={calculatePerc(stat.teamB, stat.teamA, stat.teamB)} key={2} />
+                            </ProgressBar>
+                            <div>{ stat.teamB }</div>
+                        </div>
+                    )}
+                </Card.Body>
+            </Card>
         </div>
     );
 }
