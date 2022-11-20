@@ -1,4 +1,3 @@
-const { BadRequestError } = require("../expressError");
 /**
 * Fuction to create and assign each team object to the field and delete extras no more needed
 */

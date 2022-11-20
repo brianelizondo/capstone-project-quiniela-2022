@@ -1,7 +1,7 @@
 const request = require("supertest");
 
-const app = require("./app");
-const db = require("./db");
+const app = require("../app");
+const db = require("../db");
 
 describe("test app file", function(){
     test("not found for site 404", async function () {
