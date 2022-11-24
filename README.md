@@ -42,4 +42,4 @@ The project should make use of all the technologies covered in the course such a
   b. **Homemade API:** _The project will have its own API for handling user registration requests, login, registration of new "quinielas" and get general information of the project from a PostgreSQL database. Most of the information will be stored in a PostgreSQL database, information about users, pools, cities, stadiums, games in phase 1, games in phase 2, game results, etc will be stored._
 
   c. **Schema:** _The initial database schema with the tables and relationships can be seen in the attached image. It is composed of 10 tables but they can change in their internal rows or have more tables at the end of the development of the project._
-![Quiniela 2022 Project - Initial Schema](https://github.com/brianelizondo/capstone-project-quiniela-2022/documents/db_schema.png)
+![Quiniela 2022 Project - Initial Schema](https://github.com/brianelizondo/capstone-project-quiniela-2022/blob/master/documents/db_schema.png)
