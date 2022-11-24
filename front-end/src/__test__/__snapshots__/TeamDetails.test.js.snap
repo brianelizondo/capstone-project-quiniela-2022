@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot Test 'TeamDetails' matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="TeamDetails col-md-8 offset-md-2"
+  >
+    <h1>
+      Team in FIFA World Cup 2022
+    </h1>
+    <p>
+      Details for the team ""
+    </p>
+    <div
+      class="TeamDetails-title"
+    >
+      <div />
+      <div />
+    </div>
+    <div
+      class="TeamDetails-standings"
+    />
+    <div
+      class="TeamDetails-squad"
+    >
+      <div
+        class="card"
+      >
+        <div
+          class="card-title h5"
+        >
+          Team Squad
+        </div>
+        <div
+          class="card-body"
+        />
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

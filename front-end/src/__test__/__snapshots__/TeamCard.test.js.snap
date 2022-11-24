@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot Test 'TeamCard' matches snapshot 1`] = `
+<DocumentFragment>
+  <a
+    href="/teams/ARG"
+  >
+    <div
+      class="card"
+      data-testid="team-ARG"
+    >
+      <div
+        class="card-body"
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="col-lg-2 col"
+          >
+            <img
+              alt="Argentina"
+              class="img-fluid"
+              src="/images/team_logo/ARG.png"
+            />
+          </div>
+          <div
+            class="col"
+          >
+            Argentina
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</DocumentFragment>
+`;

@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot Test 'NavBarLogged' matches snapshot 1`] = `
+<DocumentFragment>
+  <a
+    class="dropdown-item"
+    data-rr-ui-dropdown-item=""
+    href="/users/null/profile"
+  >
+    Profile
+  </a>
+  <a
+    class="dropdown-item"
+    data-rr-ui-dropdown-item=""
+    href="/users/null/quinielas/add"
+  >
+    Add New Quiniela
+  </a>
+  <hr
+    class="dropdown-divider"
+    role="separator"
+  />
+  <a
+    class="dropdown-item"
+    data-rr-ui-dropdown-item=""
+    href="#"
+    role="button"
+    tabindex="0"
+  >
+    Logout
+  </a>
+</DocumentFragment>
+`;

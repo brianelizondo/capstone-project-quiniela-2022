@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot Test 'QuinielaMatchCard' matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="card"
+  >
+    <div
+      class="card-body"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          Match 1
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col-lg-2 col"
+        >
+          <img
+            alt="Qatar"
+            class="img-fluid"
+            src="/images/team_logo/QAT.png"
+          />
+        </div>
+        <div
+          class="col"
+        >
+          Qatar
+        </div>
+        <div
+          class="col"
+        >
+          0 - 0
+        </div>
+        <div
+          class="col"
+        >
+          Ecuador
+        </div>
+        <div
+          class="col-lg-2 col"
+        >
+          <img
+            alt="Ecuador"
+            class="img-fluid"
+            src="/images/team_logo/ECU.png"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

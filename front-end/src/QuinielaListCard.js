@@ -6,7 +6,7 @@ function QuinielaListCard({ quiniela, position }){
     
     return (
         <Link to={`/quinielas/${ quiniela.username }/${quiniela.quinielaID}`} key={quiniela.quinielaID}>
-            <Card>
+            <Card data-testid={`quiniela-${quiniela.quinielaID}`}>
                 <Card.Body>
                     <Row>
                         <Col xs lg="1">

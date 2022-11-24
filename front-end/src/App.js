@@ -78,9 +78,6 @@ function App(){
                 <Route exact path="/quinielas">
                     <Home />
                 </Route>
-                <Route exact path="/quinielas/:username/:quinielaID">
-                    <QuinielaDetails />
-                </Route>
                 
                 <Route exact path="/groups">
                     <GroupList />
@@ -112,6 +109,7 @@ function App(){
                 </Route>
 
                 {/* ROUTES TO PROTECT LATER */}
+                <ProtectedRoute exact path="/quinielas/:username/:quinielaID" component={QuinielaDetails} />
                 <ProtectedRoute exact path="/users/:username/profile" component={UserProfile} />
                 <ProtectedRoute exact path="/users/:username/quinielas/add" component={UserQuinielaAdd} />
                 <ProtectedRoute exact path="/users/:username/quinielas/:quinielaID/edit" component={UserQuinielaAdd} />

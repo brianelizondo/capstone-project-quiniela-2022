@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot Test 'App' matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="NavBar"
+  >
+    <div
+      class="justify-content-center nav"
+    >
+      <div
+        class="nav-item"
+      >
+        <a
+          class="nav-link active"
+          data-rr-ui-event-key="/"
+          href="/"
+        >
+          Quinielas
+        </a>
+      </div>
+      <div
+        class="nav-item"
+      >
+        <a
+          class="nav-link"
+          data-rr-ui-event-key="/groups"
+          href="/groups"
+        >
+          Groups
+        </a>
+      </div>
+      <div
+        class="nav-item"
+      >
+        <a
+          class="nav-link"
+          data-rr-ui-event-key="/matches"
+          href="/matches"
+        >
+          Matches
+        </a>
+      </div>
+      <div
+        class="nav-item"
+      >
+        <a
+          class="nav-link"
+          data-rr-ui-event-key="/teams"
+          href="/teams"
+        >
+          Teams
+        </a>
+      </div>
+      <div
+        class="nav-item"
+      >
+        <a
+          class="nav-link"
+          data-rr-ui-event-key="/rules"
+          href="/rules"
+        >
+          Rules
+        </a>
+      </div>
+      <div
+        class="nav-item dropdown"
+      >
+        <a
+          aria-expanded="false"
+          class="dropdown-toggle nav-link"
+          href="#"
+          id="nav-dropdown"
+          role="button"
+          tabindex="0"
+        >
+          Login/Register
+        </a>
+      </div>
+    </div>
+  </div>
+  <div
+    class="Home col-md-8 offset-md-2"
+  >
+    <h1>
+      Quinielas World Cup 2022
+    </h1>
+    <p>
+      List of active and participating quinielas
+    </p>
+    <div
+      class="Home-quiniela-list"
+    />
+  </div>
+  <div
+    class="Footer"
+  >
+    Quinielas World Cup 2022. Developed by 
+    <a
+      href="https://github.com/brianelizondo"
+    >
+      Brian Elizondo
+    </a>
+     for Capstone Project
+  </div>
+</DocumentFragment>
+`;

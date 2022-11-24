@@ -28,7 +28,7 @@ function GroupStandings({ group, standings, detailsButton }){
                     </thead>
                     <tbody>
                         { standings.map((team, idx) => (
-                        <tr key={idx} onClick={() => handleClick(`/teams/${team.shortName}`)}>
+                        <tr key={idx} onClick={() => handleClick(`/teams/${team.shortName}`)} data-testid={ `team-${team.shortName}` }>
                             <td>{ team.teamName }</td>
                             <td>{ team.gamesPlayed }</td>
                             <td>{ team.gamesWon }</td>
@@ -42,7 +42,7 @@ function GroupStandings({ group, standings, detailsButton }){
                         ))}
                     </tbody>
                 </Table>
-                { detailsButton ? <Button variant="info" size="sm" onClick={() => handleClick(`/groups/${group}`)}>Group Details</Button> : "" }
+                { detailsButton ? <Button id={ `group${ group.toUpperCase() }_button` } variant="info" size="sm" onClick={() => handleClick(`/groups/${group}`)}>Group { group } Details</Button> : "" }
             </Card.Body>
         </Card>
     );

@@ -1,0 +1,468 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot Test 'GroupList' matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="GroupList col-md-8 offset-md-2"
+  >
+    <h1>
+      Groups in FIFA World Cup 2022
+    </h1>
+    <p>
+      Standings for each group
+    </p>
+    <div
+      class="GroupList-details"
+    >
+      <div
+        class="card"
+      >
+        <div
+          class="card-body"
+        >
+          <div
+            class="card-title h5"
+          >
+            Group A
+          </div>
+          <table
+            class="table table-sm table-striped"
+          >
+            <thead>
+              <tr>
+                <th>
+                  Team
+                </th>
+                <th>
+                  Played
+                </th>
+                <th>
+                  Won
+                </th>
+                <th>
+                  Draws
+                </th>
+                <th>
+                  Lost
+                </th>
+                <th>
+                  For
+                </th>
+                <th>
+                  Against
+                </th>
+                <th>
+                  Goal Diff
+                </th>
+                <th>
+                  Points
+                </th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+          <button
+            class="btn btn-info btn-sm"
+            id="groupA_button"
+            type="button"
+          >
+            Group A Details
+          </button>
+        </div>
+      </div>
+      <div
+        class="card"
+      >
+        <div
+          class="card-body"
+        >
+          <div
+            class="card-title h5"
+          >
+            Group B
+          </div>
+          <table
+            class="table table-sm table-striped"
+          >
+            <thead>
+              <tr>
+                <th>
+                  Team
+                </th>
+                <th>
+                  Played
+                </th>
+                <th>
+                  Won
+                </th>
+                <th>
+                  Draws
+                </th>
+                <th>
+                  Lost
+                </th>
+                <th>
+                  For
+                </th>
+                <th>
+                  Against
+                </th>
+                <th>
+                  Goal Diff
+                </th>
+                <th>
+                  Points
+                </th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+          <button
+            class="btn btn-info btn-sm"
+            id="groupB_button"
+            type="button"
+          >
+            Group B Details
+          </button>
+        </div>
+      </div>
+      <div
+        class="card"
+      >
+        <div
+          class="card-body"
+        >
+          <div
+            class="card-title h5"
+          >
+            Group C
+          </div>
+          <table
+            class="table table-sm table-striped"
+          >
+            <thead>
+              <tr>
+                <th>
+                  Team
+                </th>
+                <th>
+                  Played
+                </th>
+                <th>
+                  Won
+                </th>
+                <th>
+                  Draws
+                </th>
+                <th>
+                  Lost
+                </th>
+                <th>
+                  For
+                </th>
+                <th>
+                  Against
+                </th>
+                <th>
+                  Goal Diff
+                </th>
+                <th>
+                  Points
+                </th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+          <button
+            class="btn btn-info btn-sm"
+            id="groupC_button"
+            type="button"
+          >
+            Group C Details
+          </button>
+        </div>
+      </div>
+      <div
+        class="card"
+      >
+        <div
+          class="card-body"
+        >
+          <div
+            class="card-title h5"
+          >
+            Group D
+          </div>
+          <table
+            class="table table-sm table-striped"
+          >
+            <thead>
+              <tr>
+                <th>
+                  Team
+                </th>
+                <th>
+                  Played
+                </th>
+                <th>
+                  Won
+                </th>
+                <th>
+                  Draws
+                </th>
+                <th>
+                  Lost
+                </th>
+                <th>
+                  For
+                </th>
+                <th>
+                  Against
+                </th>
+                <th>
+                  Goal Diff
+                </th>
+                <th>
+                  Points
+                </th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+          <button
+            class="btn btn-info btn-sm"
+            id="groupD_button"
+            type="button"
+          >
+            Group D Details
+          </button>
+        </div>
+      </div>
+      <div
+        class="card"
+      >
+        <div
+          class="card-body"
+        >
+          <div
+            class="card-title h5"
+          >
+            Group E
+          </div>
+          <table
+            class="table table-sm table-striped"
+          >
+            <thead>
+              <tr>
+                <th>
+                  Team
+                </th>
+                <th>
+                  Played
+                </th>
+                <th>
+                  Won
+                </th>
+                <th>
+                  Draws
+                </th>
+                <th>
+                  Lost
+                </th>
+                <th>
+                  For
+                </th>
+                <th>
+                  Against
+                </th>
+                <th>
+                  Goal Diff
+                </th>
+                <th>
+                  Points
+                </th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+          <button
+            class="btn btn-info btn-sm"
+            id="groupE_button"
+            type="button"
+          >
+            Group E Details
+          </button>
+        </div>
+      </div>
+      <div
+        class="card"
+      >
+        <div
+          class="card-body"
+        >
+          <div
+            class="card-title h5"
+          >
+            Group F
+          </div>
+          <table
+            class="table table-sm table-striped"
+          >
+            <thead>
+              <tr>
+                <th>
+                  Team
+                </th>
+                <th>
+                  Played
+                </th>
+                <th>
+                  Won
+                </th>
+                <th>
+                  Draws
+                </th>
+                <th>
+                  Lost
+                </th>
+                <th>
+                  For
+                </th>
+                <th>
+                  Against
+                </th>
+                <th>
+                  Goal Diff
+                </th>
+                <th>
+                  Points
+                </th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+          <button
+            class="btn btn-info btn-sm"
+            id="groupF_button"
+            type="button"
+          >
+            Group F Details
+          </button>
+        </div>
+      </div>
+      <div
+        class="card"
+      >
+        <div
+          class="card-body"
+        >
+          <div
+            class="card-title h5"
+          >
+            Group G
+          </div>
+          <table
+            class="table table-sm table-striped"
+          >
+            <thead>
+              <tr>
+                <th>
+                  Team
+                </th>
+                <th>
+                  Played
+                </th>
+                <th>
+                  Won
+                </th>
+                <th>
+                  Draws
+                </th>
+                <th>
+                  Lost
+                </th>
+                <th>
+                  For
+                </th>
+                <th>
+                  Against
+                </th>
+                <th>
+                  Goal Diff
+                </th>
+                <th>
+                  Points
+                </th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+          <button
+            class="btn btn-info btn-sm"
+            id="groupG_button"
+            type="button"
+          >
+            Group G Details
+          </button>
+        </div>
+      </div>
+      <div
+        class="card"
+      >
+        <div
+          class="card-body"
+        >
+          <div
+            class="card-title h5"
+          >
+            Group H
+          </div>
+          <table
+            class="table table-sm table-striped"
+          >
+            <thead>
+              <tr>
+                <th>
+                  Team
+                </th>
+                <th>
+                  Played
+                </th>
+                <th>
+                  Won
+                </th>
+                <th>
+                  Draws
+                </th>
+                <th>
+                  Lost
+                </th>
+                <th>
+                  For
+                </th>
+                <th>
+                  Against
+                </th>
+                <th>
+                  Goal Diff
+                </th>
+                <th>
+                  Points
+                </th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+          <button
+            class="btn btn-info btn-sm"
+            id="groupH_button"
+            type="button"
+          >
+            Group H Details
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

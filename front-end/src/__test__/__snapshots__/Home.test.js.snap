@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot Test 'Home' matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="Home col-md-8 offset-md-2"
+  >
+    <h1>
+      Quinielas World Cup 2022
+    </h1>
+    <p>
+      List of active and participating quinielas
+    </p>
+    <div
+      class="Home-quiniela-list"
+    />
+  </div>
+</DocumentFragment>
+`;

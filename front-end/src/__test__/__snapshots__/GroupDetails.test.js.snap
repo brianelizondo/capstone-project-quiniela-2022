@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot Test 'GroupDetails' matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="GroupDetails col-md-8 offset-md-2"
+  >
+    <h1>
+      Groups in FIFA World Cup 2022
+    </h1>
+    <p>
+      Details for group ""
+    </p>
+    <h4>
+      Group Standings
+    </h4>
+    <div
+      class="GroupDetails-standings"
+    >
+      <div
+        class="card"
+      >
+        <div
+          class="card-body"
+        >
+          <div
+            class="card-title h5"
+          >
+            Group 
+          </div>
+          <table
+            class="table table-sm table-striped"
+          >
+            <thead>
+              <tr>
+                <th>
+                  Team
+                </th>
+                <th>
+                  Played
+                </th>
+                <th>
+                  Won
+                </th>
+                <th>
+                  Draws
+                </th>
+                <th>
+                  Lost
+                </th>
+                <th>
+                  For
+                </th>
+                <th>
+                  Against
+                </th>
+                <th>
+                  Goal Diff
+                </th>
+                <th>
+                  Points
+                </th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+        </div>
+      </div>
+    </div>
+    <h4>
+      Group Matches
+    </h4>
+    <div
+      class="GroupDetails-matches"
+    />
+  </div>
+</DocumentFragment>
+`;

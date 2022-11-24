@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot Test 'NavBarUnlogged' matches snapshot 1`] = `
+<DocumentFragment>
+  <a
+    class="dropdown-item"
+    data-rr-ui-dropdown-item=""
+    href="/login"
+  >
+    Login
+  </a>
+  <a
+    class="dropdown-item"
+    data-rr-ui-dropdown-item=""
+    href="/register"
+  >
+    Register
+  </a>
+</DocumentFragment>
+`;

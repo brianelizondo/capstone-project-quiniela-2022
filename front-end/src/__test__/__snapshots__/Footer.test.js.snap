@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot Test 'Footer' matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="Footer"
+  >
+    Quinielas World Cup 2022. Developed by 
+    <a
+      href="https://github.com/brianelizondo"
+    >
+      Brian Elizondo
+    </a>
+     for Capstone Project
+  </div>
+</DocumentFragment>
+`;

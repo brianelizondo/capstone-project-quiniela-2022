@@ -1,0 +1,186 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot Test 'RegisterForm' matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="RegisterForm col-md-8 offset-md-2"
+  >
+    <h1>
+      Register
+    </h1>
+    <p>
+      Register to Quinielas World Cup 2022
+    </p>
+    <div
+      class="col-md-8 offset-md-2"
+    >
+      <form
+        class=""
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="col"
+          >
+            <div
+              class="mb-3 form-floating"
+            >
+              <input
+                class="form-control"
+                id="firstName"
+                name="firstName"
+                placeholder="First Name"
+                type="text"
+                value=""
+              />
+              <div
+                class="invalid-feedback"
+              />
+              <label
+                for="firstName"
+              >
+                First Name
+              </label>
+            </div>
+          </div>
+          <div
+            class="col"
+          >
+            <div
+              class="mb-3 form-floating"
+            >
+              <input
+                class="form-control"
+                id="lastName"
+                name="lastName"
+                placeholder="First Name"
+                type="text"
+                value=""
+              />
+              <div
+                class="invalid-feedback"
+              />
+              <label
+                for="lastName"
+              >
+                Last Name
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col"
+          >
+            <div
+              class="mb-3 form-floating"
+            >
+              <input
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Email"
+                type="email"
+                value=""
+              />
+              <div
+                class="invalid-feedback"
+              />
+              <label
+                for="email"
+              >
+                Email
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col"
+          >
+            <div
+              class="mb-3 form-floating"
+            >
+              <input
+                class="form-control"
+                id="username"
+                name="username"
+                placeholder="Username"
+                type="text"
+                value=""
+              />
+              <div
+                class="invalid-feedback"
+              />
+              <small
+                class="form-text text-muted"
+                id="usernameHelpBlock"
+              >
+                Your username must be 8-20 characters long and contain letters and numbers
+              </small>
+              <label
+                for="username"
+              >
+                Username
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col"
+          >
+            <div
+              class="mb-3 form-floating"
+            >
+              <input
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Password"
+                type="password"
+                value=""
+              />
+              <div
+                class="invalid-feedback"
+              />
+              <small
+                class="form-text text-muted"
+                id="passwordHelpBlock"
+              >
+                Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters or emoji
+              </small>
+              <label
+                for="password"
+              >
+                Password
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col"
+          >
+            <button
+              class="btn btn-primary btn-sm"
+              type="submit"
+            >
+              Register!
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -34,7 +34,7 @@ function MatchCard({ match }){
         
     return (
         <Link key={match.id} to={`/matches/phase/${ phase }/match/${match.id}`}>
-            <Card>
+            <Card data-testid={`match-${match.id}`}>
                 <Card.Body>
                     <Row>
                         <Col>Match { match.id }</Col>
