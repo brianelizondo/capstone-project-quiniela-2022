@@ -43,3 +43,14 @@ The project should make use of all the technologies covered in the course such a
 
   c. **Schema:** _The initial database schema with the tables and relationships can be seen in the attached image. It is composed of 10 tables but they can change in their internal rows or have more tables at the end of the development of the project._
 ![Quiniela 2022 Project - Initial Schema](https://github.com/brianelizondo/capstone-project-quiniela-2022/blob/master/documents/db_schema.png)
+
+
+* **Step Four completed - Coding User Flows**
+
+  1. Set up the postgres database and seed with the infor about cities, stadiums, teams, matches for the phase 1 and 2, standings for each groups. The teams has a ID associated with the API info to get additional info from there.
+   
+  2. The back-end has all the necessary routes to receive the information from the database and the API, it also has all the necessary routes to carry out the CRUD actions of the users and quinielas.
+   
+  3. The entire front-end is developed in a basic way to develop all the processes and logic of the page, verify each route and that each component obtains and displays the correct information.
+   
+  4. Added tests for back-end routes and models and also tests for the front-end to verify that components are rendered correctly and are directed to correct directions when they need to be redirected to other pages.
