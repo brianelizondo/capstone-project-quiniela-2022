@@ -8,8 +8,8 @@ INSERT INTO users
     status,
     is_admin) 
 VALUES 
-    ('regular', 'user', 'regular@mail.com', 'regularuser', '$2b$12$KCCMfnTiOCaVcBw.7KLgq.WBd/Kxt.I6jbYjE3w0ZLTK1LbvqcVa2', 1, false),
-    ('admin', 'user', 'admin@mail.com', 'adminuser', '$2b$12$KCCMfnTiOCaVcBw.7KLgq.WBd/Kxt.I6jbYjE3w0ZLTK1LbvqcVa2', 1, true);
+    ('regular', 'user', 'regular@mail.com', 'regularuser', '$2b$12$DxAe6t5V1qyWBOb1di9mbO00TtvJp6lFvTzoO8Vda/r4nmrtxjZWi', 1, false),
+    ('admin', 'user', 'admin@mail.com', 'adminuser', '$2b$12$DxAe6t5V1qyWBOb1di9mbO00TtvJp6lFvTzoO8Vda/r4nmrtxjZWi', 1, true);
 
 
 -- Seed basic and independent tables with info

@@ -40,7 +40,7 @@ function teamObjectAssign(arr){
 */
 function setMatchTeamsInfo(matches, matchesAPI){
     let matchesUpdated = [];
-    matches.forEach(match => {
+    matches.forEach(async match => {
         for(let matchAPI of matchesAPI){
             if(match.apiID == matchAPI.fixture.id){
                 // set match info
@@ -72,12 +72,13 @@ function setMatchTeamsInfo(matches, matchesAPI){
                         teamB: matchAPI.score.penalty.away
                     }
                 }
-
+                
                 // set teamA and teamB info
                 match.teamA.apiInfo = matchAPI.teams.home;
                 match.teamB.apiInfo = matchAPI.teams.away;
             }
         }
+
         matchesUpdated.push(match);
     });
     return matchesUpdated;

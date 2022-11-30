@@ -21,9 +21,9 @@ class Quiniela {
     static async create(userID, matchesData, formData){
         const result = await db.query(
             `INSERT INTO quinielas 
-                (user_id) 
+                (user_id, status) 
             VALUES 
-                ($1) 
+                ($1, 1) 
             RETURNING 
                 id, created_at AS "createdAt", ended_at AS "endedAt", user_id AS "userID", status`, 
         [userID]);
@@ -61,9 +61,9 @@ class Quiniela {
 
         const resultPoints = await db.query(
             `INSERT INTO quinielas_points 
-                (quiniela_id, user_id, champion_team_id) 
+                (quiniela_id, user_id, champion_team_id, status) 
             VALUES 
-                ($1, $2, $3)
+                ($1, $2, $3, 1)
             RETURNING 
                 points`, 
         [quiniela.id, userID, quinielaTeamChampionID]);
@@ -468,11 +468,207 @@ class Quiniela {
         };
     }
 
+
+    /** 
+    * Update all quinielas points for the match updated
+    **/
+    static async updateMatchPoints(matchID, teamA_id, teamA_result, teamB_id, teamB_result){
+        // check classified team
+        async function checkClassifiedTeam(quinielaID, userID, phase, teamID){
+            const result = await db.query(
+                `SELECT 
+                    quiniela_id, 
+                    user_id 
+                FROM
+                    quinielas_phase_2  
+                WHERE 
+                    (quiniela_id=$1 AND user_id=$2 AND match_phase=$3) AND (team_a=$4 OR team_b=$4)`,
+            [quinielaID, userID, phase, teamID]);
+            
+            return result.rows[0] ? true : false;
+        }
+        // update quinielas total points
+        async function updateQuinielaPoints(quinielaID, userID){
+            const pointsP1 = await db.query(
+                `SELECT 
+                    SUM(points) AS "totalPoints" 
+                FROM 
+                    quinielas_phase_1 
+                WHERE 
+                    quiniela_id=$1 AND user_id=$2`, 
+            [quinielaID, userID]);
+
+            const pointsP2 = await db.query(
+                `SELECT 
+                    SUM(points) AS "totalPoints" 
+                FROM 
+                    quinielas_phase_2 
+                WHERE 
+                    quiniela_id=$1 AND user_id=$2`, 
+            [quinielaID, userID]);
+
+            const totalPoints = Number(pointsP1.rows[0].totalPoints) + Number(pointsP2.rows[0].totalPoints);
+
+            await db.query(
+                `UPDATE 
+                    quinielas_points 
+                SET 
+                    points=$1 
+                WHERE 
+                    quiniela_id=$2 AND user_id=$3`, 
+            [totalPoints, quinielaID, userID]);
+        };
+
+        // set team won/lost or draw
+        let matchTeamWon_ID;
+        let matchTeamDraw = false;
+        if(teamA_result > teamB_result){
+            matchTeamWon_ID = teamA_id;
+        }else if(teamA_result < teamB_result){
+            matchTeamWon_ID = teamB_id;
+        }else if(teamA_result === teamB_result){
+            matchTeamDraw = true;
+        }
+        
+        if(matchID >= 1 && matchID <= 48){
+            const resp = await db.query(
+                `SELECT 
+                    quiniela_id AS "quinielaID",
+                    user_id AS "userID", 
+                    team_a_result AS "teamA_result", 
+                    team_b_result AS "teamB_result", 
+                    points
+                FROM
+                    quinielas_phase_1  
+                WHERE 
+                    match_id = $1`,
+            [matchID]);
+            const quinielas = resp.rows;
+
+            quinielas.forEach(async (quiniela) => {
+                // set team won/lost or draw from quiniela
+                let quinielaTeamWon_ID;
+                let quinielaTeamDraw = false;
+                if(quiniela.teamA_result > quiniela.teamB_result){
+                    quinielaTeamWon_ID = teamA_id;
+                }else if(quiniela.teamA_result < quiniela.teamB_result){
+                    quinielaTeamWon_ID = teamB_id;
+                }else if(quiniela.teamA_result === quiniela.teamB_result){
+                    quinielaTeamDraw = true;
+                }
+
+                // check results
+                let earnedPoints = 0;
+                if(quiniela.teamA_result === teamA_result && quiniela.teamB_result === teamB_result){
+                    // 5 points for exact result
+                    earnedPoints = 5;
+                }else if(quinielaTeamWon_ID === matchTeamWon_ID){
+                    // 3 points for guessing Winner/Loser team
+                    earnedPoints = 3;
+                }else if(quinielaTeamDraw === matchTeamDraw && matchTeamDraw === true){
+                    // 3 points for scoring a Draw match
+                    earnedPoints = 3;
+                }
+
+                // update quiniela's match points
+                await db.query(
+                    `UPDATE  
+                        quinielas_phase_1 
+                    SET 
+                        points=$1 
+                    WHERE
+                        quiniela_id=$2 AND user_id=$3 AND match_id=$4`, 
+                [earnedPoints, quiniela.quinielaID, quiniela.userID, matchID]);
+
+                // update general quiniela's points
+                await updateQuinielaPoints(quiniela.quinielaID, quiniela.userID);
+            });
+
+            
+        }else if(matchID >= 49 && matchID <= 64){
+            const resp = await db.query(
+                `SELECT 
+                    quiniela_id AS "quinielaID",
+                    user_id AS "userID", 
+                    match_phase AS "matchPhase", 
+                    team_a AS "teamA_ID",
+                    team_a_result AS "teamA_result", 
+                    team_b AS "teamB_ID",
+                    team_b_result AS "teamB_result", 
+                    points
+                FROM
+                    quinielas_phase_2  
+                WHERE 
+                    match_id = $1`,
+            [matchID]);
+            const quinielas = resp.rows;
+
+            quinielas.forEach(async (quiniela) => {
+                // set team won/lost or draw from quiniela
+                let quinielaTeamWon_ID;
+                if(quiniela.teamA_result > quiniela.teamB_result){
+                    quinielaTeamWon_ID = teamA_id;
+                }else if(quiniela.teamA_result < quiniela.teamB_result){
+                    quinielaTeamWon_ID = teamB_id;
+                }
+
+                // check results
+                let earnedPoints = 0;
+                if(quiniela.teamA_result === teamA_result && quiniela.teamB_result === teamB_result){
+                    // 5 points for exact result
+                    earnedPoints = 5;
+                }else if(quinielaTeamWon_ID === matchTeamWon_ID){
+                    // 3 points for guessing Winner/Loser team
+                    earnedPoints = 3;
+                }
+
+                // check teams
+                // 10 points per Classified Team for Round of 16, Quarter Finals and Semifinals
+                let classifiedPoints = 0;
+                if(quiniela.matchPhase === "R16" || quiniela.matchPhase === "QF" || quiniela.matchPhase === "SF"){
+                    classifiedPoints += await checkClassifiedTeam(quiniela.quinielaID, quiniela.userID, quiniela.matchPhase, teamA_id) ? 10 : 0;
+                    classifiedPoints += await checkClassifiedTeam(quiniela.quinielaID, quiniela.userID, quiniela.matchPhase, teamB_id) ? 10 : 0;
+                }
+                // Points per Finalist Team and champion
+                if(quiniela.matchPhase === "F"){
+                    // 20 points per Finalist team
+                    classifiedPoints += await checkClassifiedTeam(quiniela.quinielaID, quiniela.userID, quiniela.matchPhase, teamA_id) ? 20 : 0;
+                    classifiedPoints += await checkClassifiedTeam(quiniela.quinielaID, quiniela.userID, quiniela.matchPhase, teamB_id) ? 20 : 0;
+                    // 20 points per Champion Team
+                    if(quinielaTeamWon_ID === matchTeamWon_ID){
+                        classifiedPoints += 20;
+                    }
+                }      
+                
+                // set total points
+                earnedPoints += classifiedPoints;
+                
+                // update quiniela's match points
+                await db.query(
+                    `UPDATE  
+                        quinielas_phase_2 
+                    SET 
+                        points=$1 
+                    WHERE
+                        quiniela_id=$2 AND user_id=$3 AND match_id=$4`, 
+                [earnedPoints, quiniela.quinielaID, quiniela.userID, matchID]);
+                
+
+                // update general quiniela's points
+                await updateQuinielaPoints(quiniela.quinielaID, quiniela.userID);
+            });
+
+        }else{
+            throw new BadRequestError(`Match ID invalid`);
+        }
+    }
+
+
     /** 
     * Find quiniela of user and deleted
     *   Returns ID
     **/
-     static async delete(userID, quinielaID){
+    static async delete(userID, quinielaID){
         const result = await db.query(
             `SELECT 
                 id, 

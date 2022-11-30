@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
 import Loading from './Loading';
+import './GroupDetails.css';
 
 // import APIFootball api
 import APIFootball from "./api-football";
@@ -14,6 +16,7 @@ function GroupDetails(){
     const [loading, setLoading] = useState(false);
     const [groupsStandings, setGroupsStandings] = useState([]);
     const [groupMatches, setGroupMatches] = useState([]);
+    const [matchesGoals, setMatchesGoals] = useState({});
 
     useEffect(() => {
         setLoading(true);
@@ -26,6 +29,9 @@ function GroupDetails(){
         async function getGroupMatches() {
             const resp = await APIFootball.getGroupMatches(group);
             setGroupMatches(resp);
+
+            const goalsAPI = await APIFootball.getMatchesGoals();
+            setMatchesGoals(goalsAPI);
         }
         getGroupMatches();
         setLoading(false);
@@ -37,18 +43,27 @@ function GroupDetails(){
 
     return (
         <div className="GroupDetails col-md-8 offset-md-2">
-            <h1>Groups in FIFA World Cup 2022</h1>
-            <p>Details for group "{group}"</p>
-            
-            <h4>Group Standings</h4>
-            <div className="GroupDetails-standings">
-                <GroupStandings key={group} group={group} standings={ groupsStandings.filter(team => team.group === group) } detailsButton={false} />
-            </div>
-
-            <h4>Group Matches</h4>
-            <div className="GroupDetails-matches">
-                { groupMatches.map(match => <MatchCard key={match.id} match={match} />) }
-            </div>
+            <Row>
+                <Col>
+                    <h1 className='section-title'>Details of the Group "{group}"</h1>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h5 className='GroupDetails-subtitle'>Group Standings</h5>
+                    <div className="GroupDetails-standings">
+                        <GroupStandings key={group} group={group} standings={ groupsStandings.filter(team => team.group === group) } detailsButton={false} />
+                    </div>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h5 className='GroupDetails-subtitle'>Group Matches</h5>
+                    <div className="GroupDetails-matches">
+                        { groupMatches.map(match => <MatchCard key={match.id} match={match} matchesGoals={matchesGoals} />) }
+                    </div>
+                </Col>
+            </Row>
         </div>
     );
 }

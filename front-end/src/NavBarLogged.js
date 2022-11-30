@@ -10,6 +10,12 @@ function NavBarLogged({ logout }) {
         <NavDropdown.Item href={`/users/${user.username}/profile`}>Profile</NavDropdown.Item>
         <NavDropdown.Item href={`/users/${user.username}/quinielas/add`}>Add New Quiniela</NavDropdown.Item>
         <NavDropdown.Divider />
+        { user.isAdmin && 
+        <>
+        <NavDropdown.Item href={`/users/matches/update`}>Update Matches</NavDropdown.Item>
+        <NavDropdown.Divider />
+        </>
+        }
         <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
         </>
     );

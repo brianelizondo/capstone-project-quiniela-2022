@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import { Card } from 'react-bootstrap';
+import { Card, Row, Col } from 'react-bootstrap';
 import Loading from './Loading';
 import ModalNotification from './ModalNotification';
+import './UserProfile.css';
 
 // import APIFootball api
 import APIFootball from "./api-football";
@@ -48,23 +49,40 @@ function UserProfile(){
 
     return (
         <div className="UserProfile col-md-8 offset-md-2">
-            <h1>Profile</h1>
-            <div className="UserProfile-data">
-                <Card>
-                    <Card.Header as="h5">User Details</Card.Header>
-                    <Card.Body>
-                        <p><b>First/Last Name:</b> { `${user.firstName} ${user.lastName}` }</p>
-                        <p><b>E-mail:</b> { user.email }</p>
-                        <p><b>Username:</b> { user.username }</p>
-                    </Card.Body>
-                </Card>
-            </div>
+            <Row>
+                <Col>
+                    <h1 className='section-title'>@{ user.username.toUpperCase() }</h1>
+                </Col>
+            </Row>
+            
+            <Row>
+                <Col><h5 className='UserProfile-subtitle'>My Profile</h5></Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Card className="UserProfile-card">
+                        <Card.Header as="h5">User Details</Card.Header>
+                        <Card.Body>
+                            <p><b>First/Last Name:</b> { `${user.firstName} ${user.lastName}` }</p>
+                            <p><b>E-mail:</b> { user.email }</p>
+                            <p><b>Username:</b> { user.username }</p>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
 
-            <h1>My Quiniela's</h1>
-            <ModalNotification modalShow={modalShow} setModalShow={setModalShow} deleteQuiniela={deleteQuiniela} />
-            <div className="UserProfile-quinielasList">
-                { userQuinielas.map(quiniela => (<UserQuinielaListCard key={quiniela.quinielaID} quiniela={quiniela} handleModalShow={handleModalShow} />))}
-            </div>
+
+            <Row>
+                <Col><h5 className='UserProfile-subtitle'>My Quiniela's</h5></Col>
+            </Row>
+            <Row>
+                <Col>
+                    <ModalNotification modalShow={modalShow} setModalShow={setModalShow} deleteQuiniela={deleteQuiniela} />
+                    <div className="UserProfile-quinielasList">
+                        { userQuinielas.map(quiniela => (<UserQuinielaListCard key={quiniela.quinielaID} quiniela={quiniela} handleModalShow={handleModalShow} />))}
+                    </div>
+                </Col>
+            </Row>
         </div>
     );
 }

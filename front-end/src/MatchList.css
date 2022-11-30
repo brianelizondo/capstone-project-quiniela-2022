@@ -1,0 +1,52 @@
+.MatchList-tabs ul{
+    border-bottom: none;
+}
+.MatchList-tabs ul li.nav-item button{
+    color: white;
+    text-transform: uppercase !important;
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 0px !important;
+    border-bottom: none;
+}
+.MatchList-tabs ul li.nav-item button:hover{
+    background-color: rgba(60, 154, 236, .75);
+    border: none;
+}
+.MatchList-tabs ul li.nav-item button.active{
+    color: white;
+    text-transform: uppercase !important;
+    font-weight: 700;
+    margin-bottom: 0px !important;
+    border: none;
+    background-color: rgba(0, 0, 0, .35);
+}
+.MatchList-tabs ul li.nav-item button.active:hover{
+    background-color: rgba(0, 0, 0, .35);
+    border: none;
+}
+
+.MatchList-tabs .tab-pane{
+    background-color: rgba(0, 0, 0, .35);
+    border: none;
+    font-size: 14px;
+    text-align: justify;
+    padding: 40px 40px 10px 40px;
+    margin-top: -17px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.MatchList-tabs-title{
+    color:white;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    filter: drop-shadow(2px 2px 2px #000);
+    margin-bottom: 30px;
+}
+
+.MatchList-tabs .tab-content a{
+    text-decoration: none !important;
+    color: black;
+}

@@ -1,0 +1,61 @@
+.MatchCard-card{
+    filter: drop-shadow(5px 5px 5px #000);
+    margin-bottom: 50px;
+}
+.MatchCard-match{
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+}
+.MatchCard-group{
+    color: gray;
+    font-size: 13px;
+    text-align: center;
+    margin-top: -5px;
+}
+.MatchCard-teamlogo{
+    text-align: center !important;
+}
+.MatchCard-teamlogo img{
+    aspect-ratio: auto;
+    max-height: 100px;
+    max-width: 90px;
+}
+.MatchCard-teamnameA, .MatchCard-teamnameB{
+    font-weight: 700;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: black;
+    padding-top: 25px;
+}
+.MatchCard-teamnameA{
+    text-align: left;
+}
+.MatchCard-teamnameB{
+    text-align: right;
+}
+.MatchCard-teamgoalsA, .MatchCard-teamgoalsB{
+    color: gray;
+    font-size: 11px;
+    white-space: pre;
+}
+.MatchCard-teamgoalsA{
+    text-align: left;
+}
+.MatchCard-teamgoalsB{
+    text-align: right;
+}
+.MatchCard-result{
+    font-family: 'Rubik', sans-serif;
+    font-size: 50px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+
+.MatchCard-date, .MatchCard-time, .MatchCard-location{
+    font-size: 11px;
+    text-align: center;
+}

@@ -15,6 +15,171 @@ const ApiFootball = require("../helpers/api-football");
 /** Related class and functions for MATCH object */
 class Match {
     /** 
+    * Find all matches goals
+    *   Returns [{ matchID }, ...]
+    *   where "matchID" is { teamA, teamB }
+    *   where "teamA" or "teamB" is { time, player, type }
+    **/
+    static async getAllGoals(){
+        const resMatchesP1 = await db.query(
+            `SELECT 
+                m.id, 
+                m.api_id AS "apiID",
+                m.team_a_result AS "teamA_result",
+                ta.api_id AS "teamA_apiID",
+                m.team_b_result AS "teamB_result",
+                tb.api_id AS "teamB_apiID"  
+            FROM
+                matches_phase_1 AS m 
+            
+            LEFT JOIN teams AS ta 
+                ON m.team_a_id = ta.id 
+
+            LEFT JOIN teams AS tb 
+                ON m.team_b_id = tb.id 
+            
+            ORDER BY 
+                m.id ASC`
+        ); 
+        const resMatchesP2 = await db.query(
+            `SELECT 
+                m.id, 
+                m.api_id AS "apiID", 
+                ta.api_id AS "teamA_apiID",
+                m.team_a_result AS "teamA_result",
+                tb.api_id AS "teamB_apiID",
+                m.team_b_result AS "teamB_result"   
+            FROM
+                matches_phase_2 AS m 
+            
+            LEFT JOIN teams AS ta 
+                ON m.team_a_id = ta.id 
+
+            LEFT JOIN teams AS tb 
+                ON m.team_b_id = tb.id 
+            
+            ORDER BY 
+                m.id ASC`
+        ); 
+
+        let goals = {};
+        const matches = resMatchesP1.rows.concat(resMatchesP2.rows);
+        for(let match of matches){
+            let goalsTeamA = [];
+            let goalsTeamB = [];
+            if(match.teamA_result !== null && match.teamB_result !== null){
+                const goalsAPI = await ApiFootball.getMatchGoals(match.apiID);
+                
+                for(let goal of goalsAPI){
+                    if(goal.team.id === match.teamA_apiID){
+                        goalsTeamA.push({
+                            time: goal.time.elapsed,
+                            player: goal.player.name,
+                            type: goal.detail
+                        });
+                    }else if(goal.team.id === match.teamB_apiID){
+                        goalsTeamB.push({
+                            time: goal.time.elapsed,
+                            player: goal.player.name,
+                            type: goal.detail
+                        });
+                    }
+                }
+                goals[`match-${match.id}`] = {
+                    teamA: goalsTeamA,
+                    teamB: goalsTeamB
+                };
+            }
+        };
+
+        return goals;
+    }
+
+    /** 
+    * Find all goals of a match
+    *   Returns [{ matchID }, ...]
+    *   where "matchID" is { teamA, teamB }
+    *   where "teamA" or "teamB" is { time, player, type }
+    **/
+    static async getMatchGoals(matchID){
+        let resMatch;
+        if(Number(matchID) <= 48){
+            resMatch = await db.query(
+                `SELECT 
+                    m.id, 
+                    m.api_id AS "apiID",
+                    m.team_a_result AS "teamA_result",
+                    ta.api_id AS "teamA_apiID",
+                    m.team_b_result AS "teamB_result",
+                    tb.api_id AS "teamB_apiID"  
+                FROM
+                    matches_phase_1 AS m 
+                
+                LEFT JOIN teams AS ta 
+                    ON m.team_a_id = ta.id 
+    
+                LEFT JOIN teams AS tb 
+                    ON m.team_b_id = tb.id 
+                
+                WHERE 
+                    m.id = $1`
+            , [matchID]); 
+        }else{
+            resMatch = await db.query(
+                `SELECT 
+                    m.id, 
+                    m.api_id AS "apiID", 
+                    ta.api_id AS "teamA_apiID",
+                    m.team_a_result AS "teamA_result",
+                    tb.api_id AS "teamB_apiID",
+                    m.team_b_result AS "teamB_result"   
+                FROM
+                    matches_phase_2 AS m 
+                
+                LEFT JOIN teams AS ta 
+                    ON m.team_a_id = ta.id 
+    
+                LEFT JOIN teams AS tb 
+                    ON m.team_b_id = tb.id 
+                
+                WHERE 
+                    m.id = $1`
+            , [matchID]); 
+        }
+
+        if(!resMatch.rows[0]){
+            throw new NotFoundError(`Match not found: ${matchID}`);
+        }
+        
+        const match = resMatch.rows[0];
+        const goalsAPI = await ApiFootball.getMatchGoals(match.apiID);
+                
+        let goalsTeamA = [];
+        let goalsTeamB = [];
+        for(let goal of goalsAPI){
+            if(goal.team.id === match.teamA_apiID){
+                goalsTeamA.push({
+                    time: goal.time.elapsed,
+                    player: goal.player.name,
+                    type: goal.detail
+                });
+            }else if(goal.team.id === match.teamB_apiID){
+                goalsTeamB.push({
+                    time: goal.time.elapsed,
+                    player: goal.player.name,
+                    type: goal.detail
+                });
+            }
+        }
+
+        return {
+            teamA: goalsTeamA,
+            teamB: goalsTeamB
+        };
+    }
+
+
+    /** 
     * Find all matches in the phase
     *   Matches Phase 1:
     *       Returns [{ id, date, time, stadium, city, group, teamA, teamB, result, status, apiID }, ...]

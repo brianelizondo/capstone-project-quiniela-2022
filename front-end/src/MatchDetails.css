@@ -1,0 +1,95 @@
+.MatchDetails-subtitle{
+    color: white;
+    font-weight: 100 !important;
+    font-size: 18px;
+    background-color: rgba(0,0,0, .60);
+    display:inline-block;
+    padding: 15px 15px;
+    border-left: 5px solid black;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+.MatchDetails-stats-card{
+    filter: drop-shadow(5px 5px 5px #000);
+    margin-bottom: 40px;
+}
+
+.MatchDetails-top-match{
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    color: lightgray;
+    filter: drop-shadow(2px 2px 2px #000);
+}
+.MatchDetails-top-teamA-logo, .MatchDetails-top-teamB-logo{
+    text-align: center;
+}
+.MatchDetails-top-teamA-logo img, .MatchDetails-top-teamB-logo img{
+    filter: drop-shadow(5px 5px 5px #000);
+    aspect-ratio: auto;
+    max-height: 130px;
+    max-width: 120px;
+}
+.MatchDetails-top-teamA-name, .MatchDetails-top-teamB-name{
+    color: white;
+    font-weight: 400;
+    font-size: 26px;
+    filter: drop-shadow(2px 2px 2px #000);
+    padding-top: 40px;
+}
+.MatchDetails-top-teamA-goals, .MatchDetails-top-teamB-goals{
+    white-space: pre;
+    font-size: 12px;
+    color: lightgray;
+    line-height: 18px;
+}
+.MatchDetails-top-teamA-name, .MatchDetails-top-teamA-goals{
+    text-align: right !important;
+}
+.MatchDetails-top-teamB-name, .MatchDetails-top-teamB-goals{
+    text-align: left !important;
+}
+
+.MatchDetails-top-result{
+    font-family: 'Rubik', sans-serif;
+    font-size: 74px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    color: white;
+    padding-top: 5px;
+    filter: drop-shadow(2px 2px 2px #000);
+}
+.MatchDetails-top-text{
+    font-size: 12px;
+    text-align: center;
+    color: lightgray;
+    line-height: 18px;
+}
+
+.MatchDetails-stats-card{
+    padding: 20px 30px;
+}
+.MatchDetails-stats{
+    margin-bottom: 40px;
+}
+.MatchDetails-stats-number-left, .MatchDetails-stats-number-right{
+    font-family: 'Rubik', sans-serif;
+    font-size: 26px;
+}
+.MatchDetails-stats-number-left{
+    text-align: left;
+    padding-left: 20px;
+}
+.MatchDetails-stats-number-right{
+    text-align: right;
+    padding-right: 20px;
+}
+.MatchDetails-stats-type{
+    color: gray;
+    font-size: 13px;
+    text-transform: capitalize;
+    text-align: center;
+    padding-top: 15px;
+}

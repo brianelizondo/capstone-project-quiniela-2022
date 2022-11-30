@@ -127,7 +127,6 @@ CREATE TABLE quinielas_points (
 	quiniela_id INTEGER 	NOT NULL REFERENCES quinielas ( id ) ON DELETE CASCADE,
 	user_id 	INTEGER 	NOT NULL REFERENCES users ( id ) ON DELETE CASCADE,
 	champion_team_id 		INTEGER 	DEFAULT NULL REFERENCES teams ( id ) ON DELETE CASCADE,
-	champion_team_sortname	VARCHAR(3) NOT NULL, 
 	points 		INTEGER 	NOT NULL DEFAULT 0 CHECK (points >= 0),
 	status		INTEGER 	NOT NULL DEFAULT 0
 );

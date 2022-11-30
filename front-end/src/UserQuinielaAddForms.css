@@ -1,0 +1,13 @@
+.UserQuinielaAddForms-button-next{
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    filter: drop-shadow(3px 3px 3px #000);
+}
+.UserQuinielaAddForms-button-back{
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-right: 20px;
+    filter: drop-shadow(3px 3px 3px #000);
+}

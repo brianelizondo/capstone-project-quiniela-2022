@@ -1,0 +1,41 @@
+.UserQuinielaListCard-card{
+    filter: drop-shadow(5px 5px 5px #000);
+    padding: 15px 0px 15px 15px;
+    margin-bottom: 50px;
+}
+.UserQuinielaListCard-logo{
+    text-align: center;
+}
+.UserQuinielaListCard-logo img{
+    aspect-ratio: auto;
+    max-height: 110px;
+    max-width: 100px;
+}
+.UserQuinielaListCard-text{
+    font-size: 14px;
+    padding-top: 20px;
+}
+.UserQuinielaListCard-points-number{
+    font-family: 'Rubik', sans-serif;
+    font-size: 50px;
+    font-weight: 400;
+    text-align: center;
+    line-height: 50px;
+    padding-top: 20px;
+}
+.UserQuinielaListCard-points-text{
+    color: gray;
+    font-size: 13px;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 12px;
+}
+.UserQuinielaListCard-points-button{
+    display: flex;
+    align-items: center;
+}
+.UserQuinielaListCard-points-button button{
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}

@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Card, Table, Button } from 'react-bootstrap';
+import './GroupStandings.css';
 
 function GroupStandings({ group, standings, detailsButton }){
     let history = useHistory();
@@ -9,10 +10,10 @@ function GroupStandings({ group, standings, detailsButton }){
     }
     
     return (
-        <Card>
+        <Card className="GroupStandings-card">
             <Card.Body>
-                <Card.Title>Group { group }</Card.Title>
-                <Table striped size="sm">
+                <Card.Title className="GroupStandings-card-title">Group { group }</Card.Title>
+                <Table striped size="sm" className="GroupStandings-card-table">
                     <thead>
                         <tr>
                             <th>Team</th>
@@ -28,7 +29,7 @@ function GroupStandings({ group, standings, detailsButton }){
                     </thead>
                     <tbody>
                         { standings.map((team, idx) => (
-                        <tr key={idx} onClick={() => handleClick(`/teams/${team.shortName}`)} data-testid={ `team-${team.shortName}` }>
+                        <tr key={idx} onClick={() => handleClick(`/teams/${team.shortName}`)} data-testid={ `team-${team.shortName}` } className="GroupStandings-card-team">
                             <td>{ team.teamName }</td>
                             <td>{ team.gamesPlayed }</td>
                             <td>{ team.gamesWon }</td>
@@ -42,7 +43,12 @@ function GroupStandings({ group, standings, detailsButton }){
                         ))}
                     </tbody>
                 </Table>
-                { detailsButton ? <Button id={ `group${ group.toUpperCase() }_button` } variant="info" size="sm" onClick={() => handleClick(`/groups/${group}`)}>Group { group } Details</Button> : "" }
+                
+                { detailsButton ? 
+                    <Card.Text className="text-end">
+                        <Button id={ `group${ group.toUpperCase() }_button` } variant="info" size="sm" onClick={() => handleClick(`/groups/${group}`)}>Group { group } Details</Button> 
+                    </Card.Text>                    
+                : "" }                
             </Card.Body>
         </Card>
     );

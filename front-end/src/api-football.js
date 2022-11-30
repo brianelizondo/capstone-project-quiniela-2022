@@ -101,6 +101,21 @@ class APIFootball {
         let res = await this.request(`matches/phase/${phase}/match/${matchID}/`);
         return res.match;
     }
+    /** Get all matches goals */
+    static async getMatchesGoals(){
+        let res = await this.request(`matches/goals/`);
+        return res.goals;
+    }
+    /** Get goals of a match */
+    static async getMatchGoals(matchID){
+        let res = await this.request(`matches/${matchID}/goals/`);
+        return res.goals;
+    }
+    /** Update goals/teams of a match */
+    static async updateGoalsTeams(matchData){
+        let res = await this.request(`matches/${matchData.matchID}/update/`, { matchData }, "patch");
+        return res;
+    }
 
     // TEAMS requests
     /** Get all matches for a phase */

@@ -1,7 +1,8 @@
 import React from "react";
 import { Card, Image, Row, Col } from 'react-bootstrap';
+import './QuinielaMatchCard.css';
 
-function MatchCard({ match }){
+function MatchCard({ match, points }){
     const teamAName = match.teamA_name;
     const teamALogo = <Image src={ `/images/team_logo/${match.teamA_shortName}.png` } alt={ match.teamA_name } fluid={true} />;
     const teamBName = match.teamB_name;
@@ -9,17 +10,23 @@ function MatchCard({ match }){
     const matchResult = `${match.teamA_result} - ${match.teamB_result}`;
             
     return (
-        <Card>
+        <Card className="QuinielaMatchCard-card">
             <Card.Body>
                 <Row>
-                    <Col>Match { match.matchID }</Col>
+                    <Col className="QuinielaMatchCard-match">Match { match.matchID }</Col>
                 </Row>
                 <Row>
-                    <Col xs lg="2">{ teamALogo }</Col>
-                    <Col>{ teamAName }</Col>
-                    <Col>{ matchResult }</Col>
-                    <Col>{ teamBName }</Col>
-                    <Col xs lg="2">{ teamBLogo }</Col>
+                    <Col xs lg="2" className="QuinielaMatchCard-teamlogo">{ teamALogo }</Col>
+                    <Col className="QuinielaMatchCard-teamnameA">{ teamAName }</Col>
+                    <Col className="QuinielaMatchCard-result">{ matchResult }</Col>
+                    <Col className="QuinielaMatchCard-teamnameB">{ teamBName }</Col>
+                    <Col xs lg="2" className="QuinielaMatchCard-teamlogo">{ teamBLogo }</Col>
+                </Row>
+                <Row>
+                    <Col className="QuinielaMatchCard-points">{ points }</Col>
+                </Row>
+                <Row>
+                    <Col className="QuinielaMatchCard-points-text">points earned</Col>
                 </Row>
             </Card.Body>
         </Card>

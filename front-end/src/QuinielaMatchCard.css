@@ -1,0 +1,53 @@
+.QuinielaMatchCard-card{
+    filter: drop-shadow(5px 5px 5px #000);
+    margin-bottom: 50px;
+}
+.QuinielaMatchCard-match{
+    color: gray;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+}
+.QuinielaMatchCard-teamlogo{
+    text-align: center !important;
+}
+.QuinielaMatchCard-teamlogo img{
+    aspect-ratio: auto;
+    max-height: 100px;
+    max-width: 90px;
+}
+.QuinielaMatchCard-teamnameA, .QuinielaMatchCard-teamnameB{
+    font-size: 14px;
+    text-transform: uppercase;
+    color: black;
+    padding-top: 30px;
+}
+.QuinielaMatchCard-teamnameA{
+    text-align: left;
+}
+.QuinielaMatchCard-teamnameB{
+    text-align: right;
+}
+.QuinielaMatchCard-result{
+    font-family: 'Rubik', sans-serif;
+    font-size: 50px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+}
+.QuinielaMatchCard-points{
+    font-family: 'Rubik', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 26px;
+}
+
+.QuinielaMatchCard-points-text{
+    color: gray;
+    font-size: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 12px;
+}

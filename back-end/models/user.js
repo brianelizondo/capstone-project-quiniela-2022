@@ -77,9 +77,10 @@ class User {
                 email, 
                 username, 
                 password,
-                is_admin) 
+                is_admin,
+                status) 
             VALUES 
-                ($1, $2, $3, $4, $5, $6) 
+                ($1, $2, $3, $4, $5, $6, 1) 
             RETURNING 
                 id, first_name AS "firstName", last_name AS "lastName", email, username, is_admin AS "isAdmin"`, 
         [

@@ -1,0 +1,66 @@
+.UserQuinielaAddMatchCard-card{
+    filter: drop-shadow(5px 5px 5px #000);
+    margin-bottom: 50px;
+}
+.UserQuinielaAddMatchCard-match{
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+}
+.UserQuinielaAddMatchCard-group{
+    color: gray;
+    font-size: 13px;
+    text-align: center;
+    margin-top: -5px;
+}
+.UserQuinielaAddMatchCard-team-logo{
+    text-align: center !important;
+}
+.UserQuinielaAddMatchCard-team-logo img{
+    aspect-ratio: auto;
+    max-height: 120px;
+    max-width: 110px;
+}
+.UserQuinielaAddMatchCard-team-name{
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    text-align: center;
+    color: black;
+    padding-top: 10px;
+}
+.UserQuinielaAddMatchCard-teamnameA{
+    text-align: left;
+}
+.UserQuinielaAddMatchCard-teamnameB{
+    text-align: right;
+}
+
+.UserQuinielaAddMatchCard-form-field{
+    padding-top: 40px;
+}
+.UserQuinielaAddMatchCard-form-field-error{
+    font-size: 13px;
+    color: Crimson;
+}
+
+.UserQuinielaAddMatchCard-form-vs{
+    font-family: 'Rubik', sans-serif;
+    font-size: 35px;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 30px;
+}
+.UserQuinielaAddMatchCard-result{
+    font-family: 'Rubik', sans-serif;
+    font-size: 50px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.UserQuinielaAddMatchCard-date, .UserQuinielaAddMatchCard-location{
+    font-size: 11px;
+    text-align: center;
+}

@@ -1,0 +1,43 @@
+.NavBar{
+    margin-bottom: 50px;
+}
+.NavBar-logo{
+    padding-top: 30px !important;
+    padding-bottom: 20px !important;
+    text-align: center;
+}
+.NavBar-logo img{
+    max-height: 140px !important;
+}
+
+.NavBar-menu a{
+    text-decoration: none;
+    text-transform: uppercase;
+    color: white !important;
+    font-size: 14px;
+    font-weight: 700;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: rgba(0, 0, 0, .40);
+    border-bottom: 5px solid rgba(0, 0, 0, .50);
+}
+.NavBar-menu a:hover{
+    color: rgb(35, 127, 207) !important;
+}
+
+.NavBar-menu .active{
+    background-color: rgba(35, 127, 207, .40);
+    border-bottom: 5px solid rgba(35, 127, 207, .60);
+}
+
+.NavBar-menu .dropdown-menu{
+    background-color: rgba(0, 0, 0, .40);
+    border: none;
+}
+.NavBar-menu .dropdown a.dropdown-item{
+    font-size: 11px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: rgba(0, 0, 0, .40);
+    border-bottom: none;
+}

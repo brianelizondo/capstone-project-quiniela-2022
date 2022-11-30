@@ -25,6 +25,7 @@ import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 
 import UserProfile from './UserProfile';
+import UserMatchUpdate from './UserMatchUpdate';
 import UserQuinielaAdd from './UserQuinielaAdd';
 
 import ProtectedRoute from './ProtectedRoute';
@@ -111,6 +112,7 @@ function App(){
                 {/* ROUTES TO PROTECT LATER */}
                 <ProtectedRoute exact path="/quinielas/:username/:quinielaID" component={QuinielaDetails} />
                 <ProtectedRoute exact path="/users/:username/profile" component={UserProfile} />
+                <ProtectedRoute exact path="/users/matches/update" component={UserMatchUpdate} />
                 <ProtectedRoute exact path="/users/:username/quinielas/add" component={UserQuinielaAdd} />
                 <ProtectedRoute exact path="/users/:username/quinielas/:quinielaID/edit" component={UserQuinielaAdd} />
 

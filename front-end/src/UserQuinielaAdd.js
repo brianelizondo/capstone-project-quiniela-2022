@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext } from 'react';
 import { useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import UserQuinielaAddStep from './UserQuinielaAddStep';
+import { Row, Col } from 'react-bootstrap';
 import FormStepper from './FormStepper';
 import Loading from "./Loading";
 import './UserQuinielaAdd.css'
@@ -86,16 +87,28 @@ function UserQuinielaAdd(){
     }
     return (
         <div className="UserQuinielaAdd col-md-8 offset-md-2">
-            <h1>Add New Quiniela</h1>
-            <p>Matches list of Groups, Round of 16, Quarter-Finals, Semi-Finals, 3th Place & Final</p>
+            <Row>
+                <Col>
+                    <h1 className='section-title'>Add New Quiniela</h1>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h5 className='section-subtitle'>Matches list of Groups, Round of 16, Quarter-Finals, Semi-Finals, 3th Place & Final</h5>
+                </Col>
+            </Row>
 
             <FormContext.Provider value={{ user, matchesForContext, setMatchesForContext, currentFormStep, setCurrentFormStep, formData, setFormData, saveQuiniela }}>
-                <div>
-                    <FormStepper steps={ formSteps } />
-                </div>
-                <div>
-                    <UserQuinielaAddStep />
-                </div>
+                <Row>
+                    <Col className="UserQuinielaAdd-stepper">
+                        <FormStepper steps={ formSteps } />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <UserQuinielaAddStep />
+                    </Col>
+                </Row>
             </FormContext.Provider>
         </div>
     );

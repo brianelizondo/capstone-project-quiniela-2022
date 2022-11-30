@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Row, Col } from 'react-bootstrap';
 import Loading from './Loading';
 
 // import APIFootball api
@@ -27,14 +28,23 @@ function TeamList(){
 
     return (
         <div className="TeamList col-md-8 offset-md-2">
-            <h1>Teams in FIFA World Cup 2022</h1>
-            <p>List of all teams competing</p>
-            
-            <div className="TeamList-list">
-                { teams.map(team => 
-                <div key={team.shortName} className="TeamList-list-card"><TeamCard key={team.shortName} team={team} /></div>
-                )}
-            </div>
+            <Row>
+                <Col>
+                    <h1 className='section-title'>Teams in FIFA World Cup 2022</h1>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h5 className='section-subtitle'>List of all teams competing</h5>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <div className="TeamList-list">
+                        { teams.map(team => <div key={team.shortName}><TeamCard key={team.shortName} team={team} /></div>) }
+                    </div>
+                </Col>
+            </Row>
         </div>
     );
 }

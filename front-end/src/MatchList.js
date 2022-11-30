@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Tab, Tabs } from 'react-bootstrap';
+import { Tab, Tabs, Row, Col } from 'react-bootstrap';
 import Loading from './Loading';
+import './MatchList.css';
 
 // import APIFootball api
 import APIFootball from "./api-football";
@@ -16,6 +17,7 @@ function MatchList(){
     const [matchesSemis, setMatchesSemis] = useState([]);
     const [matches3thPlace, setMatches3thPlace] = useState([]);
     const [matchesFinal, setMatchesFinal] = useState([]);
+    const [matchesGoals, setMatchesGoals] = useState({});
 
     useEffect(() => {
         setLoading(true);
@@ -45,6 +47,9 @@ function MatchList(){
                         break;
                 }
             });
+
+            const goalsAPI = await APIFootball.getMatchesGoals();
+            setMatchesGoals(goalsAPI);
         }
         getPhaseMatches();
         setLoading(false);
@@ -56,29 +61,46 @@ function MatchList(){
 
     return (
         <div className="MatchList col-md-8 offset-md-2">
-            <h1>Matches in FIFA World Cup 2022</h1>
-            <p>List of Group Matches, Round of 16, Quarter-Finals, Semi-Finals, 3th Place & Final</p>
-            
-            <Tabs defaultActiveKey="groups" id="justify-tab" className="mb-3" justify>
-                <Tab eventKey="groups" title="Group Matches">
-                    { matchesGroups.map(match => <MatchCard key={match.id} match={match} />) }
-                </Tab>
-                <Tab eventKey="round16" title="Round of 16">
-                    { matchesRound16.map(match => <MatchCard key={match.id} match={match} />) }
-                </Tab>
-                <Tab eventKey="quarters" title="Quarter-Finals">
-                    { matchesQuarters.map(match => <MatchCard key={match.id} match={match} />) }
-                </Tab>
-                <Tab eventKey="semis" title="Semi-Finals">
-                    { matchesSemis.map(match => <MatchCard key={match.id} match={match} />) }
-                </Tab>
-                <Tab eventKey="3thplace" title="3th Place">
-                    { matches3thPlace.map(match => <MatchCard key={match.id} match={match} />) }
-                </Tab>
-                <Tab eventKey="final" title="Final">
-                    { matchesFinal.map(match => <MatchCard key={match.id} match={match} />) }
-                </Tab>
-            </Tabs>
+            <Row>
+                <Col>
+                    <h1 className='section-title'>Matches in FIFA World Cup 2022</h1>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h5 className='section-subtitle'>List of Group Matches, Round of 16, Quarter-Finals, Semi-Finals, 3th Place & Final</h5>
+                </Col>
+            </Row>
+            <Row>
+                <Col className="MatchList-tabs">
+                    <Tabs defaultActiveKey="groups" id="justify-tab" className="mb-3" justify>
+                        <Tab eventKey="groups" title="Group Matches">
+                            <div className="MatchList-tabs-title">Group Matches</div>
+                            { matchesGroups.map(match => <MatchCard key={match.id} match={match} matchesGoals={matchesGoals} />) }
+                        </Tab>
+                        <Tab eventKey="round16" title="Round of 16">
+                            <div className="MatchList-tabs-title">Round of 16</div>
+                            { matchesRound16.map(match => <MatchCard key={match.id} match={match} matchesGoals={matchesGoals} />) }
+                        </Tab>
+                        <Tab eventKey="quarters" title="Quarter-Finals">
+                            <div className="MatchList-tabs-title">Quarter-Finals</div>
+                            { matchesQuarters.map(match => <MatchCard key={match.id} match={match} matchesGoals={matchesGoals} />) }
+                        </Tab>
+                        <Tab eventKey="semis" title="Semi-Finals">
+                            <div className="MatchList-tabs-title">Semi-Finals</div>
+                            { matchesSemis.map(match => <MatchCard key={match.id} match={match} matchesGoals={matchesGoals} />) }
+                        </Tab>
+                        <Tab eventKey="3thplace" title="3th Place">
+                            <div className="MatchList-tabs-title">3th Place</div>
+                            { matches3thPlace.map(match => <MatchCard key={match.id} match={match} matchesGoals={matchesGoals} />) }
+                        </Tab>
+                        <Tab eventKey="final" title="Final">
+                            <div className="MatchList-tabs-title">Final</div>
+                            { matchesFinal.map(match => <MatchCard key={match.id} match={match} matchesGoals={matchesGoals} />) }
+                        </Tab>
+                    </Tabs>
+                </Col>
+            </Row>
         </div>
     );
 }

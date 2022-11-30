@@ -1,0 +1,23 @@
+.UserMatchUpdate-subtitle{
+    color: white;
+    font-weight: 100 !important;
+    font-size: 18px;
+    background-color: rgba(0,0,0, .60);
+    display:inline-block;
+    padding: 15px 15px;
+    border-left: 5px solid black;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.UserMatchUpdate-form-card{
+    padding: 30px 30px;
+    background-color: rgba(0, 0, 0, .35);
+    border-radius: 10px !important;
+}
+
+.UserMatchUpdate-form-card button{
+    font-size: 14px;
+    
+    text-transform: uppercase;
+}

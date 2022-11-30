@@ -1,0 +1,112 @@
+.TeamDetails-logo{
+    text-align: right;
+    padding-right: 10px;
+}
+.TeamDetails-logo img{
+    max-height: 200px !important;
+    filter: drop-shadow(3px 3px 5px #000);
+}
+.TeamDetails-name{
+    color: white;
+    font-weight: 700;
+    font-size: 50px;
+    line-height: 70px;
+    padding-top: 80px;
+}
+
+.TeamDetails-subtitle{
+    color: white;
+    font-weight: 100 !important;
+    font-size: 18px;
+    background-color: rgba(0,0,0, .60);
+    display:inline-block;
+    padding: 15px 15px;
+    border-left: 5px solid black;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.TeamDetails-card{
+    filter: drop-shadow(5px 5px 5px #000);
+    margin-bottom: 50px;
+    padding: 20px 20px 0px 20px;
+}
+
+.TeamDetails-stats-matchesplayed{
+    font-family: 'Rubik', sans-serif;
+    text-align: center;
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 60px;
+    padding-top: 15px;
+}
+.TeamDetails-stats-text{
+    color: gray;
+    text-align: center;
+    text-transform: capitalize;
+    font-size: 14px;
+}
+.TeamDetails-stats-matcheswon, .TeamDetails-stats-matchesdrawn, .TeamDetails-stats-matcheslost{
+    color: gray;
+    text-transform: capitalize;
+    text-align: center;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 15px;
+}
+.TeamDetails-stats-matcheswon span, .TeamDetails-stats-matchesdrawn span, .TeamDetails-stats-matcheslost span{
+    font-family: 'Rubik', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: black;
+    padding-right: 5px;
+}
+.TeamDetails-stats-matcheswon{
+    border-bottom: 2px solid DarkGreen;
+}
+.TeamDetails-stats-matchesdrawn{
+    border-bottom: 2px solid Goldenrod;
+}
+.TeamDetails-stats-matcheslost{
+    border-bottom: 2px solid Crimson;
+}
+
+.TeamDetails-stats-various{
+    padding-left: 40px;
+}
+.TeamDetails-stats-number{
+    font-family: 'Rubik', sans-serif;
+    font-size: 40px;
+    font-weight: 400;
+    color: black;
+    padding-right: 5px;
+    line-height: 38px;
+}
+.TeamDetails-stats-subtitle{
+    font-size: 15px;
+    text-transform: capitalize;
+    color: gray;
+    line-height: 18px;
+}
+.TeamDetails-stats-comment{
+    font-size: 11px;
+    color: darkgray;
+    padding-bottom: 30px;
+}
+
+.TeamDetails-squad{
+    float: left;
+    margin: 0px 35px 60px 0px;
+}
+.TeamDetails-squad-name{
+    font-size: 18px;
+    font-weight: 700;
+    color: black;
+    text-align: center;
+    line-height: 20px;
+}
+.TeamDetails-squad-pos{
+    font-size: 13px;
+    color: gray;
+    text-align: center;
+}

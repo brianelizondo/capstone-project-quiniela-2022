@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, Image, Col, Row, Form } from 'react-bootstrap';
+import './UserQuinielaAddMatchCard.css';
 
 function UserQuinielaAddMatchCard({ match, formik, classifiedTeams = null }){
     let teamAName;
@@ -21,51 +22,55 @@ function UserQuinielaAddMatchCard({ match, formik, classifiedTeams = null }){
         teamBLogo = <Image src={ `/images/team_logo/${teamB_classified.teamShortName}.png` } alt={ teamB_classified.teamName } fluid={true} />;
     }
     return (
-        <Card>
+        <Card className="UserQuinielaAddMatchCard-card">
             <Card.Body>
                 <Row>
-                    <Col>Match { match.id }</Col>
+                    <Col className="UserQuinielaAddMatchCard-match">Match { match.id }</Col>
                 </Row>
-                
                 { match.group ? 
                 <Row>
-                    <Col>Group { match.group }</Col>
-                </Row>: null }
-                
+                    <Col className="MatchCard-group">Group { match.group }</Col>
+                </Row>
+                : null }
+
                 <Row>
-                    <Col md={3}>
-                        { teamALogo }
-                        { teamAName }
+                    <Col xs lg={3}>
+                        <div className="UserQuinielaAddMatchCard-team-logo">{ teamALogo }</div>
+                        <div className="UserQuinielaAddMatchCard-team-name">{ teamAName }</div>
                     </Col>
-                    <Col md={2}>
-                        <Form.Control name={ `match_${match.id}_team_a` } type="text" 
-                            onChange={formik.handleChange} 
-                            onBlur={formik.handleBlur} 
-                            value={formik.values[`match_${match.id}_team_a`]}
-                            isInvalid={formik.touched[`match_${match.id}_team_a`] && formik.errors[`match_${match.id}_team_a`]}
-                        />
-                        {formik.touched[`match_${match.id}_team_a`] && formik.errors[`match_${match.id}_team_a`] ? (<div>{formik.errors[`match_${match.id}_team_a`]}</div>) : null}
+                    <Col>
+                        <Row>
+                            <Col xs lg={5} className="UserQuinielaAddMatchCard-form-field">
+                                <Form.Control name={ `match_${match.id}_team_a` } type="text" 
+                                    onChange={formik.handleChange} 
+                                    onBlur={formik.handleBlur} 
+                                    value={formik.values[`match_${match.id}_team_a`]}
+                                    isInvalid={formik.touched[`match_${match.id}_team_a`] && formik.errors[`match_${match.id}_team_a`]}
+                                />
+                                {formik.touched[`match_${match.id}_team_a`] && formik.errors[`match_${match.id}_team_a`] ? (<div className="UserQuinielaAddMatchCard-form-field-error">{formik.errors[`match_${match.id}_team_a`]}</div>) : null}
+                            </Col>
+                            <Col xs lg={2} className="UserQuinielaAddMatchCard-form-vs">vs</Col>
+                            <Col xs lg={5} className="UserQuinielaAddMatchCard-form-field">
+                                <Form.Control name={ `match_${match.id}_team_b` } type="text" 
+                                    onChange={formik.handleChange} 
+                                    onBlur={formik.handleBlur} 
+                                    value={formik.values[`match_${match.id}_team_b`]}
+                                    isInvalid={formik.touched[`match_${match.id}_team_b`] && formik.errors[`match_${match.id}_team_b`]}
+                                />
+                                {formik.touched[`match_${match.id}_team_b`] && formik.errors[`match_${match.id}_team_b`] ? (<div className="UserQuinielaAddMatchCard-form-field-error">{formik.errors[`match_${match.id}_team_b`]}</div>) : null}
+                            </Col>
+                        </Row>
                     </Col>
-                    <Col md={2}>vs</Col>
-                    <Col md={2}>
-                        <Form.Control name={ `match_${match.id}_team_b` } type="text" 
-                            onChange={formik.handleChange} 
-                            onBlur={formik.handleBlur} 
-                            value={formik.values[`match_${match.id}_team_b`]}
-                            isInvalid={formik.touched[`match_${match.id}_team_b`] && formik.errors[`match_${match.id}_team_b`]}
-                        />
-                        {formik.touched[`match_${match.id}_team_b`] && formik.errors[`match_${match.id}_team_b`] ? (<div>{formik.errors[`match_${match.id}_team_b`]}</div>) : null}
-                    </Col>
-                    <Col md={3}>
-                        { teamBName }
-                        { teamBLogo }
+                    <Col xs lg={3}>
+                        <div className="UserQuinielaAddMatchCard-team-logo">{ teamBLogo }</div>
+                        <div className="UserQuinielaAddMatchCard-team-name">{ teamBName }</div>
                     </Col>
                 </Row>
                 <Row>
-                    <Col>{ match.date } - { match.time }</Col>
+                    <Col className="UserQuinielaAddMatchCard-date">{ match.date } - { match.time }</Col>
                 </Row>
                 <Row>
-                    <Col>{ match.city } - { match.stadium }</Col>
+                    <Col className="UserQuinielaAddMatchCard-location">{ match.city } - { match.stadium }</Col>
                 </Row>
             </Card.Body>
         </Card>

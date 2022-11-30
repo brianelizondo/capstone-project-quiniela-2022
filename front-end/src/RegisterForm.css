@@ -1,0 +1,15 @@
+.RegisterForm-form-card{
+    padding: 30px 30px;
+    background-color: rgba(0, 0, 0, .35);
+    border-radius: 10px !important;
+}
+
+.RegisterForm-form-container small{
+    color: lightgray !important;
+    font-size: 12px;
+}
+.RegisterForm-form-container button{
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}

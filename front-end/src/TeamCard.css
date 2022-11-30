@@ -1,0 +1,28 @@
+.TeamCard-card a{
+    text-decoration: none;
+}   
+.TeamCard-card{
+    filter: drop-shadow(5px 5px 5px #000);
+    margin-bottom: 40px;
+    float: left;
+    width: 180px;
+    height: 220px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+.TeamCard-teamlogo{
+    aspect-ratio: auto;
+    max-height: 160px;
+    max-width: 150px;
+}
+.TeamCard-teamname{
+    color: black !important;
+    width: 100% !important;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
+    padding-top: 10px;
+}

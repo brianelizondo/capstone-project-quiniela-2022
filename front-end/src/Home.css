@@ -1,0 +1,57 @@
+.Home-quiniela-list a{
+    text-decoration: none !important;
+    color: black;
+}
+
+.Quiniela-card{
+    filter: drop-shadow(5px 5px 5px #000);
+    margin-bottom: 30px;
+    margin-right: 12px;
+    margin-left: 12px;
+}
+.Quiniela-card-pos-number{
+    font-family: 'Rubik', sans-serif;
+    font-size: 65px;
+    font-weight: 700;
+    color:black;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+.Quiniela-card-logo-team{
+    max-width: 80px;
+    max-height: 100px;
+}
+.Quiniela-card-text{
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+.Quiniela-card-text div{
+    width: 100% !important;
+}
+.Quiniela-card-text span{
+    font-weight: 700;
+}
+
+.Quiniela-card-points{
+    font-family: 'Rubik', sans-serif;
+    font-size: 45px;
+    font-weight: 700;
+    color:black;
+}
+.Quiniela-card-points-number{
+    color: black;
+    font-size: 45px;
+    font-weight: 700;
+    line-height: 40px;
+    text-align: center;
+    padding-top: 20px;
+}
+.Quiniela-card-points-text{
+    color: gray;
+    font-size: 13px;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+}

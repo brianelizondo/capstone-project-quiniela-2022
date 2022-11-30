@@ -1,0 +1,39 @@
+.Rules-list ul li.nav-item button{
+    color: white;
+    text-transform: uppercase !important;
+    font-weight: 700;
+    margin-bottom: 0px !important;
+    filter: drop-shadow(2px 2px 2px #000);
+    border-bottom: none;
+}
+.Rules-list ul li.nav-item button:hover{
+    background-color: rgba(60, 154, 236, .35);
+    border: none;
+}
+.Rules-list ul li.nav-item button.active{
+    text-transform: uppercase !important;
+    font-weight: 700;
+    margin-bottom: 0px !important;
+    border: none;
+}
+.Rules-list ul li.nav-item button.active:hover{
+    background-color: white;
+    border: none;
+}
+.Rules-list .tab-pane{
+    background-color: white;
+    border: none;
+    font-size: 14px;
+    text-align: justify;
+    padding-top: 20px;
+    padding-right: 40px;
+    padding-bottom: 25px;
+    padding-left: 40px;
+    margin-top: -17px;
+    filter: drop-shadow(5px 5px 5px #000);
+}
+.Rules-list .tab-pane h5{
+    margin-top: 30px;
+    font-weight: 700;
+    color: rgb(23, 97, 160);
+}

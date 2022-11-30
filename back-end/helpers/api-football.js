@@ -106,6 +106,14 @@ class ApiFootball {
         let apiResponse = await ApiFootball.apiGetInfo(endpoint);
         return apiResponse;
     }
+    /** 
+    * Get goals info from the API about a match/team
+    **/
+     static async getMatchGoals(matchID){
+        let endpoint = `fixtures/events?fixture=${matchID}&type=Goal`;
+        let apiResponse = await ApiFootball.apiGetInfo(endpoint);
+        return apiResponse;
+    }
 }
 
 module.exports = ApiFootball;

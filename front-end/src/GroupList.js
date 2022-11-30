@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Row, Col } from 'react-bootstrap';
 import Loading from './Loading';
 // import APIFootball api
 import APIFootball from "./api-football";
@@ -27,12 +28,23 @@ function GroupList(){
 
     return (
         <div className="GroupList col-md-8 offset-md-2">
-            <h1>Groups in FIFA World Cup 2022</h1>
-            <p>Standings for each group</p>
-            
-            <div className="GroupList-details">
-                { groups.map(group => (<GroupStandings key={group} group={group} standings={ groupsStandings.filter(team => team.group === group) } detailsButton={true} />))}
-            </div>
+            <Row>
+                <Col>
+                    <h1 className='section-title'>Groups in FIFA World Cup 2022</h1>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h5 className='section-subtitle'>List of groups and standings for each group</h5>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <div className="GroupList-details">
+                        { groups.map(group => (<GroupStandings key={group} group={group} standings={ groupsStandings.filter(team => team.group === group) } detailsButton={true} />))}
+                    </div>
+                </Col>
+            </Row>
         </div>
     );
 }

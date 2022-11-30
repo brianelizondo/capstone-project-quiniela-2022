@@ -57,7 +57,7 @@ router.get("/:username/:id", ensureLoggedIn, async function (req, res, next) {
 
 /** 
 * POST /[username]/add
-*   quiniela must include { userID }
+*   quiniela must include { userID, matchesData, formData }
 */
 router.post("/:username/add", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try {

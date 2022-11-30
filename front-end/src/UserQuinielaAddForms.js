@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { FormContext } from '../src/UserQuinielaAdd';
 import { Form, Button, Spinner, Col, Row } from "react-bootstrap";
 import Loading from "./Loading";
+import './UserQuinielaAddForms.css';
 
 import { useNewQuinielaFormik, setNewFormStep, setQuinielasClassifiedTeams, updateTeamsClassifiedContext, checkWinningTeams } from './helpers';
 import UserQuinielaAddMatchCard from './UserQuinielaAddMatchCard';
@@ -32,14 +33,14 @@ function Groups({ matches }){
     if(loading){
         return <Loading />;
     }
-
+    
     return (
         <Form onSubmit={formik.handleSubmit} autoComplete="off">            
             { matchesCards.map(match => <UserQuinielaAddMatchCard key={match.id} match={match} formik={formik} /> )}
             
             <Row>
                 <Col>
-                    <Button variant="primary" type="submit" size="sm" disabled={ btnSubmitLoading }>
+                    <Button variant="primary" type="submit" size="sm" disabled={ btnSubmitLoading } className="UserQuinielaAddForms-button-next">
                         { btnSubmitLoading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : "Next" }
                     </Button>
                 </Col>
@@ -89,8 +90,8 @@ function Round16({ matches }){
             
             <Row>
                 <Col>
-                    <Button variant="outline-primary" size="sm" onClick={() => setNewFormStep(currentFormStep - 1, setCurrentFormStep) }>Back</Button>
-                    <Button variant="primary" type="submit" size="sm" disabled={ btnSubmitLoading }>
+                    <Button variant="primary" size="sm" onClick={() => setNewFormStep(currentFormStep - 1, setCurrentFormStep) } className="UserQuinielaAddForms-button-back">Back</Button>
+                    <Button variant="primary" type="submit" size="sm" disabled={ btnSubmitLoading } className="UserQuinielaAddForms-button-next">
                         { btnSubmitLoading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : "Next" }
                     </Button>
                 </Col>
@@ -140,8 +141,8 @@ function Quarters({ matches }){
             
             <Row>
                 <Col>
-                    <Button variant="outline-primary" size="sm" onClick={() => setNewFormStep(currentFormStep - 1, setCurrentFormStep) }>Back</Button>
-                    <Button variant="primary" type="submit" size="sm" disabled={ btnSubmitLoading }>
+                    <Button variant="primary" size="sm" onClick={() => setNewFormStep(currentFormStep - 1, setCurrentFormStep) } className="UserQuinielaAddForms-button-back">Back</Button>
+                    <Button variant="primary" type="submit" size="sm" disabled={ btnSubmitLoading } className="UserQuinielaAddForms-button-next">
                         { btnSubmitLoading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : "Next" }
                     </Button>
                 </Col>
@@ -191,8 +192,10 @@ function Semis({ matches }){
             
             <Row>
                 <Col>
-                    <Button variant="outline-primary" size="sm" onClick={() => setNewFormStep(currentFormStep - 1, setCurrentFormStep) }>Back</Button>
-                    <Button variant="primary" type="submit" size="sm" disabled={ btnSubmitLoading }>Next</Button>
+                    <Button variant="primary" size="sm" onClick={() => setNewFormStep(currentFormStep - 1, setCurrentFormStep) } className="UserQuinielaAddForms-button-back">Back</Button>
+                    <Button variant="primary" type="submit" size="sm" disabled={ btnSubmitLoading } className="UserQuinielaAddForms-button-next">
+                        { btnSubmitLoading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : "Next" }
+                    </Button>
                 </Col>
             </Row>
         </Form>
@@ -240,8 +243,8 @@ function Place3th({ matches }){
             
             <Row>
                 <Col>
-                    <Button variant="outline-primary" size="sm" onClick={() => setNewFormStep(currentFormStep - 1, setCurrentFormStep) }>Back</Button>
-                    <Button variant="primary" type="submit" size="sm" disabled={ btnSubmitLoading }>
+                    <Button variant="primary" size="sm" onClick={() => setNewFormStep(currentFormStep - 1, setCurrentFormStep) } className="UserQuinielaAddForms-button-back">Back</Button>
+                    <Button variant="primary" type="submit" size="sm" disabled={ btnSubmitLoading } className="UserQuinielaAddForms-button-next">
                         { btnSubmitLoading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : "Next" }
                     </Button>
                 </Col>
@@ -291,8 +294,8 @@ function Final({ matches }){
             
             <Row>
                 <Col>
-                    <Button variant="outline-primary" size="sm" onClick={() => setNewFormStep(currentFormStep - 1, setCurrentFormStep) }>Back</Button>
-                    <Button variant="primary" type="submit" size="sm" disabled={ btnSubmitLoading }>
+                    <Button variant="primary" size="sm" onClick={() => setNewFormStep(currentFormStep - 1, setCurrentFormStep) } className="UserQuinielaAddForms-button-back">Back</Button>
+                    <Button variant="primary" type="submit" size="sm" disabled={ btnSubmitLoading } className="UserQuinielaAddForms-button-next">
                         { btnSubmitLoading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : "Save Quiniela" }
                     </Button>
                 </Col>
