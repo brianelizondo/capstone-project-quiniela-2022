@@ -1,3 +1,6 @@
+/**
+* REDUX config and create new store, using redux-persist to keep the info in localStorage
+*/
 import { configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';

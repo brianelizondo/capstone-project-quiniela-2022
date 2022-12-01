@@ -18,7 +18,7 @@ class God {
      static async updateGoalsTeams(matchID, matchData){
         matchID = Number(matchID);
         if(matchID >= 1 && matchID <= 48){
-            // update infor for math in phase 1
+            // update info for math in phase 1
             // get match details
             const checkMatch = await db.query(
                 `SELECT 
@@ -44,7 +44,7 @@ class God {
                     id = $3`,
             [matchData.teamA_result, matchData.teamB_result, matchID]);
             
-            // update the teams standings
+            // update the team A standings
             const respStatsA = await db.query(
                 `SELECT 
                     games_played AS "gamesPlayed",
@@ -61,7 +61,8 @@ class God {
                     team_id = $1`,
             [match.teamA_id]);
             let teamA_Stats = respStatsA.rows[0];
-            
+
+            // update the team B standings
             const respStatsB = await db.query(
                 `SELECT 
                     games_played AS "gamesPlayed",
@@ -80,8 +81,10 @@ class God {
             let teamB_Stats = respStatsB.rows[0];
             
             // check match result and update teams stats
+            // games played
             teamA_Stats.gamesPlayed++;
             teamB_Stats.gamesPlayed++;
+            // check if the match is won/lost or draw to assign points and stats
             if(matchData.teamA_result > matchData.teamB_result){
                 teamA_Stats.gamesWon++;
                 teamB_Stats.gamesLost++;
@@ -96,6 +99,7 @@ class God {
                 teamA_Stats.points++;
                 teamB_Stats.points++;
             }
+            // set additional stats for the teams
             teamA_Stats.goalsFor = teamA_Stats.goalsFor + matchData.teamA_result;
             teamB_Stats.goalsFor = teamB_Stats.goalsFor + matchData.teamB_result;
             teamA_Stats.goalsAgainst = teamA_Stats.goalsAgainst + matchData.teamB_result;
@@ -128,7 +132,8 @@ class God {
 
         
         }else if(matchID >= 49 && matchID <= 64){
-            // update infor for math in phase 2
+            // update info for math in phase 2
+            // set result to number
             matchData.teamA_result = matchData.teamA_result !== "" ? matchData.teamA_result : null;
             matchData.teamB_result = matchData.teamB_result !== "" ? matchData.teamB_result : null;
             matchData.match_apiID = matchData.match_apiID !== "" ? matchData.match_apiID : null;

@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, Image, Row, Col, ProgressBar } from 'react-bootstrap';
 import Loading from './Loading';
 import './MatchDetails.css';
 
 // import APIFootball api
-import APIFootball from "./api-football";
+import APIFootball from './api-football';
 
 function MatchDetails(){
     const { matchID, phase } = useParams();
     const phaseID = Number(phase);
+    
     // initial state
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const INITIAL_VALUE = { teamA: "", teamB: "" };
     const [matchDetails, setMatchDetails] = useState({});
     const [matchStats, setMatchStats] = useState([]);
@@ -20,12 +21,14 @@ function MatchDetails(){
     const [matchGoals, setMatchGoals] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
         async function getMatchDetails() {
+            // get the match details
             const resp = await APIFootball.getMatchDetails(matchID, phase);
             setMatchDetails(resp);
+            // set the match stats
             setMatchStats(Array.from(resp.apiStats));
 
+            // set team A name/logo and team B name/logo
             let teamAName, teamBName, teamALogo, teamBLogo; 
             if(phaseID === 1){
                 teamAName = resp.teamA.name;
@@ -49,9 +52,9 @@ function MatchDetails(){
             setTeamsName({ teamA: teamAName, teamB: teamBName });
             setTeamsLogo({ teamA: teamALogo, teamB: teamBLogo });
 
+            // if the result exist get the goals info from API
             if(resp.teamA_result >= 0 && resp.teamB_result >= 0){
-                const goalsAPI = await APIFootball.getMatchGoals(matchID);
-                setMatchGoals(goalsAPI);
+                setMatchGoals(await APIFootball.getMatchGoals(matchID));
             }
             
         }
@@ -59,6 +62,7 @@ function MatchDetails(){
         setLoading(false);
     }, [matchID, phase, phaseID]);
 
+    // format the porcent numbers
     const calculatePerc = (value, valueA, valueB) => {
         value = isNaN(value) ? Number(value.replace("%", "")) : value;
         valueA = isNaN(valueA) ? Number(valueA.replace("%", "")) : valueA;
@@ -66,6 +70,7 @@ function MatchDetails(){
         return (value * 100) / (valueA + valueB);
     };
 
+    // set the goals info
     let teamA_goals = "";
     let teamB_goals = "";
     if(matchGoals){
@@ -80,7 +85,7 @@ function MatchDetails(){
             }
         }
     }
-
+    // if the result exist show it or show "vs"
     const matchResult = matchDetails.teamA_result !== null && matchDetails.teamB_result !== null ? `${matchDetails.teamA_result} - ${matchDetails.teamB_result}` : "vs";
 
     if(loading){

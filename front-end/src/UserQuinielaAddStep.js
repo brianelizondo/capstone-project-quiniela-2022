@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { FormContext } from './UserQuinielaAdd';
 import { Groups, Round16, Quarters, Semis, Place3th, Final } from './UserQuinielaAddForms';
 
+// function to render the form for each phase
+// select the form from "UserQuinielaAddForm" to render inside of each step container
 function UserQuinielaAddStep() {
     const { matchesForContext, currentFormStep } = useContext(FormContext);
     let stepContent;

@@ -6,15 +6,15 @@ import Loading from './Loading';
 import './QuinielaDetails.css';
 
 // import APIFootball api
-import APIFootball from "./api-football";
-
+import APIFootball from './api-football';
+// import additionals components
 import QuinielaMatchCard from './QuinielaMatchCard';
 
 function QuinielaDetails(){
     // initial state
     const user = useSelector((state) => state.user);
     const { username, quinielaID } = useParams();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [quinielaChampion, setQuinielaChampion] = useState({});
     const [matchesGroups, setMatchesGroups] = useState([]);
     const [matchesRound16, setMatchesRound16] = useState([]);
@@ -24,8 +24,8 @@ function QuinielaDetails(){
     const [matchesFinal, setMatchesFinal] = useState([]);
 
     useEffect(() => {
-        setLoading(true);
         async function getPhaseMatches(){
+            // set the user token to the API and get the quiniela details
             APIFootball.token = user.token;
             const respQuiniela = await APIFootball.getQuinielaDetails(username, quinielaID);
             setQuinielaChampion({
@@ -34,8 +34,10 @@ function QuinielaDetails(){
                 championTeam_Name: respQuiniela.championTeam_Name, 
                 championTeam_ShortName: respQuiniela.championTeam_ShortName 
             });
+            // set the matches info for each group
             setMatchesGroups(respQuiniela.matchesPhase1);
 
+            // set the matches info for each phase
             respQuiniela.matchesPhase2.forEach(match => {
                 switch (match.matchPhase){
                     case 'R16':

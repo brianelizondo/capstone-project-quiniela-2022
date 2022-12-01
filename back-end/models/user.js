@@ -55,6 +55,7 @@ class User {
     *   Throws BadRequestError on duplicates
     **/
     static async register({ firstName, lastName, email, username, password, isAdmin }){
+        // check if the email or username already exits
         const duplicateCheck = await db.query(
             `SELECT 
                 email, username
@@ -67,9 +68,10 @@ class User {
         if(duplicateCheck.rows[0]){
             throw new BadRequestError(`Duplicate email and/or username: ${email} / ${username}`);
         }
-
+        // create hashed password
         const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
+        // create the new user
         const result = await db.query(
             `INSERT INTO users 
                 (first_name,
@@ -96,7 +98,7 @@ class User {
     }
 
     /** 
-    * Check if username/email already exist
+    * Check if username/email already exist and return the response to the register form
     *   Returns { username, email }
     **/
     static async checkUsernameEmail({ username, email }){

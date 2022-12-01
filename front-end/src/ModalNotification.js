@@ -1,3 +1,6 @@
+/**
+* Modal notification component when try to delete a quiniela
+*/
 import React, { useState } from 'react';
 import { Modal, Button, Spinner } from 'react-bootstrap';
 

@@ -4,13 +4,13 @@ import Loading from './Loading';
 import './MatchList.css';
 
 // import APIFootball api
-import APIFootball from "./api-football";
-
+import APIFootball from './api-football';
+// import additionals components
 import MatchCard from './MatchCard';
 
 function MatchList(){
     // initial state
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [matchesGroups, setMatchesGroups] = useState([]);
     const [matchesRound16, setMatchesRound16] = useState([]);
     const [matchesQuarters, setMatchesQuarters] = useState([]);
@@ -20,11 +20,12 @@ function MatchList(){
     const [matchesGoals, setMatchesGoals] = useState({});
 
     useEffect(() => {
-        setLoading(true);
         async function getPhaseMatches(){
+            // get the phase 1 matches
             const respPhase1 = await APIFootball.getPhaseMatches(1);
             setMatchesGroups(respPhase1);
 
+            // get the phase 2 matches and set to each phase
             const respPhase2 = await APIFootball.getPhaseMatches(2);
             respPhase2.forEach(match => {
                 switch (match.phase){
@@ -48,8 +49,8 @@ function MatchList(){
                 }
             });
 
-            const goalsAPI = await APIFootball.getMatchesGoals();
-            setMatchesGoals(goalsAPI);
+            // get the goals info from the APi
+            setMatchesGoals(await APIFootball.getMatchesGoals());
         }
         getPhaseMatches();
         setLoading(false);

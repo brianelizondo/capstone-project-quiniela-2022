@@ -4,7 +4,6 @@ import { Card, Button, Image, Row, Col } from 'react-bootstrap';
 import './UserQuinielaListCard.css';
 
 function UserQuinielaListCard({ quiniela, handleModalShow }){
-    
     return (
         <Link to={`/quinielas/${ quiniela.username }/${quiniela.quinielaID}`} key={quiniela.quinielaID}>
             <Card className="UserQuinielaListCard-card">

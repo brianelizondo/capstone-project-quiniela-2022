@@ -5,30 +5,28 @@ import Loading from './Loading';
 import './TeamDetails.css';
 
 // import APIFootball api
-import APIFootball from "./api-football";
+import APIFootball from './api-football';
 
 function TeamDetails(){
     const { shortname } = useParams();
     // initial state
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [team, setTeam] = useState({});
     const [teamStats, setTeamStats] = useState([]);
     const [teamSquad, setTeamSquads] = useState([]);
 
     useEffect(() => {
-        setLoading(true);
-        async function getTeam(){
-            const resp = await APIFootball.getTeam(shortname);
-            const respStats = await APIFootball.getTeamStats(shortname);
-            const respSquad = await APIFootball.getTeamSquad(shortname);
-            setTeam(resp);
-            setTeamStats(respStats);
-            setTeamSquads(respSquad);
+        async function getTeamInfo(){
+            // get the team info, stats and squad
+            setTeam(await APIFootball.getTeam(shortname));
+            setTeamStats(await APIFootball.getTeamStats(shortname));
+            setTeamSquads(await APIFootball.getTeamSquad(shortname));
         }
-        getTeam();
+        getTeamInfo();
         setLoading(false);
     }, [shortname]);
 
+    // format the porcent numbers
     const calculatePorc = (value, total) => {
         return ((value * 100) / total).toFixed(2);
     }

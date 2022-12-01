@@ -7,8 +7,8 @@ import ModalNotification from './ModalNotification';
 import './UserProfile.css';
 
 // import APIFootball api
-import APIFootball from "./api-football";
-
+import APIFootball from './api-football';
+// import additionals components
 import UserQuinielaListCard from './UserQuinielaListCard';
 
 function UserProfile(){
@@ -17,15 +17,14 @@ function UserProfile(){
     const user = useSelector((state) => state.user);
     const [modalShow, setModalShow] = useState(false);
     const [quinielaDeleteID, setQuinielaDeleteID] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [userQuinielas, setUserQuinielas] = useState([]);
     
     useEffect(() => {
-        setLoading(true);
         async function getQuinielas() {
+            // get all quinielas of the user
             APIFootball.token = user.token;
-            const resp = await APIFootball.getQuinielasByUser(user.username);
-            setUserQuinielas(resp);
+            setUserQuinielas(await APIFootball.getQuinielasByUser(user.username));
         }
         getQuinielas();
         setLoading(false);
@@ -40,6 +39,7 @@ function UserProfile(){
         setQuinielaDeleteID(id);
         setModalShow(true);
     };
+    // handle the delete quiniela process
     async function deleteQuiniela(){
         APIFootball.token = user.token;
         await APIFootball.deleteQuiniela(user, quinielaDeleteID);

@@ -1,7 +1,8 @@
-import React from "react";
+import React from 'react';
 import { Card, Image, Row, Col } from 'react-bootstrap';
 import './QuinielaMatchCard.css';
 
+// card for the match in the quiniela
 function MatchCard({ match, points }){
     const teamAName = match.teamA_name;
     const teamALogo = <Image src={ `/images/team_logo/${match.teamA_shortName}.png` } alt={ match.teamA_name } fluid={true} />;

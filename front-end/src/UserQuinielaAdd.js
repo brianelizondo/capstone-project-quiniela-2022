@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import UserQuinielaAddStep from './UserQuinielaAddStep';
 import { Row, Col } from 'react-bootstrap';
@@ -9,13 +9,13 @@ import './UserQuinielaAdd.css'
 
 // import APIFootball api
 import APIFootball from "./api-football";
-
+// form context to use with the form
 export const FormContext = createContext();
 
 function UserQuinielaAdd(){
     // initial states
     const history = useHistory();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [currentFormStep, setCurrentFormStep] = useState(0);
     const [formData, setFormData] = useState({});
     const formSteps = ['Groups Matches', 'Round of 16', 'Quarter-Finals', 'Semi-Finals', '3rd Place', 'Final'];
@@ -25,8 +25,9 @@ function UserQuinielaAdd(){
     // matches data from database
     const [matchesForContext, setMatchesForContext] = useState({});
 
-    // redirect after save quiniela
+    // handle te create quiniela process
     async function saveQuiniela(){
+        // set the matches data from context
         const matchesData = {
             R16: matchesForContext.matchesRound16,            
             QF: matchesForContext.matchesQuarters,            
@@ -35,15 +36,16 @@ function UserQuinielaAdd(){
             F: matchesForContext.matchesFinal
         };
 
+        // call the API to create a new quiniela and redirect
         APIFootball.token = user.token;
         await APIFootball.createNewQuiniela(user, matchesData, formData);
         history.push(`/users/${user.username}/profile`);
     }
     
     useEffect(() => {
-        setLoading(true);
         // set matches from database
         async function getMatches(){
+            // get the phase 1 matches
             const respPhase1 = await APIFootball.getPhaseMatches(1);
             let matchesContext = { 
                 matchesGroups: respPhase1, 
@@ -54,6 +56,7 @@ function UserQuinielaAdd(){
                 matchesFinal: []
             };
 
+            // get the phase 2 matches and assing to each phase
             const respPhase2 = await APIFootball.getPhaseMatches(2);
             respPhase2.forEach(match => {
                 switch (match.phase){
@@ -76,6 +79,7 @@ function UserQuinielaAdd(){
                         break;
                 }
             });
+            // set all matches to the form context
             setMatchesForContext(matchesContext);
         }
         getMatches();

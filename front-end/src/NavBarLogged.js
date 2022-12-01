@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavDropdown } from 'react-bootstrap';
 
+// options to show when the user is logged
 function NavBarLogged({ logout }) {
     const user = useSelector((state) => state.user);
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { Card, Row, Col, Spinner, Form, FloatingLabel, Button } from 'react-bootstrap';
@@ -7,7 +7,7 @@ import Loading from './Loading';
 import './UserMatchUpdate.css';
 
 // import APIFootball api
-import APIFootball from "./api-football";
+import APIFootball from './api-football';
 
 function UserMatchUpdate(){
     // initial state
@@ -16,14 +16,13 @@ function UserMatchUpdate(){
     
     const history = useHistory();
     const [teams, setTeams] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [btnSubmitLoading, setBtnSubmitLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
         async function getTeams() {
-            const resp = await APIFootball.getTeams();
-            setTeams(resp);
+            // get all teams
+            setTeams(await APIFootball.getTeams());
         }
         getTeams();
         setLoading(false);

@@ -1,9 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, Image, Row, Col } from 'react-bootstrap';
 
+// match card for the quiniela matches list
 function QuinielaListCard({ quiniela, position }){
-    
     return (
         <Link to={`/quinielas/${ quiniela.username }/${quiniela.quinielaID}`} key={quiniela.quinielaID}>
             <Card data-testid={`quiniela-${quiniela.quinielaID}`} className="Quiniela-card">

@@ -54,3 +54,16 @@ The project should make use of all the technologies covered in the course such a
   3. The entire front-end is developed in a basic way to develop all the processes and logic of the page, verify each route and that each component obtains and displays the correct information.
    
   4. Added tests for back-end routes and models and also tests for the front-end to verify that components are rendered correctly and are directed to correct directions when they need to be redirected to other pages.
+
+
+* **Step Five completed - Polish Your Application**
+
+  1. The entire application was updated to improve the style to make sure the site looks good and Added additional improvements that will show up when the visual aspect of the site is improved.
+   
+  2. The application was deployed on Heroku/Surge to be able to enter and test. The link to enter the application is: [Quinielas World Cup 2022](https://quinielas-2022.surge.sh/)
+
+
+* **Step Step Six - Document Your Project**
+
+  1. All files and codes are commented for a better understanding of what each file does and what its complete function within the application. 
+  2. The GitHub README file has been updated with all the necessary information. 

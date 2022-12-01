@@ -1,10 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from 'react-router-dom';
 import { Nav, NavDropdown, Row, Col, Image } from 'react-bootstrap';
 import './NavBar.css';
 import QuinielaLogo from './images/quinielas-logo.png';
 
+// import additionals components
 import NavBarLogged from './NavBarLogged';
 import NavBarUnlogged from './NavBarUnlogged';
 

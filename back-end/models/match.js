@@ -63,13 +63,17 @@ class Match {
         ); 
 
         let goals = {};
+        // set array with goal from phase 1 and 2
         const matches = resMatchesP1.rows.concat(resMatchesP2.rows);
+        // get goals info from the API
         for(let match of matches){
             let goalsTeamA = [];
             let goalsTeamB = [];
             if(match.teamA_result !== null && match.teamB_result !== null){
+                // get the API info
                 const goalsAPI = await ApiFootball.getMatchGoals(match.apiID);
                 
+                // set the goals and players for each team
                 for(let goal of goalsAPI){
                     if(goal.team.id === match.teamA_apiID){
                         goalsTeamA.push({
@@ -85,6 +89,7 @@ class Match {
                         });
                     }
                 }
+                // set the goals object with the goal info
                 goals[`match-${match.id}`] = {
                     teamA: goalsTeamA,
                     teamB: goalsTeamB
@@ -146,14 +151,14 @@ class Match {
                     m.id = $1`
             , [matchID]); 
         }
-
-        if(!resMatch.rows[0]){
+        const match = resMatch.rows[0];
+        if(!match){
             throw new NotFoundError(`Match not found: ${matchID}`);
         }
         
-        const match = resMatch.rows[0];
+        // get the API info
         const goalsAPI = await ApiFootball.getMatchGoals(match.apiID);
-                
+        // set the goals and players for each team
         let goalsTeamA = [];
         let goalsTeamB = [];
         for(let goal of goalsAPI){

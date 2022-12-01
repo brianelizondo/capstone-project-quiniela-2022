@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useHistory } from "react-router-dom";
-import { Form, FloatingLabel, Button, Spinner, Col, Row, Card } from "react-bootstrap";
+import { useHistory } from 'react-router-dom';
+import { Form, FloatingLabel, Button, Spinner, Col, Row, Card } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import './RegisterForm.css';
-
 
 function RegisterForm({ userRegister, checkUsernameEmail }){
     // history, loading and state for submit button
@@ -45,8 +44,12 @@ function RegisterForm({ userRegister, checkUsernameEmail }){
                 .max(20, 'Must be 20 characters or less')
           }),
         onSubmit: async (values) => {
+            // show the loading in button
             setBtnSubmitLoading(true);
+            // check if the username/email already exist
             const checkDuplicate = await checkUsernameEmail(values.email, values.username);
+            // if existe show the error
+            // if not exist go to register process fuction
             if(checkDuplicate.username || checkDuplicate.email){
                 setBtnSubmitLoading(false);
                 setShowUserEmailError(checkDuplicate);

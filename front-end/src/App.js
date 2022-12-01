@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.css';
 
 // import APIFootball api
-import APIFootball from "./api-football";
+import APIFootball from './api-football';
 
 // redux dispatch and reducer
 import { useDispatch } from 'react-redux';
@@ -109,7 +109,6 @@ function App(){
                     <LoginForm userAuthenticate={userAuthenticate} />
                 </Route>
 
-                {/* ROUTES TO PROTECT LATER */}
                 <ProtectedRoute exact path="/quinielas/:username/:quinielaID" component={QuinielaDetails} />
                 <ProtectedRoute exact path="/users/:username/profile" component={UserProfile} />
                 <ProtectedRoute exact path="/users/matches/update" component={UserMatchUpdate} />

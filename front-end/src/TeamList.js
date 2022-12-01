@@ -3,20 +3,19 @@ import { Row, Col } from 'react-bootstrap';
 import Loading from './Loading';
 
 // import APIFootball api
-import APIFootball from "./api-football";
-
+import APIFootball from './api-football';
+// import additionals components
 import TeamCard from './TeamCard';
 
 function TeamList(){
     // initial state
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [teams, setTeams] = useState([]);
 
     useEffect(() => {
-        setLoading(true);
         async function getTeams() {
-            const resp = await APIFootball.getTeams();
-            setTeams(resp);
+            // get all teams
+            setTeams(await APIFootball.getTeams());
         }
         getTeams();
         setLoading(false);

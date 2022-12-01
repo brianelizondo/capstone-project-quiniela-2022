@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Loading from './Loading';
-// import APIFootball api
-import APIFootball from "./api-football";
 
+// import APIFootball api
+import APIFootball from './api-football';
+// import additionals components
 import GroupStandings from './GroupStandings';
 
 function GroupList(){
     // initial state
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const groups = ["A", "B", "C", "D", "E", "F", "G", "H"];
     const [groupsStandings, setGroupsStandings] = useState([]);
 
     useEffect(() => {
-        setLoading(true);
         async function getGroupsStandings() {
-            const resp = await APIFootball.getGroupsStandings();
-            setGroupsStandings(resp);
+            // get all groups stats
+            setGroupsStandings(await APIFootball.getGroupsStandings());
         }
         getGroupsStandings();
         setLoading(false);

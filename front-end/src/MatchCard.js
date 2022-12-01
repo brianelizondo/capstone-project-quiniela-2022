@@ -10,6 +10,9 @@ function MatchCard({ match,  matchesGoals }){
     let teamALogo = null;
     let teamBName;
     let teamBLogo = null;
+    
+    // check if the match is phase 1 or 2
+    // set the group, tean A name/logo, team B name/logo
     if(match.id <= 48){
         phase = 1;
         matchGroup = match.group;
@@ -33,6 +36,7 @@ function MatchCard({ match,  matchesGoals }){
         }
     }
 
+    // set the goals for the match
     let teamA_goals = "";
     let teamB_goals = "";
     if(matchesGoals[`match-${match.id}`]){
@@ -49,7 +53,7 @@ function MatchCard({ match,  matchesGoals }){
             }
         }
     }
-
+    // if the result exist show it or show "vs"
     const matchResult = match.teamA_result !== null && match.teamB_result !== null ? `${match.teamA_result} - ${match.teamB_result}` : "vs";
         
     return (

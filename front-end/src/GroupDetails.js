@@ -5,35 +5,31 @@ import Loading from './Loading';
 import './GroupDetails.css';
 
 // import APIFootball api
-import APIFootball from "./api-football";
-
+import APIFootball from './api-football';
+// import additionals components
 import GroupStandings from './GroupStandings';
 import MatchCard from './MatchCard';
 
 function GroupDetails(){
     // initial state
     const { group } = useParams();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [groupsStandings, setGroupsStandings] = useState([]);
     const [groupMatches, setGroupMatches] = useState([]);
     const [matchesGoals, setMatchesGoals] = useState({});
 
     useEffect(() => {
-        setLoading(true);
-        async function getGroupsStandings() {
-            const resp = await APIFootball.getGroupsStandings();
-            setGroupsStandings(resp);
+        async function getGroupInfo() {
+            // get the groups stats from DB
+            setGroupsStandings(await APIFootball.getGroupsStandings());
+            
+            // get all matches from each group
+            setGroupMatches(await APIFootball.getGroupMatches(group));
+            
+            // get all goals for the matches from the API
+            setMatchesGoals(await APIFootball.getMatchesGoals());
         }
-        getGroupsStandings();
-
-        async function getGroupMatches() {
-            const resp = await APIFootball.getGroupMatches(group);
-            setGroupMatches(resp);
-
-            const goalsAPI = await APIFootball.getMatchesGoals();
-            setMatchesGoals(goalsAPI);
-        }
-        getGroupMatches();
+        getGroupInfo();
         setLoading(false);
     }, [group]);
 

@@ -19,6 +19,7 @@ class Quiniela {
     *       where matchesPhase2 is: [{ id, matchID, matchPhase, teamA, teamAResult, teamB, teamBResult, points }, ...]
     **/
     static async create(userID, matchesData, formData){
+        // create a new quiniela
         const result = await db.query(
             `INSERT INTO quinielas 
                 (user_id, status) 
@@ -29,6 +30,7 @@ class Quiniela {
         [userID]);
         let quiniela = result.rows[0];
 
+        // find all matches in the phase 1 and add to the quiniela phase 1 with goals data
         const matches_phase_1 = await Match.findAll(1);
         let quiniela_matches_phase_1 = [];
         for(const match of matches_phase_1){
@@ -37,6 +39,7 @@ class Quiniela {
             
             quiniela_matches_phase_1.push(await Quiniela.addMatch(quiniela.id, quiniela.userID, match.id, 1, match.teamA.id, teamA_result, match.teamB.id, teamB_result));
         }
+        // find all matches in the phase 2 and add to the quiniela phase 2 with teams/goals data
         const matches_phase_2 = await Match.findAll(2);
         let quinielaTeamChampionID = 0;
         let quiniela_matches_phase_2 = [];
@@ -47,7 +50,7 @@ class Quiniela {
             
             quiniela_matches_phase_2.push(await Quiniela.addMatch(quiniela.id, quiniela.userID, match.id, 2, teamsMatch[0].teamA.teamID, teamA_result, teamsMatch[0].teamB.teamID, teamB_result, match.phase));
 
-            // check champion team
+            // check and set the champion team
             if(match.phase === 'F'){
                 if(teamA_result > teamB_result){
                     quinielaTeamChampionID = teamsMatch[0].teamA.teamID;
@@ -59,6 +62,7 @@ class Quiniela {
         quiniela.matchesPhase1 = quiniela_matches_phase_1;
         quiniela.matchesPhase2 = quiniela_matches_phase_2;
 
+        // set a new quiniela total points
         const resultPoints = await db.query(
             `INSERT INTO quinielas_points 
                 (quiniela_id, user_id, champion_team_id, status) 
@@ -78,6 +82,7 @@ class Quiniela {
     *   Returns for phase 2 match: { id, matchID, teamA, teamAResult, teamB, teamBResult, points }
     */
     static async addMatch(quinielaID, userID, matchID, phase, teamA_id, teamA_result, teamB_id, teamB_result, matchPhase=null ){
+        // check the phase for the match
         if(phase == 1){
             const result = await db.query(
                 `INSERT INTO quinielas_phase_1 
@@ -119,6 +124,7 @@ class Quiniela {
     */
      static async matchesList(quinielaID, phase){
         let quinielaMatches;
+        // check the phase for the matches
         if(phase == 1){
             const result = await db.query(
                 `SELECT 
@@ -250,6 +256,7 @@ class Quiniela {
                 qp.points DESC`,
         [userID]);
         
+        // find and add the matches list of the quiniela
         let quinielas = [];
         for(let quiniela of result.rows){
             quiniela.matchesPhase1 = await Quiniela.matchesList(quiniela.quinielaID, 1);
@@ -294,6 +301,7 @@ class Quiniela {
             throw new NotFoundError(`Quiniela/User not found`);
         }
         
+        // find and add the matches list of the quiniela
         quiniela.matchesPhase1 = await Quiniela.matchesList(quinielaID, 1);
         quiniela.matchesPhase2 = await Quiniela.matchesList(quinielaID, 2);
         
@@ -302,7 +310,7 @@ class Quiniela {
 
 
     /**
-    * Set quiniela groups standings and get classified teams
+    * Set quiniela groups standings and to get all classified teams for aech group
     *   Returns classified teams by groups/possitions: { A1: teamID, A2: teamID, B1: teamID, B2: teamID, C1: teamID, C2: teamID, D1: teamID, D2: teamID, E1: teamID, E2: teamID, F1: teamID, F2: teamID, G1: teamID, G2: teamID, H1: teamID, H2: teamID }
     */
      static async setQuinielasClassifiedTeams(userID, matches, formData){
@@ -322,6 +330,7 @@ class Quiniela {
             let teamA_stan;
             let teamB_stan;
             
+            // insert a new team A stats
             const insertSQL = `INSERT INTO quinielas_groups_standings (user_id, "group", team_id) VALUES ($1, $2, $3)`;
             if(!teams.has(match.teamA.id)){
                 await db.query(insertSQL, [userID, match.group, match.teamA.id]);
@@ -340,7 +349,7 @@ class Quiniela {
             }else{
                 teamA_stan = teamStandings[`${match.teamA.shortName}`];
             }
-
+            // insert a new team B stats
             if(!teams.has(match.teamB.id)){
                 await db.query(insertSQL, [userID, match.group, match.teamB.id]);
                 teams.add(match.teamB.id);
@@ -393,6 +402,7 @@ class Quiniela {
             teamStandings[`${match.teamB.shortName}`] = teamB_stan;
         }
 
+        // get the teams stats after updated to get the classified teams
         for(let team in teamStandings){
             // save standings in database
             const teamStan = teamStandings[team];
@@ -448,6 +458,7 @@ class Quiniela {
                 qgs.group ASC, qgs.points DESC, qgs.games_won DESC, qgs.goals_diff DESC`,
         [userID]);
 
+        // return a object with the teams classified for the R16 phase
         return {
             "1A": { teamID: resultStats.rows[0].teamID, teamName: resultStats.rows[0].teamName, teamShortName: resultStats.rows[0].shortName },
             "2A": { teamID: resultStats.rows[1].teamID, teamName: resultStats.rows[1].teamName, teamShortName: resultStats.rows[1].shortName },
@@ -530,7 +541,9 @@ class Quiniela {
             matchTeamDraw = true;
         }
         
+        // matches for phase 1
         if(matchID >= 1 && matchID <= 48){
+            // get all quinielas match info
             const resp = await db.query(
                 `SELECT 
                     quiniela_id AS "quinielaID",
@@ -545,6 +558,7 @@ class Quiniela {
             [matchID]);
             const quinielas = resp.rows;
 
+            // check each quiniela match to set earned points and update the match points
             quinielas.forEach(async (quiniela) => {
                 // set team won/lost or draw from quiniela
                 let quinielaTeamWon_ID;
@@ -580,12 +594,13 @@ class Quiniela {
                         quiniela_id=$2 AND user_id=$3 AND match_id=$4`, 
                 [earnedPoints, quiniela.quinielaID, quiniela.userID, matchID]);
 
-                // update general quiniela's points
+                // update the total general quiniela's points
                 await updateQuinielaPoints(quiniela.quinielaID, quiniela.userID);
             });
 
-            
+        // matches for phase 2    
         }else if(matchID >= 49 && matchID <= 64){
+            // get all quinielas match info
             const resp = await db.query(
                 `SELECT 
                     quiniela_id AS "quinielaID",
@@ -603,6 +618,7 @@ class Quiniela {
             [matchID]);
             const quinielas = resp.rows;
 
+            // check each quiniela match to set earned points and update the match points
             quinielas.forEach(async (quiniela) => {
                 // set team won/lost or draw from quiniela
                 let quinielaTeamWon_ID;
@@ -653,8 +669,7 @@ class Quiniela {
                         quiniela_id=$2 AND user_id=$3 AND match_id=$4`, 
                 [earnedPoints, quiniela.quinielaID, quiniela.userID, matchID]);
                 
-
-                // update general quiniela's points
+                // update the total general quiniela's points
                 await updateQuinielaPoints(quiniela.quinielaID, quiniela.userID);
             });
 

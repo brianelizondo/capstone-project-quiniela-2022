@@ -1,3 +1,6 @@
+/**
+* REDUX actions to save the login data, update data and logut to delete the data from redux and localStorage
+*/
 import { createSlice } from '@reduxjs/toolkit';
 
 export const userSlice = createSlice({

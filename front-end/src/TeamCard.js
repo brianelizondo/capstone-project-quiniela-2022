@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, Image, Row, Col } from 'react-bootstrap';
 import './TeamCard.css';
 

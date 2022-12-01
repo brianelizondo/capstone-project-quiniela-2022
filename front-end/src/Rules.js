@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tab, Tabs, Row, Col } from 'react-bootstrap';
-import "./Rules.css";
+import './Rules.css';
 
 function Rules(){
     return (

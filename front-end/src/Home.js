@@ -5,16 +5,16 @@ import QuinielaListCard from './QuinielaListCard';
 import './Home.css';
 
 // import APIFootball api
-import APIFootball from "./api-football";
+import APIFootball from './api-football';
 
 function Home(){
     // initial state
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [quinielas, setQuinielas] = useState([]);
 
     useEffect(() => {
-        setLoading(true);
         async function getQuinielas() {
+            // get all quinielas active
             const resp = await APIFootball.getQuinielas();
             setQuinielas(resp);
         }

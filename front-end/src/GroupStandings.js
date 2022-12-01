@@ -1,10 +1,11 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Card, Table, Button } from 'react-bootstrap';
 import './GroupStandings.css';
 
 function GroupStandings({ group, standings, detailsButton }){
     let history = useHistory();
+    // fuction to handler the card click event
     function handleClick(link){
         history.push(link);
     }

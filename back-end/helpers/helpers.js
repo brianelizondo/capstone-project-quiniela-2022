@@ -3,23 +3,27 @@
 */
 function teamObjectAssign(arr){
     const result = arr.map((m) => {
+        // basic info for the team A
         m.teamA = {
             id: m.teamA_id,
             name: m.teamA_name,
             shortName: m.teamA_shortName,
             apiID: m.teamA_apiID
         };
+        // delete extra info
         delete m.teamA_id;
         delete m.teamA_name;
         delete m.teamA_shortName;
         delete m.teamA_apiID;
 
+        // basic info for the team A
         m.teamB = {
             id: m.teamB_id,
             name: m.teamB_name,
             shortName: m.teamB_shortName,
             apiID: m.teamB_apiID
         };
+        // delete extra info
         delete m.teamB_id;
         delete m.teamB_name;
         delete m.teamB_shortName;
@@ -29,6 +33,7 @@ function teamObjectAssign(arr){
         m.date = new Date(m.date).toLocaleDateString('en-us');
         m.time = m.time.toString().split(":").slice(0,2).join(":");
 
+        // return the new teams object
         return m;
     });
 
@@ -40,10 +45,12 @@ function teamObjectAssign(arr){
 */
 function setMatchTeamsInfo(matches, matchesAPI){
     let matchesUpdated = [];
+    // check each match to set the info from the API
     matches.forEach(async match => {
         for(let matchAPI of matchesAPI){
             if(match.apiID == matchAPI.fixture.id){
                 // set match info
+                // delete extra info no needed
                 delete matchAPI.fixture.id;
                 delete matchAPI.fixture.date;
                 delete matchAPI.fixture.timezone;
